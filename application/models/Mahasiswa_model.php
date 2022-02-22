@@ -1,0 +1,152 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Mahasiswa_model extends MY_Model {
+
+	protected $primary_key = 'id';
+	protected $table = 'master_mahasiswa';
+	
+	public function __construct()
+	{
+		parent::__construct();
+		
+	}	
+
+
+    public function getDefaultValues()
+    {
+        return [
+            'id'        => '',
+            'nama_lengkap'  => '',
+            'email' => '',
+            'no_registrasi' => '',
+            'program_studi' => '',
+            'no_hp' => '',
+            'foto'  => '',
+            'created_at'    => '',
+        ];
+    }
+
+    public function getValidationRules()
+    {
+        $validationRules = [
+            [
+                'field' => 'nama_mahasiswa',
+                'label' => 'Nama Mahasiswa',
+                'rules' => 'trim|required',
+            ],
+            [
+                'field' => 'email',
+                'label' => 'Email',
+                'rules' => 'trim|required|valid_email|is_unique[master_mahasiswa.email]',
+            ],
+            [
+                'field' => 'no_registrasi',
+                'label' => 'No Registrasi',
+                'rules' => 'trim|required|is_unique[master_mahasiswa.no_registrasi]',
+            ],
+            [
+                'field' => 'no_hp',
+                'label' => 'No HP (WA)',
+                'rules' => 'required',
+            ],
+
+        ];
+        return $validationRules;
+        
+    }
+
+    public function run($data, $action = 'input')
+    {
+        if ($action == 'input') {
+            $user_avatar_uuid = $data->user_avatar_uuid;
+            $user_avatar_name = $data->user_avatar_name;
+
+            $save_data = [
+                'nama_lengkap'  => $data->nama_mahasiswa,
+                'email' => $data->email,
+                'no_registrasi' => $data->no_registrasi,
+                'id_master_prodi'   => $data->prodi,
+                'no_hp' => $data->no_hp,
+                'created_by' => $this->session->userdata('id')
+
+            ];
+
+            if (!empty($user_avatar_name)) {
+
+                $user_avatar_name_copy = date('YmdHis') . '-' . $user_avatar_name;
+
+                if (!is_dir(FCPATH . '/uploads/mahasiswa')) {
+                    mkdir(FCPATH . '/uploads/mahasiswa');
+                }
+
+                @rename(FCPATH . 'uploads/tmp/' . $user_avatar_uuid . '/' . $user_avatar_name, 
+                        FCPATH . 'uploads/mahasiswa/' . $user_avatar_name_copy);
+
+                $save_data['foto'] = $user_avatar_name_copy;
+            }
+
+            return $this->create($save_data);
+        } else {
+        
+            
+                $user_avatar_uuid = $data->user_avatar_uuid;
+                $user_avatar_name = $data->user_avatar_name;
+
+                $save_data = [
+                    'nama_lengkap'  => $data->nama_mahasiswa,
+                    'email' => $data->email,
+                    'no_registrasi' => $data->no_registrasi,
+                    'id_master_prodi'   => $data->prodi,
+                    'no_hp' => $data->no_hp,
+                    'foto'      => 'default.png',
+                    'update_at' => date('Y-m-d H:i:s'),
+
+                ];
+
+
+                if (!empty($user_avatar_name)) {
+
+                    $user_avatar_name_copy = date('YmdHis') . '-' . $user_avatar_name;
+
+                    if (!is_dir(FCPATH . '/uploads/mahasiswa')) {
+                        mkdir(FCPATH . '/uploads/mahasiswa');
+                    }
+
+                    @rename(FCPATH . 'uploads/tmp/' . $user_avatar_uuid . '/' . $user_avatar_name, 
+                            FCPATH . 'uploads/mahasiswa/' . $user_avatar_name_copy);
+
+                    $save_data['foto'] = $user_avatar_name_copy;
+                }
+            
+
+            return $this->where('id', $data->id)->update($save_data);
+        }
+    }
+
+    public function save_users($data)
+    {
+         $save = $this->create($data, 'users');
+         if ($save) {
+            return $save;
+         } else {
+            return false;
+         }
+    }
+
+	public function getData($id_prodi)
+    {
+        $this->datatables->select('a.id, a.no_registrasi, a.nama_lengkap, a.no_ktp,a.no_hp, a.gelar_kesarjanaan, a.tempat_lahir, a.tanggal_lahir, a.status_kawin, a.alamat_rumah, a.email, a.no_hp, a.nama_ayah, a.nama_ibu, b.program_studi, a.konsentrasi, a.foto, a.created_at,a.update_at, a.created_by,a.status');
+        $this->datatables->select('(SELECT COUNT(id) FROM aauth_users WHERE username = a.no_registrasi) AS ada');
+        $this->datatables->from('master_mahasiswa a');
+        $this->datatables->join('master_prodi b', 'a.id_master_prodi = b.id');
+        if ($id_prodi != null) {
+        	 $this->datatables->where('a.id_master_prodi', $id_prodi);
+        }
+        return $this->datatables->generate();
+    }
+
+}
+
+/* End of file Mahasiswa_model.php */
+/* Location: ./application/models/Mahasiswa_model.php */

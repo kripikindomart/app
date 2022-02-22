@@ -1,0 +1,1 @@
+{php_open_tag} waw waww {php_close_tag}
