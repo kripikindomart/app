@@ -17,6 +17,24 @@ class MY_Model extends CI_Model {
         }
         
     }
+    public function change($id = NULL, $data = array())
+    {        
+        $this->db->where($this->primary_key, $id);
+        $this->db->update($this->table, $data);
+
+        return $this->db->affected_rows();
+    }
+
+    public function scurity($input)
+    {
+        return mysqli_real_escape_string($this->db->conn_id, $input);
+    }
+
+    public function store($data = array())
+    {
+        $this->db->insert($this->table, $data);
+        return $this->db->insert_id();
+    }
 
     public function from($table)
     {

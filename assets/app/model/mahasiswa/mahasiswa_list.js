@@ -67,7 +67,7 @@ $(document).ready(function() {
         orderable: false,
         searchable: false
       },
-      { data: "no_registrasi" },
+      { data: "npm" },
       { data: "nama_lengkap" },
       { data: "no_hp" },
       { data: "program_studi" },
@@ -125,9 +125,9 @@ $(document).ready(function() {
   });
 
   table
-    
-    .container()
-    .appendTo("#mahasiswa_wrapper .col-md-6:eq(0)");
+  .buttons()
+  .container()
+  .appendTo("#mahasiswa_wrapper .col-md-6:eq(0)");
 
   $(".select_all").on("click", function() {
     if (this.checked) {

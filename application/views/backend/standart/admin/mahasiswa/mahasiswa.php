@@ -94,7 +94,7 @@
                     <thead>
                     <tr>
                         <th width="5px">No.</th>
-                        <th>No Registrasi</th>
+                        <th>NPM</th>
                         <th>Nama Mahasiswa</th>
                         <th>No HP</th>
                         <th>Program Studi</th>
@@ -110,7 +110,7 @@
                       <tfoot>
                           <tr>
                               <th width="5px">No.</th>
-                              <th>No Registrasi</th>
+                              <th>NPM</th>
                               <th>Nama Mahasiswa</th>
                               <th>No HP</th>
                               <th>Program Studi</th>

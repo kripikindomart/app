@@ -30,9 +30,14 @@ class Crud extends Builder {
 		$this->render('index', $data);
 	}
 
-	public function build()
+	public function add_save()
 	{
 		return $this->buildCrud();
+	}
+
+	public function build()
+	{
+		
 	}
 
 	/**

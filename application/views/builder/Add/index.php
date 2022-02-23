@@ -135,7 +135,7 @@ $(document).ready(function() {
         $('.loading').show();
 
         $.ajax({
-                url: BASE_URL + '/administrator/crud/add_save',
+                url: BASE_URL + '/admin/builder/crud/add_save',
                 type: 'POST',
                 dataType: 'json',
                 data: data_post,

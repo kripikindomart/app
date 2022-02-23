@@ -19,7 +19,7 @@ class Mahasiswa_model extends MY_Model {
             'id'        => '',
             'nama_lengkap'  => '',
             'email' => '',
-            'no_registrasi' => '',
+            'npm' => '',
             'program_studi' => '',
             'no_hp' => '',
             'foto'  => '',
@@ -41,9 +41,9 @@ class Mahasiswa_model extends MY_Model {
                 'rules' => 'trim|required|valid_email|is_unique[master_mahasiswa.email]',
             ],
             [
-                'field' => 'no_registrasi',
+                'field' => 'npm',
                 'label' => 'No Registrasi',
-                'rules' => 'trim|required|is_unique[master_mahasiswa.no_registrasi]',
+                'rules' => 'trim|required|is_unique[master_mahasiswa.npm]',
             ],
             [
                 'field' => 'no_hp',
@@ -65,7 +65,7 @@ class Mahasiswa_model extends MY_Model {
             $save_data = [
                 'nama_lengkap'  => $data->nama_mahasiswa,
                 'email' => $data->email,
-                'no_registrasi' => $data->no_registrasi,
+                'npm' => $data->npm,
                 'id_master_prodi'   => $data->prodi,
                 'no_hp' => $data->no_hp,
                 'created_by' => $this->session->userdata('id')
@@ -96,7 +96,7 @@ class Mahasiswa_model extends MY_Model {
                 $save_data = [
                     'nama_lengkap'  => $data->nama_mahasiswa,
                     'email' => $data->email,
-                    'no_registrasi' => $data->no_registrasi,
+                    'npm' => $data->npm,
                     'id_master_prodi'   => $data->prodi,
                     'no_hp' => $data->no_hp,
                     'foto'      => 'default.png',
@@ -137,7 +137,7 @@ class Mahasiswa_model extends MY_Model {
 	public function getData($id_prodi)
     {
         $this->datatables->select('a.id, a.npm, a.nama_lengkap, a.no_ktp,a.no_hp, a.gelar_kesarjanaan, a.tempat_lahir, a.tanggal_lahir, a.status_kawin, a.alamat_rumah, a.email, a.no_hp, a.nama_ayah, a.nama_ibu, b.program_studi, a.konsentrasi, a.foto, a.created_at,a.update_at, a.created_by,a.status');
-        $this->datatables->select('(SELECT COUNT(id) FROM aauth_users WHERE username = a.no_registrasi) AS ada');
+        $this->datatables->select('(SELECT COUNT(id) FROM aauth_users WHERE username = a.npm) AS ada');
         $this->datatables->from('master_mahasiswa a');
         $this->datatables->join('master_prodi b', 'a.id_master_prodi = b.id');
         if ($id_prodi != null) {
