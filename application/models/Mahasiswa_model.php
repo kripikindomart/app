@@ -136,7 +136,7 @@ class Mahasiswa_model extends MY_Model {
 
 	public function getData($id_prodi)
     {
-        $this->datatables->select('a.id, a.no_registrasi, a.nama_lengkap, a.no_ktp,a.no_hp, a.gelar_kesarjanaan, a.tempat_lahir, a.tanggal_lahir, a.status_kawin, a.alamat_rumah, a.email, a.no_hp, a.nama_ayah, a.nama_ibu, b.program_studi, a.konsentrasi, a.foto, a.created_at,a.update_at, a.created_by,a.status');
+        $this->datatables->select('a.id, a.npm, a.nama_lengkap, a.no_ktp,a.no_hp, a.gelar_kesarjanaan, a.tempat_lahir, a.tanggal_lahir, a.status_kawin, a.alamat_rumah, a.email, a.no_hp, a.nama_ayah, a.nama_ibu, b.program_studi, a.konsentrasi, a.foto, a.created_at,a.update_at, a.created_by,a.status');
         $this->datatables->select('(SELECT COUNT(id) FROM aauth_users WHERE username = a.no_registrasi) AS ada');
         $this->datatables->from('master_mahasiswa a');
         $this->datatables->join('master_prodi b', 'a.id_master_prodi = b.id');
