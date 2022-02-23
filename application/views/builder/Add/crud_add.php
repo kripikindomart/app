@@ -1,4 +1,5 @@
 <link rel="stylesheet" type="text/css" href="<?= BASE_ASSET; ?>css/crud.css">
+<script src="<?= BASE_ASSET.'js/crud.js'; ?>" ></script>
 <script src="<?= BASE_ASSET; ?>/js/jquery.hotkeys.js"></script>
 <!-- <script src="<?= BASE_ASSET; ?>/float-thead/jquery.floatThead.min.js"></script> -->
 <script type="text/javascript">

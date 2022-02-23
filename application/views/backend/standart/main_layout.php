@@ -65,7 +65,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <!-- EXTENDS SCRIPT-->
 <script src="<?= BASE_ASSET.'js/custom.js'; ?>" ></script>
-<script src="<?= BASE_ASSET.'js/crud.js'; ?>" ></script>
 <script src="<?= BASE_ASSET.'lib/select2/js/select2.js'; ?>"></script>
 <script src="<?= BASE_ASSET.'lib/fine-upload/jquery.fine-uploader.js'; ?>"></script>
 <script src="<?= BASE_ASSET.'lib/select2/js/select2.full.js'; ?>"></script>

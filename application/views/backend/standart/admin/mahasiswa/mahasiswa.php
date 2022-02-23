@@ -32,10 +32,14 @@
 
                   <div class="form-group">
                       <label>Tahun Angkatan</label>
-                      <div id="data-kelas">
-                          <select name="thn_akademik" id="thn_akademik" class="form-control input-sm ">
-                              <?php if(!empty($thn_akademik)){ echo $thn_akademik; } ?>
-                          </select>
+                      <div id="data-angkatan">
+                        <select id="thn_angkatan" class="form-control chosen chosen-select" style="width:100% !important">
+                              <option value="all">Semua Angkatan</option>
+                              <?php foreach ($angkatan as $m) :?>
+                                <option value="<?=$m->id?>"><?=$m->keterangan?></option>
+                              <?php endforeach; ?>
+                            </select>
+                          
                       </div>
                   </div>
 

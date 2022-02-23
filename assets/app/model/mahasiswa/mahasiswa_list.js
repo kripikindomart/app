@@ -12,6 +12,17 @@ $(document).ready(function() {
     if(id_prodi !== 'all'){
       let src2 = src + '/' + id_prodi;
       url = $(this).prop('checked') === true ? src : src2;
+      $('#thn_angkatan').on('change', function(){
+        let id = $(this).val();
+        if(id !== 'all'){
+          let src3 = src + '/' + id_prodi + '/' + id;
+          url = $(this).prop('checked') === true ? src : src3;
+        }else{
+          url = src;
+        }
+
+        table.ajax.url(url).load();
+      });
     }else{
       url = src;
     }
@@ -19,6 +30,22 @@ $(document).ready(function() {
     table.ajax.url(url).load();
   });
 
+
+  $('#thn_angkatan').on('change', function(){
+    let id = $(this).val();
+    let src = BASE_URL+'admin/mahasiswa/ajax';
+    let url;
+
+
+    if(id !== 'all'){
+      let src2 = src + '/null/' + id;
+      url = $(this).prop('checked') === true ? src : src2;
+    }else{
+      url = src;
+    }
+
+    table.ajax.url(url).load();
+  });
 
   table = $("#mahasiswa").DataTable({
     initComplete: function() {

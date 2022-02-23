@@ -15,15 +15,16 @@ class Mahasiswa extends Admin {
 		$this->template->title('Mahasiswa List');
 
 		$data['prodi'] = $this->mahasiswa->where('prodiID != ', 'ADM')->get('master_prodi');
+		$data['angkatan'] = $this->mahasiswa->get('master_angkatan');
 		$this->render('mahasiswa/mahasiswa', $data);
 	}
 
 
-	public function ajax($id=null)
+	public function ajax($id=null, $angkatan = null)
 	{
 		//if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ) {
 
-			return $this->response($this->mahasiswa->getData($id), false);
+			return $this->response($this->mahasiswa->getData($id, $angkatan), false);
 		//}
 	}
 
