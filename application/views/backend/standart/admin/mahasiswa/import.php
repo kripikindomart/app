@@ -19,15 +19,27 @@
             <br>
             <div class="row">
                 <?= form_open_multipart('admin/mahasiswa/preview'); ?>
-                <label for="file" class="col-sm-offset-1 col-sm-3 text-right">Pilih File</label>
-                <div class="col-sm-4">
-                    <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-3 ">
+                    <select id="thn_angkatan" class="form-control chosen chosen-select" style="width:100% !important" name="thn_angkatan">
+                      <option value="all">Semua Angkatan</option>
+                      <?php foreach ($angkatan as $m) :?>
+                        <option value="<?=$m->id?>"><?=$m->keterangan?></option>
+                      <?php endforeach; ?>
+                    </select>
+                </div>
+                
+                <div class="col-sm-6">
+                    <label for="file" class="text-right col-sm-4">Pilih File</label>
+                    <div class="form-group col-sm-8">
+                        
                         <input type="file" name="upload_file">
                     </div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <button name="preview" type="submit" class="btn btn-sm btn-success">Preview</button>
                 </div>
+
+                
                 <?= form_close(); ?>
                 <div class="col-sm-6 col-sm-offset-3">
                     <?php if (isset($_POST['preview'])) : ?>
@@ -37,10 +49,11 @@
                             <thead>
                                 <tr>
                                     <td>No</td>
-                                    <td>No Registrasi</td>
+                                    <td>NPM</td>
                                     <td>Nama Mahasiswa</td>
                                     <td>No Hp</td>
                                     <td>ID Program Studi</td>
+                                    <td>Tahun Angkatan</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,8 +67,8 @@
                                             ?>
                                         <tr>
                                             <td><?= $no++; ?></td>
-                                            <td class="<?= $data['no_registrasi'] == null ? 'bg-danger' : ''; ?>">
-                                                <?= $data['no_registrasi'] == null ? 'BELUM DIISI' : $data['no_registrasi']; ?>
+                                            <td class="<?= $data['npm'] == null ? 'bg-danger' : ''; ?>">
+                                                <?= $data['npm'] == null ? 'BELUM DIISI' : $data['npm']; ?>
                                             </td>
                                             <td class="<?= $data['nama_lengkap'] == null ? 'bg-danger' : ''; ?>">
                                                 <?= $data['nama_lengkap'] == null ? 'BELUM DIISI' : $data['nama_lengkap'];; ?>
@@ -67,9 +80,14 @@
                                             <td class="<?= $data['id_master_prodi'] == null ? 'bg-danger' : ''; ?>">
                                                 <?= $data['id_master_prodi'] == null ? 'BELUM DIISI' : get_data($data['id_master_prodi'], 'id', 'master_prodi', 'program_studi'); ?>
                                             </td>
+
+                                            <td class="<?= $data['thn_angkatan'] == null ? 'bg-danger' : ''; ?>">
+                                                <?= $data['thn_angkatan'] == null ? 'BELUM DIISI' : get_data($data['thn_angkatan'], 'id', 'master_angkatan', 'keterangan'); ?>
+                                            </td>
+
                                         </tr>
                                 <?php
-                                            if ($data['no_registrasi'] == null || $data['nama_lengkap'] == null ||  $data['no_hp'] == null ) {
+                                            if ($data['npm'] == null || $data['nama_lengkap'] == null ||  $data['no_hp'] == null ) {
                                                 $status = false;
                                             }
                                         endforeach;

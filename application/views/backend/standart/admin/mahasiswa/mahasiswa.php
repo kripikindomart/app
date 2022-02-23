@@ -34,7 +34,7 @@
                       <label>Tahun Angkatan</label>
                       <div id="data-angkatan">
                         <select id="thn_angkatan" class="form-control chosen chosen-select" style="width:100% !important">
-                              <option value="all">Semua Angkatan</option>
+                              <option value="">Semua Angkatan</option>
                               <?php foreach ($angkatan as $m) :?>
                                 <option value="<?=$m->id?>"><?=$m->keterangan?></option>
                               <?php endforeach; ?>

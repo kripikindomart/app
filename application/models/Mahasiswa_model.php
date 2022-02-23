@@ -139,18 +139,25 @@ class Mahasiswa_model extends MY_Model {
         $this->datatables->select('a.id, a.npm, a.nama_lengkap, a.no_ktp,a.no_hp, a.gelar_kesarjanaan, a.tempat_lahir, a.tanggal_lahir, a.status_kawin, a.alamat_rumah, a.email, a.no_hp, a.nama_ayah, a.nama_ibu, b.program_studi, a.konsentrasi, a.foto, a.created_at,a.update_at, a.created_by,a.status');
         $this->datatables->select('(SELECT COUNT(id) FROM aauth_users WHERE username = a.npm) AS ada');
         $this->datatables->from('master_mahasiswa a');
-        $this->datatables->join('master_prodi b', 'a.id_master_prodi = b.id');
-        $this->datatables->join('master_angkatan c', 'a.id_angkatan = c.id');
+        $this->datatables->join('master_prodi b', 'b.id = a.id_master_prodi', 'left');
+        $this->datatables->join('master_angkatan c', 'a.id_angkatan = c.id', 'left');
+        
         if ($id_prodi != null && $angkatan != null) {
-             $this->datatables->where('a.id_master_prodi', $id_prodi);
-        	 $this->datatables->where('a.id_angkatan', $angkatan);
-        } else if($id_prodi != null) {
             $this->datatables->where('a.id_master_prodi', $id_prodi);
-        } else if($id_prodi == null && $angkatan != null) {
-            $this->datatables->where('a.id_angkatan', $angkatan);
+             $this->db->where('a.id_angkatan', $angkatan);
         }
 
+        // if ($id_prodi != null && $angkatan != null) {
+        //      $this->datatables->where('a.id_master_prodi', $id_prodi);
+        //      $this->datatables->where('a.id_angkatan', $angkatan);
+         
+        // } else if($id_prodi != null) {
+        //     $this->datatables->where('a.id_master_prodi', $id_prodi);
+        // } else if($id_prodi == null && $angkatan != null) {
+        //     $this->datatables->where('a.id_angkatan', $angkatan);
+        // } 
 
+       // return $this->db->get();
         return $this->datatables->generate();
     }
 

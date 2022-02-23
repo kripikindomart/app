@@ -342,7 +342,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               </li>
 
               <li class=" "> 
-                <a href="<?= base_url('admin/tahun') ?>"><i class="fa  fa-circle-o"></i> <span>Tahun Angkatan</span>
+                <a href="<?= base_url('admin/angkatan') ?>"><i class="fa  fa-circle-o"></i> <span>Tahun Angkatan</span>
                 </a>
               </li>
 

@@ -534,7 +534,7 @@ class Mahasiswa extends Admin {
 		$data['page']	= 'mahasiswa/import';
 		$data['content']	= $this->mahasiswa->get('master_prodi');
 		if ($import_data != null) $data['import'] = $import_data;
-
+		$data['angkatan'] = $this->mahasiswa->get('master_angkatan');
 		$this->template->title($data['title']);
 		$this->render($data['page'], $data);
 	}
@@ -576,10 +576,11 @@ class Mahasiswa extends Admin {
 			$data = [];
 			for ($i = 1; $i < count($sheetData); $i++) {
 				$data[] = [
-					'no_registrasi' => $sheetData[$i][0],
+					'npm' => $sheetData[$i][0],
 					'nama_lengkap' => $sheetData[$i][1],
 					'no_hp' => $sheetData[$i][2],
-					'id_master_prodi' => $sheetData[$i][3]
+					'id_master_prodi' => $sheetData[$i][3],
+					'thn_angkatan' => $this->input->post('thn_angkatan')
 				];
 			}
 
@@ -592,16 +593,18 @@ class Mahasiswa extends Admin {
 	public function do_import()
 	{
 		$input = json_decode($this->input->post('data', true));
+
 		$data = [];
 		foreach ($input as $d) {
 			$data[] = [
-				'no_registrasi' => $d->no_registrasi,
+				'npm' => $d->npm,
 				'nama_lengkap' => $d->nama_lengkap,
 				'no_hp' => $d->no_hp,
-				'id_master_prodi' => $d->id_master_prodi
+				'id_master_prodi' => $d->id_master_prodi,
+				'id_angkatan' => $d->thn_angkatan
 			];
 		}
-
+	
 		$save = $this->mahasiswa->insert_batch($data);
 		if ($save) {
 			redirect('admin/mahasiswa');
