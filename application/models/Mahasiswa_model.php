@@ -142,9 +142,8 @@ class Mahasiswa_model extends MY_Model {
         $this->datatables->join('master_prodi b', 'b.id = a.id_master_prodi', 'left');
         $this->datatables->join('master_angkatan c', 'a.id_angkatan = c.id', 'left');
         
-        if ($id_prodi != null && $angkatan != null) {
-            $this->datatables->where('a.id_master_prodi', $id_prodi);
-             $this->db->where('a.id_angkatan', $angkatan);
+        if ($id_prodi != null) {
+             $this->datatables->where('a.id_master_prodi', $id_prodi);
         }
 
         // if ($id_prodi != null && $angkatan != null) {

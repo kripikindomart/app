@@ -358,7 +358,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <ul class="treeview-menu" >
             <ul class="sidebar-menu  sidebar-admin tree" data-widget="tree">
               <li class=" "> 
-                <a href="<?= base_url('admin/ujian') ?>" >
+                <a href="<?= base_url('admin/pendaftaran') ?>" >
                   <i class="fa  fa-circle-o"></i> <span>Pendaftaran</span>
                 </a>
               </li>
@@ -393,6 +393,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               <li class=" "> 
                 <a href="<?= base_url('admin/ujian') ?>" >
                   <i class="fa  fa-circle-o"></i> <span>Data Pengajuan</span>
+                </a>
+              </li>
+              <li class=" "> 
+                <a href="<?= base_url('admin/surat/sk') ?>"><i class="fa  fa-circle-o"></i> <span>Data SK</span>
+                </a>
+              </li>
+
+              <li class=" "> 
+                <a href="<?= base_url('admin/surat') ?>"><i class="fa  fa-circle-o"></i> <span>Data Surat</span>
+                </a>
+              </li>
+
+              <li class=" "> 
+                <a href="<?= base_url('admin/surat/add') ?>"><i class="fa  fa-circle-o"></i> <span>Buat Surat</span>
+                </a>
+              </li>
+
+             
+
+            </ul>
+          </ul>
+        </li>
+
+        <li class="treeview" style="height: auto;">
+          <a href="#" ><i class="fa fa fa-file-text-o "></i> <span>KOMPONEN</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+          </a>
+          <ul class="treeview-menu" >
+            <ul class="sidebar-menu  sidebar-admin tree" data-widget="tree">
+              <li class=" "> 
+                <a href="<?= base_url('admin/komponen') ?>" >
+                  <i class="fa  fa-circle-o"></i> <span>Kategori Komponen</span>
                 </a>
               </li>
               <li class=" "> 

@@ -463,6 +463,8 @@ class Builder extends MY_Controller
             }
 
             $table_name = $this->input->post('table_name');
+            $controller_name = $this->input->post('controler_name');
+            $model_name = $this->input->post('model_name');
 
 
             $validate = $this->crud_builder->validateAll();
@@ -476,13 +478,13 @@ class Builder extends MY_Controller
             }
 
             $builder_list = $this->parser->parse($this->template_crud_path.'builder_list', $this->data, true);
-            write_file($this->view_path.$table_name.'_list.php', $builder_list);
+            write_file($this->view_path.$controller_name.'_list.php', $builder_list);
 
             $builder_list = $this->parser->parse($this->template_crud_path.'builder_controller', $this->data, true);
-            write_file($this->controller_path.ucwords($table_name).'.php', $builder_list);
+            write_file($this->controller_path.ucwords($controller_name).'.php', $builder_list);
 
             $builder_list = $this->parser->parse($this->template_crud_path.'builder_model', $this->data, true);
-            write_file($this->model_path.'Model_'.$table_name.'.php', $builder_list);
+            write_file($this->model_path.'Model_'.$controller_name.'.php', $builder_list);
 
             if ($this->input->post('create')) {
                 $this->builder_list = $this->parser->parse($this->template_crud_path.'builder_add', $this->data, true);

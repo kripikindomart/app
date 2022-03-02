@@ -93,6 +93,13 @@
                      </div>
                   </div>
                   <div class="form-group ">
+                     <label for="label" class="col-sm-2 control-label"><?= cclang('title') ?> </label>
+                     <div class="col-sm-8">
+                        <input type="text" class="form-control" name="controller_name" id="controller_name" placeholder="controller_name" value="<?= set_value('controller_name'); ?>">
+                        <small class="info help-block">The title of crud.</small>
+                     </div>
+                  </div>
+                  <div class="form-group ">
                      <label for="label" class="col-sm-2 control-label"><?= cclang('page') ?></label>
                      <div class="col-sm-7">
                         <div class="col-xs-3">

@@ -21,7 +21,7 @@
                 <div class="form-group">
                       <label>Pilih Program Studi</label>
                       <div id="data-kelas">
-                          <select id="prodi_filter" class="form-control chosen chosen-select" style="width:100% !important">
+                          <select id="prodi_filter" class="form-control chosen chosen-select filter" style="width:100% !important">
                               <option value="all">Semua Program Studi</option>
                               <?php foreach ($prodi as $m) :?>
                                 <option value="<?=$m->id?>"><?=$m->program_studi?></option>
@@ -33,7 +33,7 @@
                   <div class="form-group">
                       <label>Tahun Angkatan</label>
                       <div id="data-angkatan">
-                        <select id="thn_angkatan" class="form-control chosen chosen-select" style="width:100% !important">
+                        <select id="thn_angkatan" class="form-control chosen chosen-select filter" style="width:100% !important">
                               <option value="">Semua Angkatan</option>
                               <?php foreach ($angkatan as $m) :?>
                                 <option value="<?=$m->id?>"><?=$m->keterangan?></option>
