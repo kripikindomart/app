@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Pendaftaran extends Admin {
+class Pengajuan extends Admin {
 
 	public function __construct()
 	{

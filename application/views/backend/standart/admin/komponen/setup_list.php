@@ -23,7 +23,7 @@
                   <div class="widget-user-header ">
                      <div class="row pull-right">
                         <?php is_allowed('group_add', function(){?>
-                        <button class="btn btn-flat btn-success btn_add_new" id="add" title="<?= cclang('add_new_button', 'Prodi'); ?> (Ctrl+a)" href="<?= site_url('admin/komponen/add_kategori'); ?>"><i class="fa fa-plus-square-o" ></i> <?= cclang('add_new_button', 'Kategori'); ?></button>
+                        <button class="btn btn-flat btn-success btn_add_new" id="add" title="<?= cclang('add_new_button', 'komponen'); ?> (Ctrl+a)" href="<?= site_url('admin/komponen/add_komponen'); ?>"><i class="fa fa-plus-square-o" ></i> <?= cclang('add_new_button', 'komponen'); ?></button>
 
                       
                         <?php }) ?>
@@ -49,8 +49,7 @@
                             </div>
                            </td>
                            <th width="5px">No.</th>
-                           <th>Kategori</th>
-                           <th>Aktif</th>
+                           <th>Komponen</th>
                            <th class="action">Action</th>
                       </tr>
                      </thead>
@@ -65,8 +64,7 @@
                             </div>
                            </td>
                            <th width="5px">No.</th>
-                           <th>Kategori</th>
-                           <th>Aktif</th>
+                           <th>Komponen</th>
                            <th class="action">Action</th>
                       </tr>
                      </tfoot>
@@ -109,36 +107,34 @@
 <form></form>
 <div class="modal fade" id="modal_form" role="dialog">
     <div class="modal-dialog modal-lg">
+        <form id="form" method="post" class="form-horizontal" enctype="multipart/form-data">
         <div class="modal-content">
             <div class="modal-header" style="background-color:#03904e; color:#fff; ">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title text-center">Tambah Data</h3>
             </div>
             <div class="modal-body form">
-                <form class="form form-horizontal" method="post" enctype="multipart/form-data" id="form">
-                  <input type="hidden" name="id">
+              
                     <div class="form-group ">
                         <label for="label" class="col-sm-2 control-label">Kategori</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control" name="kategori" id="kategori" placeholder="Kategori Komponen" value="">
+                            <span class="form-control"><strong><?= $data_kategori->kategori ?></strong></span>
+                          <input type="hidden" class="form-control" name="id_kategori" id="id" placeholder="Kategori Komponen" value="<?= $data_kategori->id ?>" >
+
                           <i class="required"><small></small></i>
                         </div>
                     </div>  
 
 
                     <div class="form-group ">
-                        <label for="url" class="col-sm-2 control-label">Aktif <i class="required">*</i></label>
+                        <label for="url" class="col-sm-2 control-label">Nama Komponen <i class="required">*</i></label>
 
                         <div class="col-sm-8">
-                          <select name="aktif" id="" class="form-control">
-                            <option value="Y">Y</option>
-                            <option value="N">N</option>
-                          </select>
+                          <input type="text" class="form-control" name="nama_komponen" id="nama_komponen" placeholder="Nama Komponen" value="" >
                         </div>
                     </div>
                     
 
-                </form>
             </div>
             <div class="modal-footer">
 
@@ -147,14 +143,15 @@
                 </div>
                 <span class="loading loading-hide"><img src="<?= base_url('assets'); ?>/img/loading-spin-primary.svg"> <i>Loading, Saving data</i></span>
                 <button type="submit" class="btn btn-flat btn-primary btn_save btn_action" id="simpan" data-stype='stay' title="save (Ctrl+s)"><i class="fa fa-save" ></i> Save</button>
-                <button type="submit" class="btn btn-flat btn-info btn_save btn_action btn_save_back" id="simpan" data-stype='back' title="save and back to the list (Ctrl+d)"><i class="ion ion-ios-list-outline" ></i> Save and Go to The List</button>
+                <button type="button" class="btn btn-flat btn-info btn_save btn_action btn_save_back" id="simpan" data-stype='back' title="save and back to the list (Ctrl+d)"><i class="ion ion-ios-list-outline" ></i> Save and Go to The List</button>
                 <button type="button" data-dismiss="modal" class="btn btn-flat btn-default " id="btn_cancel" title="cancel (Ctrl+x)"><i class="fa fa-undo" ></i> Cancel</button>
             </div>
         </div><!-- /.modal-content -->
+        </form>
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<script type="text/javascript" src="<?= APP.'komponen/setup_list.js' ?>"></script>
+<script type="text/javascript" src="<?= APP.'komponen/komponen_setup.js' ?>"></script>
 <!-- Page script -->
 <script>
 
@@ -219,27 +216,25 @@
 
     $('.btn_action').click(function(event) {
           if (save_method == 'add') {
-               var url = '<?= base_url('admin/komponen/add_kategori'); ?>';
+               var url = '<?= base_url('admin/komponen/save_komponen'); ?>';
                 var save_type = $(this).attr('data-stype');
           } else {
               var url = '<?= base_url('admin/komponen/kategori_edit_save'); ?>';
               var save_type = 'back';
           }
+          var form = $('#form').serializeArray();
+          console.log(form)
            $.ajax({
              url: url,
              type:"post",
              dataType: 'json',
-             data:new FormData(form),
-             processData:false,
-             contentType:false,
-             cache:false,
-             async:false,
+             data:form,
          })
            .done(function(res) {
               if (res.success == true) {
                 if (save_type == 'stay') {
                   $('form input[type != hidden], form textarea, form select').val('');
-                  reload_ajax();
+                  //reload_ajax();
                   $('.message').printMessage({
                         message: res.message
                     });
@@ -265,7 +260,7 @@
              console.log("error");
            })
            .always(function() {
-                reload_ajax();
+               // reload_ajax();
            });
     });
 

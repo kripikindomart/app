@@ -395,10 +395,11 @@ class Builder extends MY_Controller
 
     protected $table_name = 'news';
     protected $data = []; 
-    protected $controller_dir = 'admin/Builder/';    
-    protected $views_dir = 'builder/';    
+    protected $controller_dir = 'admin/';    
+    protected $views_dir = 'backend/standart/admin/';    
     protected $view_path = '';
     protected $controller_path = '';
+    protected $controller_name = 'Controller';
     protected $model_path = '';    
     protected $template_crud_path = 'core_template/crud/';
     
@@ -414,7 +415,7 @@ class Builder extends MY_Controller
             'table_name'                => $this->table_name,
 
         ];
-        $this->is_loggin();
+    $this->is_loggin();
     $this->view_path = FCPATH . '/application/views/'.$this->views_dir.'/'.$this->table_name.'/';
     $this->controller_path = FCPATH . '/application/controllers/'.$this->controller_dir;
     $this->model_path = FCPATH . '/application/models/builder/';  

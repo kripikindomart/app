@@ -144,6 +144,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     var csrf = '<?= $this->security->get_csrf_token_name(); ?>';
     var token = '<?= $this->security->get_csrf_hash(); ?>';
     var uri_segment = '<?= $this->uri->segment(2) ?>';
+    var uri_segment_3 = '<?= $this->uri->segment(4) ?>';
     $(document).ready(function(){
 
       toastr.options = {
@@ -391,7 +392,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <ul class="treeview-menu" >
             <ul class="sidebar-menu  sidebar-admin tree" data-widget="tree">
               <li class=" "> 
-                <a href="<?= base_url('admin/ujian') ?>" >
+                <a href="<?= base_url('admin/pengajuan') ?>" >
                   <i class="fa  fa-circle-o"></i> <span>Data Pengajuan</span>
                 </a>
               </li>
@@ -452,7 +453,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
        
 
         <li class=" "> 
-          <a href="<?= base_url('admin/course') ?>" ><i class="fa fa fa-book "></i> <span>Kelengkapan</span>
+          <a href="<?= base_url('admin/kelengkapan') ?>" ><i class="fa fa fa-book "></i> <span>Kelengkapan</span>
           </a>
         </li> 
         <li class="header treeview">REPORTS</li>

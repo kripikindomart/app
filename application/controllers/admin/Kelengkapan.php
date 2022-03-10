@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Komponen extends Admin {
+class Kelengkapan extends Admin {
 
 	public function __construct()
 	{
@@ -14,7 +14,7 @@ class Komponen extends Admin {
 	{
 		$this->template->title('Program Studi List');
 		$data = [];
-		$this->render('komponen/kategori_list', $data);
+		$this->render('kelengkapan/kelengkapan_list', $data);
 	}
 
 	public function setKategori($id)
@@ -57,7 +57,7 @@ class Komponen extends Admin {
 
 	public function setup($id)
 	{
-		$this->template->title('Komponen');
+		$this->template->title('Program Studi List');
 		$data_kategori = $this->komponen->where('id', $id)->first('kategori_komponen');
 
 		$data = ['data_kategori' => $data_kategori];
@@ -87,13 +87,12 @@ class Komponen extends Admin {
 
 	public function setup_list_ajax($id)
 	{
-
 		if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ) {
-			$this->datatables->select('k.id, k.id_kategori_komponen, k.komponen, kk.kategori');
+			$this->datatables->select('k.id, k.kategori, k.aktif, kk.kategori');
 	        $this->datatables->from('komponen k');
-	        $this->db->where('k.id_kategori_komponen', $id);
+	        $this->db->where('k.id', $id);
 	        $this->db->join('kategori_komponen kk', 'kk.id = k.id_kategori_komponen', 'left');
-	        $this->db->order_by('k.id_kategori_komponen','dsc');
+	        $this->db->order_by('k.id','dsc');
 	       
 	        $btn_edit = false;
 	        if ($this->is_allowed('users_update', false) == true) {

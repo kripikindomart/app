@@ -176,7 +176,7 @@
                     <div class="form-group ">
                         <label for="label" class="col-sm-2 control-label">Pendaftran Ujian</label>
                         <div class="col-sm-8">
-                          <select name="jenjang" id="" class="form-control select2">
+                          <select name="ujian" id="" class="form-control select2">
                             <option value=""> - Pilih Ujian - </option>
                             <option value="kompre">Komprehensif</option>
                             <option value="tesis">Sidang Tesis</option>
@@ -186,7 +186,9 @@
                         </div>
                     </div>  
 
-                  <input type="hidden" name="id">
+                  <input type="hidden" name="npm" id="npm">
+                  <input type="hidden" name="prodiid" id="prodiid">
+                  <input type="hidden" name="angkatanid" id="angkatanid">
                     <div class="form-group ">
                         <label for="label" class="col-sm-2 control-label">Program Studi</label>
                         <div class="col-sm-8">
@@ -213,6 +215,14 @@
                         </div>
                     </div>
                     
+                    <div class="form-group ">
+                        <label for="url" class="col-sm-2 control-label">Judul Tehesis / Disertasi<i class="required">*</i></label>
+
+                         <div class="col-sm-8">
+                          <textarea class="form-control" name="thesis"></textarea>
+                          <i class="required"><small></small></i>
+                        </div>
+                    </div>
 
                 </form>
             </div>
@@ -251,6 +261,9 @@
                    $('#angkatan').val(res.data.keterangan)
                    $('#nama_mahasiswa').val(res.data.nama_lengkap)
                    $('#prodi').val(res.data.program_studi)
+                   $('#npm').val(res.data.npm)
+                   $('#prodiid').val(res.data.id_master_prodi)
+                   $('#angkatanid').val(res.data.id_angkatan)
                 }
             })
             .fail(function() {
@@ -258,6 +271,35 @@
             })
             .always(function() {
                 console.log("complete");
+            });
+            
+        });
+
+        $('.btn_save_back').click(function() {
+            /* Act on the event */
+            var form = $('#form').serializeArray();
+            console.log(form)
+            $.ajax({
+                url: '<?= base_url('admin/pendaftaran/ajuan') ?>',
+                type: 'post',
+                dataType: 'json',
+                data: form,
+            })
+            .done(function(res) {
+                console.log(res)
+                if (res.success == true) {
+                    toastr['success'](res.message);  
+                   $('form input[type != hidden], form textarea, form select').val('');
+                   $('#modal_form').modal('hide'); 
+
+                } else {
+                    toastr['warning'](res.message);  
+                }
+            })
+            .fail(function() {
+                toastr['warning'](res.message);  
+            })
+            .always(function() {
             });
             
         });
