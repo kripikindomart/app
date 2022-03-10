@@ -294,27 +294,27 @@ $(document).ready(function() {
     });
 
 
-  $("#mahasiswa").on("click", ".btn-aktif", function() {
-    let delete_id = $(this).attr("data-id");
+  // $("#mahasiswa").on("click", ".btn-aktif", function() {
+  //   let delete_id = $(this).attr("data-id");
 
-    $.ajax({
-      url: BASE_URL + "admin/mahasiswa/create_user",
-      type :'POST',
-      dataType: 'json',
-      data: {delete_id:delete_id}, 
-      success: function(response) {
-        if (response.success) {
-          var title = response.success ? "Berhasil" : "Gagal";
-          var type = response.success ? "success" : "error";
-          swal({
-              title: title,
-              text: response.message,
-              type: type,
-          });
-        }
-        reload_ajax();
-      }
-    });
-  });
+  //   $.ajax({
+  //     url: BASE_URL + "admin/mahasiswa/create_user",
+  //     type :'POST',
+  //     dataType: 'json',
+  //     data: {delete_id:delete_id}, 
+  //     success: function(response) {
+  //       if (response.success) {
+  //         var title = response.success ? "Berhasil" : "Gagal";
+  //         var type = response.success ? "success" : "error";
+  //         swal({
+  //             title: title,
+  //             text: response.message,
+  //             type: type,
+  //         });
+  //       }
+  //       reload_ajax();
+  //     }
+  //   });
+  // });
 
 });

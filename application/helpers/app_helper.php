@@ -68,6 +68,7 @@ if (!function_exists('cmb_dinamis')) {
 	}
 }
 
+
 if(!function_exists('redirect_back')) {
 	function redirect_back($url = '')
 	{
@@ -1125,13 +1126,13 @@ if(!function_exists('get_all_blog')) {
 }
 
 function get_data($id, $ref, $table,$field)
-    {
-        $ci =& get_instance();
-        $ci->db->where($ref, $id);
-        $data =  $ci->db->get($table)->row()->$field;
-        
-        print_r($data);
-    }
+{
+    $ci =& get_instance();
+    $ci->db->where($ref, $id);
+    $data =  $ci->db->get($table)->row()->$field;
+    
+    echo($data);
+}
 
     function tampil_media($file,$width="100%",$height="100%") {
         $ret = '';
