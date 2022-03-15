@@ -16,7 +16,67 @@ class Mahasiswa extends Admin {
 
 		$data['prodi'] = $this->mahasiswa->where('prodiID != ', 'ADM')->get('master_prodi');
 		$data['angkatan'] = $this->mahasiswa->get('master_angkatan');
-		$this->render('mahasiswa/mahasiswa', $data);
+		$this->render('mahasiswa/mahasiswa_list', $data);
+	}
+
+	public function getAjax()
+	{
+		// variable initialization
+		$group = $this->input->get('group');
+		$bayar = $this->input->get('bayar');
+		$thn_akademik = $this->input->get('thn_akademik');
+		$semester = $this->input->get('semester');
+
+		$search = "";
+		$start = 0;
+		$rows = 10;
+
+		// get search value (if any)
+		if (isset($_GET['sSearch']) && $_GET['sSearch'] != "" ) {
+			$search = $_GET['sSearch'];
+		}
+
+		// limit
+		$start = $this->get_start();
+		$rows = $this->get_rows();
+
+		// run query to get user listing
+		$query = $this->cbt_user_model->get_datatable($start, $rows, 'user_firstname', $search, $group, $bayar, $thn_akademik, $semester);
+		$iFilteredTotal = $query->num_rows();
+		
+		$iTotal= $this->cbt_user_model->get_datatable_count('user_firstname', $search, $group, $bayar, $thn_akademik, $semester)->row()->hasil;
+	    
+		$output = array(
+			"sEcho" => intval($_GET['sEcho']),
+	        "iTotalRecords" => $iTotal,
+	        "iTotalDisplayRecords" => $iTotal,
+	        "aaData" => array()
+	    );
+
+	    // get result after running query and put it in array
+		$i=$start;
+		$query = $query->result();
+	    foreach ($query as $temp) {			
+			$record = array();
+            
+			$record[] = ++$i;
+            $record[] = $temp->user_name;
+            $record[] = $temp->user_firstname;
+
+            $query_group = $this->cbt_user_grup_model->get_by_kolom_limit('grup_id', $temp->user_grup_id, 1)->row();
+            $check = $temp->bayar == "Y" ? "checked" : "";
+            $text = $temp->bayar == "Y" ? "Sudah Bayar" : "Belum Bayar";
+            $record[] = $query_group->grup_nama;
+			$record[] =  ' <input type="checkbox" name="status" data-user-id="'.$temp->user_id.'" class="switch-button" '.$check.'>';
+
+            $record[] = '<a onclick="edit(\''.$temp->user_id.'\')" style="cursor: pointer;" class="btn btn-default btn-xs">Edit</a>';
+            $record[] = '<input type="checkbox" name="edit-user-id['.$temp->user_id.']" >';
+
+			$output['aaData'][] = $record;
+		}
+		// format it to JSON, this output will be displayed in datatable
+        
+		return $this->response($output, false);
 	}
 
 

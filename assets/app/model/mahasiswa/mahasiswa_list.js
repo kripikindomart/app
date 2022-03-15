@@ -72,6 +72,7 @@ $(document).ready(function() {
     },
     processing: true,
     serverSide: true,
+    responsive : true,
     ajax: {
       url: BASE_URL + "admin/mahasiswa/ajax",
       type: "POST"
