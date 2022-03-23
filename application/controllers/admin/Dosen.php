@@ -16,7 +16,7 @@ class Dosen extends Admin
 	{
 		parent::__construct();
 
-		$this->load->model('model_dosen');
+		$this->load->model('model_Dosen');
 	}
 
 	public function index()
