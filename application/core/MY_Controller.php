@@ -428,6 +428,9 @@ class Builder extends MY_Controller
         $this->form_validation->set_rules('subject', 'Subject', 'trim|required|alpha_numeric_spaces');
         $this->form_validation->set_rules('title', 'Subject', 'trim|alpha_numeric_spaces');
         $this->form_validation->set_rules('primary_key', 'Primary Key of Table', 'trim|required');
+        $this->controller_name = $this->input->post('controller_name');
+        $table_name = $this->input->post('table_name');
+        $model_name = $this->input->post('model_name');
 
         if ($this->form_validation->run()) {
             $this->data = [
@@ -441,6 +444,8 @@ class Builder extends MY_Controller
                 'input_able_validation'     => $this->crud_builder->getInputableValidation(),
                 'show_in_add_form'          => $this->crud_builder->getFieldShowInAddForm(),
                 'show_in_update_form'       => $this->crud_builder->getFieldShowInUpdateForm(),
+                'controller_name'           => $this->controller_name,
+                'model_name'                => $model_name,
             ];
             if ($this->input->post('title')) {
                 $this->data['title'] = $this->input->post('title');
@@ -448,13 +453,11 @@ class Builder extends MY_Controller
                 $this->data['title'] = $this->input->post('subject');
             }
 
-            $table_name = $this->input->post('table_name');
-            $this->controller_name = $this->input->post('controller_name');
-            $model_name = $this->input->post('model_name');
+            
 
             $this->view_path = FCPATH . '/application/views/'.$this->views_dir.'/'.$this->controller_name.'/';
             $this->controller_path = FCPATH . '/application/controllers/'.$this->controller_dir;
-            $this->model_path = FCPATH . '/application/models/builder/';  
+            $this->model_path = FCPATH . '/application/models/';  
 
                 //Cek Direktori
                 if (!is_dir($this->view_path)) {
@@ -482,29 +485,29 @@ class Builder extends MY_Controller
             }
 
             $builder_list = $this->parser->parse($this->template_crud_path.'builder_list', $this->data, true);
-            write_file($this->view_path.$this->controller_name.'_list.php', $builder_list);
+            write_file($this->view_path.strtolower($this->controller_name).'_list.php', $builder_list);
 
             $builder_list = $this->parser->parse($this->template_crud_path.'builder_controller', $this->data, true);
-            write_file($this->controller_path.ucwords($this->controller_name).'.php', $builder_list);
+            write_file($this->controller_path.ucwords(strtolower($this->controller_name)).'.php', $builder_list);
 
             $builder_list = $this->parser->parse($this->template_crud_path.'builder_model', $this->data, true);
             write_file($this->model_path.'Model_'.$model_name.'.php', $builder_list);
 
             if ($this->input->post('create')) {
                 $this->builder_list = $this->parser->parse($this->template_crud_path.'builder_add', $this->data, true);
-                write_file($this->view_path.$this->controller_name.'_add.php', $builder_list);
+                write_file($this->view_path.strtolower($this->controller_name).'_add.php', $builder_list);
                 $this->aauth->create_perm($this->controller_name.'_add');
             }
 
             if ($this->input->post('update')) {
                 $builder_list = $this->parser->parse($this->template_crud_path.'builder_update', $this->data, true);
-                write_file($this->view_path.$this->controller_name.'_update.php', $builder_list);
+                write_file($this->view_path.strtolower($this->controller_name).'_update.php', $builder_list);
                 $this->aauth->create_perm($this->controller_name.'_update');
             }
             
             if ($this->input->post('read')) {
                 $builder_list = $this->parser->parse($this->template_crud_path.'builder_view', $this->data, true);
-                write_file($this->view_path.$this->controller_name.'_view.php', $builder_list);
+                write_file($this->view_path.strtolower($this->controller_name).'_view.php', $builder_list);
                 $this->aauth->create_perm($this->controller_name.'_view');
             }
 
