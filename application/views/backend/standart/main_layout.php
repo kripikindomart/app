@@ -102,6 +102,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="<?= BASE_ASSET.'lib/' ?>datatables/dataTables.responsive.min.js"></script>
 <script src="<?= BASE_ASSET.'lib/' ?>datatables/responsive.bootstrap.min.js"></script>
 <script src="<?= BASE_ASSET.'lib/' ?>datatables/dataTables.scroller.min.js"></script>
+<script src="<?= BASE_ASSET.'js/dataTables.reload.js'; ?>" ></script>
 
 <script type="text/javascript">
       // To make Pace works on Ajax calls

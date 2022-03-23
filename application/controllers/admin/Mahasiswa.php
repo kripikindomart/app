@@ -16,15 +16,16 @@ class Mahasiswa extends Admin {
 
 		$data['prodi'] = $this->mahasiswa->where('prodiID != ', 'ADM')->get('master_prodi');
 		$data['angkatan'] = $this->mahasiswa->get('master_angkatan');
-		$this->render('mahasiswa/mahasiswa_list', $data);
+		$data['url'] = 'admin/mahasiswa';
+		$this->render('mahasiswa/mahasiswa_new', $data);
 	}
 
 	public function getAjax()
 	{
 		// variable initialization
-		$group = $this->input->get('group');
-		$bayar = $this->input->get('bayar');
-		$thn_akademik = $this->input->get('thn_akademik');
+		$prodiID = $this->input->get('id_master_prodi');
+		$angkatan = $this->input->get('id_angkatan');
+		$kelas = $this->input->get('kelas');
 		$semester = $this->input->get('semester');
 
 		$search = "";
@@ -37,14 +38,14 @@ class Mahasiswa extends Admin {
 		}
 
 		// limit
-		$start = $this->get_start();
-		$rows = $this->get_rows();
+		$start = $this->mahasiswa->get_start();
+		$rows = $this->mahasiswa->get_rows();
 
 		// run query to get user listing
-		$query = $this->cbt_user_model->get_datatable($start, $rows, 'user_firstname', $search, $group, $bayar, $thn_akademik, $semester);
+		$query = $this->mahasiswa->get_datatable($start, $rows, 'npm', $search, $prodiID, $angkatan, $kelas, $semester);
 		$iFilteredTotal = $query->num_rows();
 		
-		$iTotal= $this->cbt_user_model->get_datatable_count('user_firstname', $search, $group, $bayar, $thn_akademik, $semester)->row()->hasil;
+		$iTotal= $this->mahasiswa->get_datatable_count('npm', $search, $prodiID, $angkatan, $kelas, $semester)->row()->hasil;
 	    
 		$output = array(
 			"sEcho" => intval($_GET['sEcho']),
@@ -56,27 +57,30 @@ class Mahasiswa extends Admin {
 	    // get result after running query and put it in array
 		$i=$start;
 		$query = $query->result();
+
+
 	    foreach ($query as $temp) {			
 			$record = array();
             
 			$record[] = ++$i;
-            $record[] = $temp->user_name;
-            $record[] = $temp->user_firstname;
+            $record[] = $temp->npm;
+            $record[] = $temp->nama_lengkap;
 
-            $query_group = $this->cbt_user_grup_model->get_by_kolom_limit('grup_id', $temp->user_grup_id, 1)->row();
-            $check = $temp->bayar == "Y" ? "checked" : "";
-            $text = $temp->bayar == "Y" ? "Sudah Bayar" : "Belum Bayar";
-            $record[] = $query_group->grup_nama;
-			$record[] =  ' <input type="checkbox" name="status" data-user-id="'.$temp->user_id.'" class="switch-button" '.$check.'>';
+            $query_group = $this->mahasiswa->get_by_kolom_limit('id', $temp->id_master_prodi, 1, 'master_prodi')->row();
+         
+            $check = $temp->status == 0 ? "checked" : "";
+            $text = $temp->status == 0 ? "Mahasiswa Aktif" : "Tidak aktif";
+            $record[] = $query_group->program_studi;
+			$record[] =  ' <input type="checkbox" name="status" data-user-id="'.$temp->id.'" class="switch-button" '.$check.'>';
 
-            $record[] = '<a onclick="edit(\''.$temp->user_id.'\')" style="cursor: pointer;" class="btn btn-default btn-xs">Edit</a>';
-            $record[] = '<input type="checkbox" name="edit-user-id['.$temp->user_id.']" >';
+            $record[] = '<a onclick="edit(\''.$temp->id.'\')" style="cursor: pointer;" class="btn btn-default btn-xs">Edit</a>';
+            $record[] = '<input type="checkbox" name="edit-user-id['.$temp->id.']" >';
 
 			$output['aaData'][] = $record;
 		}
 		// format it to JSON, this output will be displayed in datatable
         
-		return $this->response($output, false);
+		echo json_encode($output);
 	}
 
 
