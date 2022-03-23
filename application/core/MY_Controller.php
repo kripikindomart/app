@@ -445,6 +445,7 @@ class Builder extends MY_Controller
                 'show_in_add_form'          => $this->crud_builder->getFieldShowInAddForm(),
                 'show_in_update_form'       => $this->crud_builder->getFieldShowInUpdateForm(),
                 'controller_name'           => $this->controller_name,
+                'uc_controller_name'           => strtolower($this->controller_name),
                 'model_name'                => $model_name,
             ];
             if ($this->input->post('title')) {

@@ -5,7 +5,7 @@ class Model_dosen extends MY_Model {
 
 		protected $primary_key 	= 'id';
 	protected $table 	= 'master_dosen';
-	protected $field_search 	= ['nik', 'nama_lengkap', 'jenis_kelamin', 'no_ktp', 'gelar_kesarjanaan', 'tempat_lahir', 'tanggal_lahir', 'status_kawin', 'alamat_rumah', 'email', 'no_hp', 'id_master_prodi', 'fungsional', 'golongan', 'foto', 'status_dosen', 'created_at', 'update_at', 'created_by'];
+	protected $field_search 	= ['nik', 'nama_lengkap', 'jenis_kelamin', 'no_ktp', 'gelar_kesarjanaan', 'tempat_lahir', 'tanggal_lahir', 'status_kawin', 'alamat_rumah', 'email', 'no_hp', 'id_master_prodi', 'fungsional', 'golongan', 'foto', 'status_dosen'];
 
 	public function __construct()
 	{
