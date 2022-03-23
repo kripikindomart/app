@@ -4,14 +4,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Model_crud extends MY_Model {
 
 	protected $primary_key 	= 'id';
-	protected $table_name 	= 'crud';
+	protected $table 	= 'crud';
 	protected $field_search 	= array('table_name', 'subject', 'title');
 
 	public function __construct()
 	{
 		$config = array(
 			'primary_key' 	=> $this->primary_key,
-		 	'table_name' 	=> $this->table_name,
+		 	'table_name' 	=> $this->table,
 		 	'field_search' 	=> $this->field_search,
 		 );
 
@@ -42,7 +42,7 @@ class Model_crud extends MY_Model {
         }
 
         $this->db->where($where);
-		$query = $this->db->get($this->table_name);
+		$query = $this->db->get($this->table);
 
 		return $query->num_rows();
 	}
@@ -73,7 +73,7 @@ class Model_crud extends MY_Model {
         $this->db->where($where);
         $this->db->limit($limit, $offset);
         $this->db->order_by($this->primary_key, "DESC");
-		$query = $this->db->get($this->table_name);
+		$query = $this->db->get($this->table);
 
 		return $query->result();
 	}
@@ -94,7 +94,7 @@ class Model_crud extends MY_Model {
 
 	public function crud_exist($table_name = '')
 	{
-		$result = $this->db->get_where($this->table_name, ['table_name' => $table_name])->row();
+		$result = $this->db->get_where($this->table, ['table_name' => $table_name])->row();
 
 		if ($result) {
 			return $result->id;

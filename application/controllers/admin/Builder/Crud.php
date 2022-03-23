@@ -32,6 +32,8 @@ class Crud extends Builder {
 
 	public function add_save()
 	{
+
+		
 		return $this->buildCrud();
 	}
 

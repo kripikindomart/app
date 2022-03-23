@@ -394,14 +394,14 @@ class Builder extends MY_Controller
 
 
     protected $table_name = 'news';
+    protected $controller_name = 'controller';
     protected $data = []; 
     protected $controller_dir = 'admin/';    
     protected $views_dir = 'backend/standart/admin/';    
     protected $view_path = '';
     protected $controller_path = '';
-    protected $controller_name = 'Controller';
     protected $model_path = '';    
-    protected $template_crud_path = 'core_template/crud/';
+    protected $template_crud_path = 'core_template/percobaan/';
     
     function __construct()
     {
@@ -413,26 +413,11 @@ class Builder extends MY_Controller
             'php_close_tag'             => '?>',
             'php_open_tag_echo'         => '<?=',
             'table_name'                => $this->table_name,
+            'controller_name'                => $this->controller_name,
 
         ];
     $this->is_loggin();
-    $this->view_path = FCPATH . '/application/views/'.$this->views_dir.'/'.$this->table_name.'/';
-    $this->controller_path = FCPATH . '/application/controllers/'.$this->controller_dir;
-    $this->model_path = FCPATH . '/application/models/builder/';  
-
-        //Cek Direktori
-        if (!is_dir($this->view_path)) {
-            mkdir($this->view_path);
-        }
-
-        if (!is_dir($this->controller_path)) {
-            mkdir($this->controller_path);
-        }
-
-
-        if (!is_dir($this->model_path)) {
-            mkdir($this->model_path);
-        }
+    
     }
 
     public function buildCrud()
@@ -464,8 +449,26 @@ class Builder extends MY_Controller
             }
 
             $table_name = $this->input->post('table_name');
-            $controller_name = $this->input->post('controler_name');
+            $this->controller_name = $this->input->post('controller_name');
             $model_name = $this->input->post('model_name');
+
+            $this->view_path = FCPATH . '/application/views/'.$this->views_dir.'/'.$this->controller_name.'/';
+            $this->controller_path = FCPATH . '/application/controllers/'.$this->controller_dir;
+            $this->model_path = FCPATH . '/application/models/builder/';  
+
+                //Cek Direktori
+                if (!is_dir($this->view_path)) {
+                    mkdir($this->view_path);
+                }
+
+                if (!is_dir($this->controller_path)) {
+                    mkdir($this->controller_path);
+                }
+
+
+                if (!is_dir($this->model_path)) {
+                    mkdir($this->model_path);
+                }
 
 
             $validate = $this->crud_builder->validateAll();
@@ -479,30 +482,30 @@ class Builder extends MY_Controller
             }
 
             $builder_list = $this->parser->parse($this->template_crud_path.'builder_list', $this->data, true);
-            write_file($this->view_path.$controller_name.'_list.php', $builder_list);
+            write_file($this->view_path.$this->controller_name.'_list.php', $builder_list);
 
             $builder_list = $this->parser->parse($this->template_crud_path.'builder_controller', $this->data, true);
-            write_file($this->controller_path.ucwords($controller_name).'.php', $builder_list);
+            write_file($this->controller_path.ucwords($this->controller_name).'.php', $builder_list);
 
             $builder_list = $this->parser->parse($this->template_crud_path.'builder_model', $this->data, true);
-            write_file($this->model_path.'Model_'.$controller_name.'.php', $builder_list);
+            write_file($this->model_path.'Model_'.$model_name.'.php', $builder_list);
 
             if ($this->input->post('create')) {
                 $this->builder_list = $this->parser->parse($this->template_crud_path.'builder_add', $this->data, true);
-                write_file($this->view_path.$table_name.'_add.php', $builder_list);
-                $this->aauth->create_perm($table_name.'_add');
+                write_file($this->view_path.$this->controller_name.'_add.php', $builder_list);
+                $this->aauth->create_perm($this->controller_name.'_add');
             }
 
             if ($this->input->post('update')) {
                 $builder_list = $this->parser->parse($this->template_crud_path.'builder_update', $this->data, true);
-                write_file($this->view_path.$table_name.'_update.php', $builder_list);
-                $this->aauth->create_perm($table_name.'_update');
+                write_file($this->view_path.$this->controller_name.'_update.php', $builder_list);
+                $this->aauth->create_perm($this->controller_name.'_update');
             }
             
             if ($this->input->post('read')) {
                 $builder_list = $this->parser->parse($this->template_crud_path.'builder_view', $this->data, true);
-                write_file($this->view_path.$table_name.'_view.php', $builder_list);
-                $this->aauth->create_perm($table_name.'_view');
+                write_file($this->view_path.$this->controller_name.'_view.php', $builder_list);
+                $this->aauth->create_perm($this->controller_name.'_view');
             }
 
 
@@ -530,8 +533,8 @@ class Builder extends MY_Controller
             //     write_file($this->view_path.$this->table_name.'_view.php', $builder_list);
             //}
 
-            $this->aauth->create_perm($table_name.'_delete');
-            $this->aauth->create_perm($table_name.'_list');
+            $this->aauth->create_perm($this->controller_name.'_delete');
+            $this->aauth->create_perm($this->controller_name.'_list');
 
             $save_data = [
                 'table_name'        => $this->input->post('table_name'),

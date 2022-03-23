@@ -54,6 +54,22 @@
                      </div>
                   </div>
                   <div class="form-group ">
+                     <label for="label" class="col-sm-2 control-label">Nama Controller<i class="required">*</i></label>
+                     <div class="col-sm-8">
+                        <input type="text" class="form-control" name="controller_name" id="controller_name" placeholder="Controller Name" value="<?= set_value('controller_name'); ?>">
+                        <small class="info help-block">The controller name of crud.</small>
+                     </div>
+                  </div>
+
+                  <div class="form-group ">
+                     <label for="label" class="col-sm-2 control-label">Nama Model<i class="required">*</i></label>
+                     <div class="col-sm-8">
+                        <input type="text" class="form-control" name="model_name" id="model_name" placeholder="Model Name" value="<?= set_value('model_name'); ?>">
+                        <small class="info help-block">The Model name of crud.</small>
+                     </div>
+                  </div>
+
+                  <div class="form-group ">
                      <label for="label" class="col-sm-2 control-label"><?= cclang('subject') ?> <i class="required">*</i></label>
                      <div class="col-sm-8">
                         <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" value="<?= set_value('subject'); ?>">
@@ -177,6 +193,14 @@ $(document).ready(function() {
 
         return false;
     }); /*end btn save*/
+    function capitalize(s)
+    {
+        return s && s[0].toUpperCase() + s.slice(1);
+    }
+
+    String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
+}
 
     $('#table_name').on('change', function() {
         var table = $(this).val();
@@ -190,6 +214,8 @@ $(document).ready(function() {
                 if (res.success) {
 
                     $('#subject, #title').val(res.subject);
+                    $('#model_name').val(res.subject.replace(/\s+/g, '_').capitalizeFirstLetter());
+                    $('#controller_name').val(res.subject.replace(/\s+/g, '_').capitalizeFirstLetter());
                     $('.wrapper-crud').html(res.html);
                     var config = {
                         '.chosen-select': {},
