@@ -344,6 +344,7 @@ class Crud_builder
 							'relation_table' => $contains[$field]['relation_table'],
 							'relation_value' => $contains[$field]['relation_value'],
 							'relation_label' => $contains[$field]['relation_label'],
+							'fk_field' => $field_name,
 						];
 					}
 				}

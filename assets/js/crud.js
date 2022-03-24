@@ -96,7 +96,7 @@ $(document).ready(function(){
 		relation_value.parents('.form-group').show();
 		relation_label.parents('.form-group').show();
 
-		$.get(BASE_URL + '/administrator/crud/get_list_field_id/' + table_name, function(data) {
+		$.get(BASE_URL + '/admin/builder/crud/get_list_field_id/' + table_name, function(data) {
 			var res = (data);
 
 			if(res.success) {
@@ -117,7 +117,7 @@ $(document).ready(function(){
 		});
 
 
-		$.get(BASE_URL + '/administrator/crud/get_list_field_label/' + table_name, function(data) {
+		$.get(BASE_URL + '/admin/builder/crud/get_list_field_label/' + table_name, function(data) {
 			var res = (data);
 
 			if(res.success) {

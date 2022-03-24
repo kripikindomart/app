@@ -433,6 +433,20 @@ class Builder extends MY_Controller
         $model_name = $this->input->post('model_name');
 
         if ($this->form_validation->run()) {
+            foreach ($this->crud_builder->getFieldShowInColumn() as $field) {
+                $relation = $this->crud_builder->getFieldRelation($field);
+                if ($relation){
+                    $cetak[] = $relation['relation_table'].'.'.$relation['relation_label'];
+                    $join[] = '$this->datatables->join("'.$relation['relation_table'].'", "'.$relation['relation_table'].'.'.$relation['relation_value'].' = '.$this->input->post('table_name').'.'.$relation['fk_field'].'");';
+                } else {
+                    $cetak[] = $table_name.'.'.$field;
+                }
+                
+                
+            }
+
+             $sql = implode(', ', $cetak);
+
             $this->data = [
                 'php_open_tag'              => '<?php',
                 'php_close_tag'             => '?>',
@@ -445,9 +459,14 @@ class Builder extends MY_Controller
                 'show_in_add_form'          => $this->crud_builder->getFieldShowInAddForm(),
                 'show_in_update_form'       => $this->crud_builder->getFieldShowInUpdateForm(),
                 'controller_name'           => $this->controller_name,
-                'uc_controller_name'           => strtolower($this->controller_name),
+                'uc_controller_name'        => strtolower($this->controller_name),
                 'model_name'                => $model_name,
+                'join'                      => $join,
             ];
+
+
+
+
             if ($this->input->post('title')) {
                 $this->data['title'] = $this->input->post('title');
             } else {
@@ -485,7 +504,7 @@ class Builder extends MY_Controller
                 exit;
             }
 
-            $builder_list = $this->parser->parse($this->template_crud_path.'builder_list', $this->data, true);
+            $builder_list = $this->parser->parse($this->template_crud_path.'builder_list_coba', $this->data, true);
             write_file($this->view_path.strtolower($this->controller_name).'_list.php', $builder_list);
 
             $builder_list = $this->parser->parse($this->template_crud_path.'builder_controller', $this->data, true);

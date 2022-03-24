@@ -34,7 +34,7 @@
    </h1>
    <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> <?= cclang('home');  ?></a></li>
-      <li class=""><a  href="<?= site_url('administrator/crud'); ?>">Crud</a></li>
+      <li class=""><a  href="<?= site_url('admin/crud'); ?>">Crud</a></li>
       <li class="active"><?= cclang('new');  ?></li>
    </ol>
 </section>
