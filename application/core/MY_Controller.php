@@ -413,7 +413,7 @@ class Builder extends MY_Controller
             'php_close_tag'             => '?>',
             'php_open_tag_echo'         => '<?=',
             'table_name'                => $this->table_name,
-            'controller_name'                => $this->controller_name,
+            'controller_name'           => $this->controller_name,
 
         ];
     $this->is_loggin();
@@ -504,7 +504,7 @@ class Builder extends MY_Controller
                 exit;
             }
 
-            $builder_list = $this->parser->parse($this->template_crud_path.'builder_list_coba', $this->data, true);
+            $builder_list = $this->parser->parse($this->template_crud_path.'builder_list', $this->data, true);
             write_file($this->view_path.strtolower($this->controller_name).'_list.php', $builder_list);
 
             $builder_list = $this->parser->parse($this->template_crud_path.'builder_controller', $this->data, true);

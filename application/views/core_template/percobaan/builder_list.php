@@ -273,22 +273,41 @@ $(document).ready(function() {
     <?php  foreach ($this->crud_builder->getFieldShowInColumn() as $field):
          $relation = $this->crud_builder->getFieldRelation($field);
          if ($relation):
-    ?>
-    {
-        data: "<?= $relation['relation_label'] ?>",
-        orderable: true,
-        searchable: true
-    },
-   
-    <?php
-         else:
-    ?> 
-    {
-        data: "<?= $field ?>",
-        orderable: true,
-        searchable: true
-    },
-    <?php        
+             ?>
+             {
+                 data: "<?= $relation['relation_label'] ?>",
+                 orderable: true,
+                 searchable: true
+             },
+            
+             <?php
+                  else:
+                     if ($this->crud_builder->getFieldFile($field)):
+             ?> 
+                      { data: "<?= $this->crud_builder->getFieldFile($field) ?>",
+                        orderable: false,
+                        searchable : false,
+                        render : function(data){
+                           let files = "";
+                           var url = BASE_URL+"uploads/user/"+data;
+                         
+                           if (url) {
+                              files = url;
+                           } else {
+                              files = BASE_URL+"uploads/user/default2.png";
+                           }
+                           
+                           return '<div class="chip"><a class="fancybox" rel="group" href="'+files+'" onerror="urlExisithref(this);"><img onerror="urlExists(this);"  src="'+files+'" alt="Person" width="50" height="50"></a></div>';
+                        }
+                     },
+              <?php else: ?>       
+                      {
+                          data: "<?= $field ?>",
+                          orderable: true,
+                          searchable: true
+                      },
+    <?php 
+                     endif;         
       endif;
       endforeach;
     ?>
@@ -344,7 +363,17 @@ $(document).ready(function() {
     .container()
     .appendTo(".dataTable .col-md-6:eq(0)");
 
+   function urlExists(url){
+       url.onerror = "";
+       url.src = BASE_URL+"uploads/user/default2.png";
+       return true;
+   }
 
+   function urlExisithref(url){
+       url.onerror = "";
+       url.href = BASE_URL+"uploads/user/default2.png";
+       return true;
+   }
   
   $(".select_all").on("click", function() {
       if (this.checked) {
@@ -359,6 +388,7 @@ $(document).ready(function() {
         });
       }
    });  
+});  
     
 });
 </script>
