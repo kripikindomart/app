@@ -29,7 +29,7 @@ class Karyawan extends Admin
 
 	public function getDatatable()
 	{
-				$this->datatables->select('karyawans.id ,karyawans.code, karyawans.nik, karyawans.nama, karyawans.email, karyawans.jenis_kelamin, karyawans.photo, program_studis.nama as program_studis, departements.nama as departements, karyawans.status_akun');
+				$this->datatables->select('karyawans.code, karyawans.nik, karyawans.nama, karyawans.email, karyawans.jenis_kelamin, karyawans.photo, program_studis.code, departements.nama, karyawans.status_akun');
 		$this->datatables->join("program_studis", "program_studis.id = karyawans.program_studi_id");
 $this->datatables->join("departements", "departements.id = karyawans.departement_id");        $this->datatables->from('karyawans');
         $this->db->order_by('karyawans.id','dsc');
