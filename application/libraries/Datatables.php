@@ -462,7 +462,7 @@
 
           if ($this->check_cType()) {
 
-            $this->ci->db->order_by($data[$key['column']]['data'], $key['dir']);
+            $this->ci->db->order_by($data[$key['column']]['name'], $key['dir']);
 
           } else {
 
@@ -470,7 +470,7 @@
 
           }
 
-        }
+        } 
 
       }
 
@@ -620,7 +620,9 @@
         $sOutput  = array('draw'      => intval($this->ci->input->post('draw')),
               'recordsTotal'    => $iTotal,
               'recordsFiltered' => $iFilteredTotal,
-              'data'      => $aaData    );
+              'data'      => $aaData,
+              'ordering'  => $this->get_ordering()
+                  );
 
         if ($charset == 'utf-8') {
           return json_encode($sOutput);

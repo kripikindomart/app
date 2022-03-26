@@ -33,7 +33,7 @@ class Karyawans extends Admin
 		$this->datatables->join("program_studis", "program_studis.id = karyawans.program_studi_id");
 		$this->datatables->join("departements", "departements.id = karyawans.departement_id");        $this->datatables->from('karyawans');
 	        $this->db->order_by('karyawans.id','dsc');
-	        
+
 	        $btn_edit = false;
 	        if ($this->is_allowed('karyawans_update', false) == true) {
 	        	$btn_edit = '
@@ -58,6 +58,8 @@ class Karyawans extends Admin
 	       ->add_column('btn_delete', $btn_delete, 'id')
 	       ->add_column('btn_detail', $btn_detail, 'id')
 	       ->add_column('status', $status);	
+	       
+
 	       
 	        return $this->response($this->datatables->generate(), false);
 	}
