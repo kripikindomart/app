@@ -33,7 +33,7 @@ class <?= ucwords($controller_name); ?> extends Admin
 		foreach ($this->crud_builder->getFieldShowInColumn() as $field) {
 				$relation = $this->crud_builder->getFieldRelation($field);
 				if ($relation){
-					$cetak[] = $relation['relation_table'].'.'.$relation['relation_label'];
+					$cetak[] = $relation['relation_table'].'.'.$relation['relation_label'].' as '.$relation['relation_table'].'_'.$relation['relation_label'];
 
 				} else {
 					$cetak[] = $table_name.'.'.$field;
