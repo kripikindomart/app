@@ -127,6 +127,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         var csrfname = '<?= $this->security->get_csrf_token_name() ?>';
         var csrfhash = '<?= $this->security->get_csrf_hash() ?>';
         var csrf = {};
+        var table;
         csrf[csrfname] = csrfhash;
         $.ajaxSetup({
           "data": csrf

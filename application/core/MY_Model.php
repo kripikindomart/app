@@ -7,6 +7,11 @@ class MY_Model extends CI_Model {
     protected $table = '';
     protected $perPage = 5;
     protected $primary_key;
+    var $column_order = array();
+    var $column_search = array(); 
+    var $select_field;
+    var $join = null;
+    var $where = null;
     public function __construct()
     {
         parent::__construct();
@@ -562,6 +567,119 @@ class MY_Model extends CI_Model {
         }
 
         return $sort_dir;
+    }
+
+
+  public function _count($where= NUll)
+    {
+        if (!empty($this->type)) {
+            $where['post_type'] = $this->type;
+        }
+
+        if ($where) {
+            $this->db->where($where);
+        }
+        $this->db->from($this->table_name);
+        return $this->db->count_all_results();
+    }
+
+
+    /* Request Ajax query */
+
+    public function getRequestAjax()
+    {
+        $this->_get_datatables_query();
+        if($_POST['length'] != -1)
+        $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();  
+        return $query->result();   
+    }
+
+
+    private function _get_datatables_query($select_data = null, $table = null)
+    {
+        $this->db->from($this->table);
+        $i = 0;
+        $select_dat = implode(', ', $this->select);
+        $this->db->select($select_dat);
+        $this->getJoin();
+        $this->getWhere();
+        foreach ($this->column_search as $item) // loop column 
+        {
+            if($_POST['search']['value']) // if datatable send POST for search
+            {
+                
+                if($i===0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                }
+                else
+                {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if(count($this->column_search) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+        
+        if(isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } 
+        else if(isset($this->order))
+        {
+            $order = $this->order;
+            $this->db->order_by(key($order), $order[key($order)]);
+        }
+    }
+
+    public function getJoin()
+    {
+        $i = 1;
+        if ($this->join != null) {
+             foreach ($this->join as $key => $value) {
+                $a[$i] = $this->db->join($key, $value, 'left');
+                $i++;
+             }
+        } else {
+            $a = '';
+        }
+
+         return $this;
+    }
+
+    public function wheres($columns, $condition)
+    {
+        $this->db->where($columns, $condition);
+        return $this;
+    }
+
+    public function getWhere()
+    {
+        if ($this->where != null) {
+            if (is_array($this->where)) {
+                return $this->db->where($this->where);
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function _count_filtered()
+    {
+        $this->_get_datatables_query();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all()
+    {
+        $this->_get_datatables_query();
+        $query = $this->db->get();
+        return $this->db->count_all_results();
     }
 
     

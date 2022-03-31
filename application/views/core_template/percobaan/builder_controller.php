@@ -77,4 +77,67 @@ class <?= ucwords($controller_name); ?> extends Admin
         return $this->response($this->datatables->generate(), false);
 	}
 
+	public function ajax()
+	{
+		if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ) {
+		$data = $this->model_{model_name}->getRequestAjax();
+		$data_row = array();
+			$no = $_POST['start'];
+			foreach ($data as $row) {
+				$no++;
+				$data_row = array();
+				$data_row[] = '<input type="checkbox" class="data-check check checkbox icheckbox_flat-green toltip" value="'.$row->{primary_key}.'" name="data-check[]">';
+				$data_row[] = $no;
+				<?php  foreach ($this->crud_builder->getFieldShowInColumn() as $field):
+			         $relation = $this->crud_builder->getFieldRelation($field);
+			    if ($relation):
+			             ?>
+			    $data_row[] = $row-><?= $relation['relation_table'].'_'.$relation['relation_label'] ?>;
+			    <?php
+			    else:
+			       if ($this->crud_builder->getFieldFile($field)):
+
+			    ?> 
+
+
+			    if (is_file(FCPATH . 'uploads/user/' . $row-><?= $this->crud_builder->getFieldFile($field) ?>)): 
+	            $img_url = base_url() . 'uploads/user/' .$row-><?= $this->crud_builder->getFieldFile($field) ?>; 
+	            else: 
+	            $img_url = base_url() . 'uploads/user/default.png'; 
+	            endif; 
+                $data_row[] = '<a class="fancybox" rel="group" href="'.$img_url.'">
+                          <img src="'.$img_url.'" alt="Person" width="50" height="50">
+                       	 </a>';
+
+			    <?php else: ?>  
+			    <?php if ($field != $primary_key): ?>
+			    $data_row[] = $row-><?= $field ?>;  
+			     <?php endif ?>     
+			    <?php 
+			    endif;         
+			    endif;
+			    endforeach;
+			    ?>
+
+				//add html for action
+				$data_row[] = '
+				<div class="text-center"><button type="button" class="btn btn-sm btn-warning edit" title="Edit" id="edit" data-id = "'.$row->{primary_key}.'"><i class="fa fa-pencil"></i>Edit </button>
+				<button type="button" class="btn btn-sm btn-danger delete" title="Delete" id="delete" data-id = "'.$row->{primary_key}.'"><i class="fa fa-trash"></i>Delete</button></div>';
+				$data_[] = $data_row;
+			}
+
+			$json_data = [
+				"draw" => $_POST['draw'],
+				"recordsTotal" => $this->model_{model_name}->count_all(),
+				"recordsFiltered" => $this->model_{model_name}->_count_filtered(),
+				'data' => $data_
+			];
+
+			return $this->response($json_data);
+		}
+		
+	}
+
+	
+
 }

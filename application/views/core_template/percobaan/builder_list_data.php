@@ -1,11 +1,11 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
    <h1>
-      Dosen<small>Data</small>
+      <?= ucwords($subject); ?><small>Data</small>
    </h1>
    <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">Dosen</li>
+      <li class="active"><?= ucwords($subject); ?></li>
    </ol>
 </section>
 
@@ -23,25 +23,25 @@
                   <div class="widget-user-header ">
                      <div class="row pull-right">
                         <button type="button" onclick="reload_ajax()" class="btn btn-sm btn-flat btn-default"><i class="fa fa-refresh"></i> Reload</button>
-                        <?php is_allowed('Dosen_add', function(){?>
-                        <a class="btn btn-flat btn-success btn_add_new" id="btn_add_new" title="<?= cclang('add_new_button', ['Dosen']); ?>  (Ctrl+a)" href="<?=  site_url('admin/Dosen/add'); ?>"><i class="fa fa-plus-square-o" ></i> <?= cclang('add_new_button', ['Dosen']); ?></a>
-                        <?php }) ?>
-                        <?php is_allowed('Dosen_export', function(){?>
-                        <a class="btn btn-flat btn-success" title="<?= cclang('export'); ?> Dosen" href="<?= site_url('admin/Dosen/export'); ?>"><i class="fa fa-file-excel-o" ></i> <?= cclang('export'); ?> XLS</a>
-                        <?php }) ?>
-                        <?php is_allowed('Dosen_export', function(){?>
-                        <a class="btn btn-flat btn-success" title="<?= cclang('export'); ?> pdf Dosen" href="<?= site_url('admin/Dosen/export_pdf'); ?>"><i class="fa fa-file-pdf-o" ></i> <?= cclang('export'); ?> PDF</a>
-                        <?php }) ?>
+                        <?php if ($this->input->post('create')) { ?>{php_open_tag} is_allowed('<?= $controller_name; ?>_add', function(){{php_close_tag}
+                        <a class="btn btn-flat btn-success btn_add_new" id="btn_add_new" title="{php_open_tag_echo} cclang('add_new_button', ['<?= ucwords(clean_snake_case($controller_name)); ?>']); {php_close_tag}  (Ctrl+a)" href="{php_open_tag_echo}  site_url('admin/<?= $controller_name; ?>/add'); {php_close_tag}"><i class="fa fa-plus-square-o" ></i> {php_open_tag_echo} cclang('add_new_button', ['<?= ucwords(clean_snake_case($controller_name)); ?>']); {php_close_tag}</a>
+                        {php_open_tag} }) {php_close_tag}
+                        <?php } ?>{php_open_tag} is_allowed('<?= $controller_name; ?>_export', function(){{php_close_tag}
+                        <a class="btn btn-flat btn-success" title="{php_open_tag_echo} cclang('export'); {php_close_tag} <?= ucwords(clean_snake_case($controller_name)); ?>" href="{php_open_tag_echo} site_url('admin/<?= $controller_name; ?>/export'); {php_close_tag}"><i class="fa fa-file-excel-o" ></i> {php_open_tag_echo} cclang('export'); {php_close_tag} XLS</a>
+                        {php_open_tag} }) {php_close_tag}
+                        {php_open_tag} is_allowed('<?= $controller_name; ?>_export', function(){{php_close_tag}
+                        <a class="btn btn-flat btn-success" title="{php_open_tag_echo} cclang('export'); {php_close_tag} pdf <?= ucwords(clean_snake_case($controller_name)); ?>" href="{php_open_tag_echo} site_url('admin/<?= $controller_name; ?>/export_pdf'); {php_close_tag}"><i class="fa fa-file-pdf-o" ></i> {php_open_tag_echo} cclang('export'); {php_close_tag} PDF</a>
+                        {php_open_tag} }) {php_close_tag}
                      </div>
                      <div class="widget-user-image">
-                        <img class="img-circle" src="<?= BASE_ASSET; ?>/img/list.png" alt="User Avatar">
+                        <img class="img-circle" src="{php_open_tag_echo} BASE_ASSET; {php_close_tag}/img/list.png" alt="User Avatar">
                      </div>
                      <!-- /.widget-user-image -->
-                     <h3 class="widget-user-username">Dosen</h3>
-                     <h5 class="widget-user-desc">  Dosen  <i class="label bg-yellow">  <?= cclang('items'); ?></i></h5>
+                     <h3 class="widget-user-username"><?= ucwords($subject); ?></h3>
+                     <h5 class="widget-user-desc">  <?= ucwords($subject); ?>  <i class="label bg-yellow">  {php_open_tag_echo} cclang('items'); {php_close_tag}</i></h5>
                   </div>
 
-                  <form name="form_dosen" id="form_dosen" action="<?= base_url('admin/Dosen/index'); ?>">
+                  <form name="form_<?= $uc_controller_name; ?>" id="form_<?= $uc_controller_name; ?>" action="{php_open_tag_echo} base_url('admin/<?= $controller_name; ?>/index'); {php_close_tag}">
                   
 
                   <div class="table-responsive"> 
@@ -50,30 +50,18 @@
                         <tr class="">
                            <td width="5px">
                             <div class="text-center">
-                            <input type="checkbox" class="checkbox icheckbox_flat-green toltip select_all " id="check_all" name="check_all" title="Mark All">
+                            <input type="checkbox" class="checkbox icheckbox_flat-green toltip select_all " id="check_all" name="check_all" title="<?= cclang('check_all') ?>">
                             </div>
                            </td>
                            <td>#</td>
-										<th>Nik</th>
-								<th>Nama Lengkap</th>
-								<th>Jenis Kelamin</th>
-								<th>No Ktp</th>
-								<th>Gelar Kesarjanaan</th>
-								<th>Tempat Lahir</th>
-								<th>Tanggal Lahir</th>
-								<th>Status Kawin</th>
-								<th>Alamat Rumah</th>
-								<th>Email</th>
-								<th>No Hp</th>
-								<th>Prodi</th>
-								<th>Fungsional</th>
-								<th>Golongan</th>
-								<th>Foto</th>
-								<th>Status Dosen</th>
-				<th>Action</th>
+		<?php foreach ($this->crud_builder->getFieldShowInColumn(true) as $option): ?>
+		<?php if ($option['label'] != $primary_key): ?>
+		<th><?= ucwords(clean_snake_case($option['label'])); ?></th>
+		<?php endif ?>
+		<?php endforeach; ?><th>Action</th>
                         </tr>
                      </thead>
-                     <tbody id="tbody_Dosen">
+                     <tbody id="tbody_<?= $controller_name; ?>">
                      
                      </tbody>
                   </table>
@@ -90,45 +78,32 @@
                         </select>
                      </div>
                      <div class="col-sm-2 padd-left-0 ">
-                        <button type="button" class="btn btn-flat" name="apply" id="apply" title="<?= cclang('apply_bulk_action'); ?>"><?= cclang('apply_button'); ?></button>
+                        <button type="button" class="btn btn-flat" name="apply" id="apply" title="{php_open_tag_echo} cclang('apply_bulk_action'); {php_close_tag}">{php_open_tag_echo} cclang('apply_button'); {php_close_tag}</button>
                      </div>
                      <div class="col-sm-3 padd-left-0  " >
-                        <input type="text" class="form-control" name="q" id="filter" placeholder="<?= cclang('filter'); ?>" value="<?= $this->input->get('q'); ?>">
+                        <input type="text" class="form-control" name="q" id="filter" placeholder="{php_open_tag_echo} cclang('filter'); {php_close_tag}" value="{php_open_tag_echo} $this->input->get('q'); {php_close_tag}">
                      </div>
                      <div class="col-sm-3 padd-left-0 " >
                         <select type="text" class="form-control chosen chosen-select" name="f" id="field" >
-                           <option value=""><?= cclang('all'); ?></option>
-                            <option <?= $this->input->get('f') == 'id' ? 'selected' :''; ?> value="id">Id</option>
-                           <option <?= $this->input->get('f') == 'nik' ? 'selected' :''; ?> value="nik">Nik</option>
-                           <option <?= $this->input->get('f') == 'nama_lengkap' ? 'selected' :''; ?> value="nama_lengkap">Nama Lengkap</option>
-                           <option <?= $this->input->get('f') == 'jenis_kelamin' ? 'selected' :''; ?> value="jenis_kelamin">Jenis Kelamin</option>
-                           <option <?= $this->input->get('f') == 'no_ktp' ? 'selected' :''; ?> value="no_ktp">No Ktp</option>
-                           <option <?= $this->input->get('f') == 'gelar_kesarjanaan' ? 'selected' :''; ?> value="gelar_kesarjanaan">Gelar Kesarjanaan</option>
-                           <option <?= $this->input->get('f') == 'tempat_lahir' ? 'selected' :''; ?> value="tempat_lahir">Tempat Lahir</option>
-                           <option <?= $this->input->get('f') == 'tanggal_lahir' ? 'selected' :''; ?> value="tanggal_lahir">Tanggal Lahir</option>
-                           <option <?= $this->input->get('f') == 'status_kawin' ? 'selected' :''; ?> value="status_kawin">Status Kawin</option>
-                           <option <?= $this->input->get('f') == 'alamat_rumah' ? 'selected' :''; ?> value="alamat_rumah">Alamat Rumah</option>
-                           <option <?= $this->input->get('f') == 'email' ? 'selected' :''; ?> value="email">Email</option>
-                           <option <?= $this->input->get('f') == 'no_hp' ? 'selected' :''; ?> value="no_hp">No Hp</option>
-                           <option <?= $this->input->get('f') == 'id_master_prodi' ? 'selected' :''; ?> value="id_master_prodi">Id Master Prodi</option>
-                           <option <?= $this->input->get('f') == 'fungsional' ? 'selected' :''; ?> value="fungsional">Fungsional</option>
-                           <option <?= $this->input->get('f') == 'golongan' ? 'selected' :''; ?> value="golongan">Golongan</option>
-                           <option <?= $this->input->get('f') == 'foto' ? 'selected' :''; ?> value="foto">Foto</option>
-                           <option <?= $this->input->get('f') == 'status_dosen' ? 'selected' :''; ?> value="status_dosen">Status Dosen</option>
-                          </select>
+                           <option value="">{php_open_tag_echo} cclang('all'); {php_close_tag}</option>
+                           <?php foreach ($this->crud_builder->getFieldShowInColumn() as $field): 
+                          ?> <option {php_open_tag_echo} $this->input->get('f') == '<?= $field; ?>' ? 'selected' :''; {php_close_tag} value="<?= $field; ?>"><?= ucwords(clean_snake_case($field)); ?></option>
+                          <?php endforeach;
+                        ?></select>
                      </div>
                      <div class="col-sm-1 padd-left-0 ">
-                        <button type="submit" class="btn btn-flat" name="sbtn" id="sbtn" value="Apply" title="<?= cclang('filter_search'); ?>">
+                        <button type="submit" class="btn btn-flat" name="sbtn" id="sbtn" value="Apply" title="{php_open_tag_echo} cclang('filter_search'); {php_close_tag}">
                         Filter
                         </button>
                      </div>
                      <div class="col-sm-1 padd-left-0 ">
-                        <a class="btn btn-default btn-flat" name="reset" id="reset" value="Apply" href="<?= base_url('administrator/master_dosen');?>" title="<?= cclang('reset_filter'); ?>">
+                        <a class="btn btn-default btn-flat" name="reset" id="reset" value="Apply" href="{php_open_tag_echo} base_url('administrator/<?= $table_name; ?>');{php_close_tag}" title="{php_open_tag_echo} cclang('reset_filter'); {php_close_tag}">
                         <i class="fa fa-undo"></i>
                         </a>
                      </div>
                   </div>
-                  </form>                  <div class="col-md-4">
+                  <?= form_close(); ?>
+                  <div class="col-md-4">
                      <div class="dataTables_paginate paging_simple_numbers pull-right" id="example2_paginate" >
                         
                      </div>
@@ -152,13 +127,13 @@
       var url = $(this).attr('data-href');
 
       swal({
-          title: "<?= cclang('are_you_sure'); ?>",
-          text: "<?= cclang('data_to_be_deleted_can_not_be_restored'); ?>",
+          title: "{php_open_tag_echo} cclang('are_you_sure'); {php_close_tag}",
+          text: "{php_open_tag_echo} cclang('data_to_be_deleted_can_not_be_restored'); {php_close_tag}",
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#DD6B55",
-          confirmButtonText: "<?= cclang('yes_delete_it'); ?>",
-          cancelButtonText: "<?= cclang('no_cancel_plx'); ?>",
+          confirmButtonText: "{php_open_tag_echo} cclang('yes_delete_it'); {php_close_tag}",
+          cancelButtonText: "{php_open_tag_echo} cclang('no_cancel_plx'); {php_close_tag}",
           closeOnConfirm: true,
           closeOnCancel: true
         },
@@ -175,7 +150,7 @@
     $('#apply').click(function(){
 
       var bulk = $('#bulk');
-      var serialize_bulk = $('#form_dosen').serialize();
+      var serialize_bulk = $('#form_<?= $uc_controller_name; ?>').serialize();
       var list_id = [];
 	    $(".data-check:checked").each(function() {
 	            list_id.push(this.value);
@@ -183,13 +158,13 @@
       if (bulk.val() == 'delete') {
 
          swal({
-            title: "<?= cclang('are_you_sure'); ?>",
-            text: "<?= cclang('data_to_be_deleted_can_not_be_restored'); ?>",
+            title: "{php_open_tag_echo} cclang('are_you_sure'); {php_close_tag}",
+            text: "{php_open_tag_echo} cclang('data_to_be_deleted_can_not_be_restored'); {php_close_tag}",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
-            confirmButtonText: "<?= cclang('yes_delete_it'); ?>",
-            cancelButtonText: "<?= cclang('no_cancel_plx'); ?>",
+            confirmButtonText: "{php_open_tag_echo} cclang('yes_delete_it'); {php_close_tag}",
+            cancelButtonText: "{php_open_tag_echo} cclang('no_cancel_plx'); {php_close_tag}",
             closeOnConfirm: true,
             closeOnCancel: true
           },
@@ -199,7 +174,7 @@
             		$.ajax({
 		                type: "POST",
 		                data: {id:list_id},
-		                url: "<?= site_url('admin/dosen/delete')?>",
+		                url: "{php_open_tag_echo} site_url('admin/{uc_controller_name}/delete'){php_close_tag}",
 		                dataType: "JSON",
 		                success: function(data)
 		                {
@@ -222,7 +197,7 @@
             		alert('Error deleting data');
             	}
             	
-               // document.location.href = BASE_URL + '/admin/dosen/delete?' + serialize_bulk;      
+               // document.location.href = BASE_URL + '/admin/<?= $uc_controller_name; ?>/delete?' + serialize_bulk;      
             }
           });
 
@@ -231,7 +206,7 @@
       } else if(bulk.val() == '')  {
           swal({
             title: "Upss",
-            text: "<?= cclang('please_choose_bulk_action_first'); ?>",
+            text: "{php_open_tag_echo} cclang('please_choose_bulk_action_first'); {php_close_tag}",
             type: "warning",
             showCancelButton: false,
             confirmButtonColor: "#DD6B55",
@@ -276,7 +251,7 @@ $(document).ready(function() {
     serverSide: true,
     order : [],
     ajax: {
-      url: BASE_AJAX + "dosen/ajax",
+      url: BASE_AJAX + "<?= $uc_controller_name ?>/ajax",
       type: "POST",
       // data: data,
     },

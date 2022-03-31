@@ -7,6 +7,7 @@ class MY_Controller extends CI_Controller {
     public $page_dir        = "backend/standart/admin/";
     public $template_data = array();
     public $limit_page = 10;
+    public $reponse;
 
 	public function __construct()
 	{
@@ -437,7 +438,7 @@ class Builder extends MY_Controller
                 $relation = $this->crud_builder->getFieldRelation($field);
                 if ($relation){
                     $cetak[] = $relation['relation_table'].'.'.$relation['relation_label'];
-                    $join[] = '$this->datatables->join("'.$relation['relation_table'].'", "'.$relation['relation_table'].'.'.$relation['relation_value'].' = '.$this->input->post('table_name').'.'.$relation['fk_field'].'");';
+                    $join[] = '$this->db->join("'.$relation['relation_table'].'", "'.$relation['relation_table'].'.'.$relation['relation_value'].' = '.$this->input->post('table_name').'.'.$relation['fk_field'].'", "left");';
                 } else {
                     $cetak[] = $table_name.'.'.$field;
                 }
@@ -504,7 +505,7 @@ class Builder extends MY_Controller
                 exit;
             }
 
-            $builder_list = $this->parser->parse($this->template_crud_path.'builder_list', $this->data, true);
+            $builder_list = $this->parser->parse($this->template_crud_path.'builder_list_data', $this->data, true);
             write_file($this->view_path.strtolower($this->controller_name).'_list.php', $builder_list);
 
             $builder_list = $this->parser->parse($this->template_crud_path.'builder_controller', $this->data, true);
@@ -652,12 +653,12 @@ class Builder extends MY_Controller
                 $this->response['success'] = true;
                 $this->response['message'] = cclang('success_save_data_stay', [
                     anchor('admin/crud', ' Go back to list'),
-                    anchor('admin/'.$this->input->post('table_name'), ' View')
+                    anchor('admin/'.$this->input->post('controller_name'), ' View')
                 ]);
             } else {
                 set_message(
                     cclang('success_save_data_redirect', [
-                    anchor('admin/'.$this->input->post('table_name'), ' View')
+                    anchor('admin/'.$this->input->post('controller_name'), ' View')
                 ]), 'success');
                 $this->response['success'] = true;
                 $this->response['redirect'] = site_url('admin/crud');

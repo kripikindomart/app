@@ -34,7 +34,7 @@ class Crud extends Builder {
 	{
 
 		
-		return $this->buildCrud();
+		print_r($this->buildCrud());
 	}
 
 	public function build()
