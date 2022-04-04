@@ -9,6 +9,11 @@ class Model_Komponen extends MY_Model {
 	protected $table_sidang = 'kategori_komponen';
 	protected $table_disertas = 'kategori_komponen';
 	protected $table_administrasi = 'kategori_komponen';
+	var $select = array('id', 'komponen', 'jenis');
+	var $order = array('id' => 'desc'); // default order 
+	var $column_order = array(null, null, "komponen", "jenis", null);
+	var $column_search = array("komponen", "jenis"); 
+	
 
 	public function __construct()
 	{

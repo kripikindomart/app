@@ -21,7 +21,7 @@ class <?= ucwords($controller_name); ?> extends Admin
 
 	public function index()
 	{
-		//$this->is_allowed('{controller_name}_list') ;
+		//$this->is_allowed('{uc_controller_name}_list') ;
 		$this->template->title('<?= ucwords(clean_snake_case($title)); ?>');
 		$data = [];
 		$this->render('{controller_name}/<?= strtolower($controller_name); ?>_list', $data);
@@ -45,7 +45,11 @@ class <?= ucwords($controller_name); ?> extends Admin
 		$sql = implode(', ', $cetak);
 		?>
 		$this->datatables->select('<?= $sql ?>');
-		<?= implode("\r\n", $join); ?>
+		<?php 
+		if ($join != null || !empty($join)) {
+			echo implode("\r\n", $join);
+		}
+		 ?>
         $this->datatables->from('{table_name}');
         $this->db->order_by('{table_name}.{primary_key}','dsc');
 
@@ -83,6 +87,7 @@ class <?= ucwords($controller_name); ?> extends Admin
 		$data = $this->model_{model_name}->getRequestAjax();
 		$data_row = array();
 			$no = $_POST['start'];
+			$data_ = array();
 			foreach ($data as $row) {
 				$no++;
 				$data_row = array();

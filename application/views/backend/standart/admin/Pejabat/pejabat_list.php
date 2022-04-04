@@ -55,12 +55,12 @@
                            </td>
                            <td>#</td>
 										<th>Karyawan</th>
-								<th>Pengajar</th>
-								<th>Departemen</th>
-								<th>Jabatan</th>
-								<th>Ttd</th>
-								<th>Status</th>
-				<th>Action</th>
+      								<th>Pengajar</th>
+      								<th>Departemen</th>
+      								<th>Jabatan</th>
+      								<th>Ttd</th>
+      								<th>Status</th>
+				                  <th>Action</th>
                         </tr>
                      </thead>
                      <tbody id="tbody_Pejabat">

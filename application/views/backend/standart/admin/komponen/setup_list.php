@@ -40,34 +40,24 @@
                   <form name="form_group" id="form_group" action="<?= base_url('admin/komponen/index'); ?>">
                   
                   <div class=""> 
-                  <table class="table table-striped dataTable table table-bordered table-hover">
+                   <table class="table table-bordered table-striped dataTable" style="width: 98%;">
                      <thead>
-                        <tr>
-                        <td width="5px">
+                        <tr class="">
+                             <td>#</td>
+                           <td width="5px">
                             <div class="text-center">
-                            <input type="checkbox" class="checkbox icheckbox_flat-green toltip select_all" id="check_all" name="check_all" title="<?= cclang('check_all') ?>">
+                            <input type="checkbox" class="checkbox icheckbox_flat-green toltip select_all " id="check_all" name="check_all" title="Mark All">
                             </div>
                            </td>
-                           <th width="5px">No.</th>
-                           <th>Komponen</th>
-                           <th class="action">Action</th>
-                      </tr>
+                          
+                            <th>Komponen</th>
+                            <th>Jenis</th>
+                            <th>Action</th>
+                        </tr>
                      </thead>
-                     <tbody id="tbody_group">
-                      
+                     <tbody id="tbody_setup">
+                     
                      </tbody>
-                     <tfoot>
-                       <tr>
-                        <td width="5px">
-                            <div class="text-center">
-                            <input type="checkbox" class="checkbox icheckbox_flat-green toltip select_all" id="check_all" name="check_all" title="<?= cclang('check_all') ?>">
-                            </div>
-                           </td>
-                           <th width="5px">No.</th>
-                           <th>Komponen</th>
-                           <th class="action">Action</th>
-                      </tr>
-                     </tfoot>
                   </table>
                   </div>
                </div>
@@ -119,6 +109,7 @@
                         <label for="label" class="col-sm-2 control-label">Kategori</label>
                         <div class="col-sm-8">
                             <span class="form-control"><strong><?= $data_kategori->kategori ?></strong></span>
+                            <input type="hidden" name="id">
                           <input type="hidden" class="form-control" name="id_kategori" id="id" placeholder="Kategori Komponen" value="<?= $data_kategori->id ?>" >
 
                           <i class="required"><small></small></i>
@@ -131,6 +122,19 @@
 
                         <div class="col-sm-8">
                           <input type="text" class="form-control" name="nama_komponen" id="nama_komponen" placeholder="Nama Komponen" value="" >
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="url" class="col-sm-2 control-label">Type <i class="required">*</i></label>
+
+                        <div class="col-sm-8">
+                          <select class="form-control" name="jenis">
+                              <option value="">-Pilih Type-</option>
+                              <option value="check">Check</option>
+                              <option value="upload">Upload</option>
+                              <option value="input">Input</option>
+                          </select>
                         </div>
                     </div>
                     
@@ -151,17 +155,10 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<script type="text/javascript" src="<?= APP.'komponen/komponen_setup.js' ?>"></script>
+
 <!-- Page script -->
 <script>
-
-
-  $(document).ready(function() {
-    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-        checkboxClass: 'icheckbox_minimal-red',
-        radioClass: 'iradio_minimal-red'
-    });
-
+$(document).ready(function() {
 
     /*
     * Add Modal show  
@@ -174,67 +171,64 @@
           $('.box-form ').show();
           $('#simpan').hide();
           $('.btn_save_back').show(); 
-    });
+    }); 
 
     /*
     * Edit Modal show  
     */
     $(document).on('click', '.edit', function(){
       $('#modal_form').modal('show'); 
-        $('.modal-title').text('Edit Program Studi');
+        $('.modal-title').text('Edit Komponen');
         $('#simpan').show();
-        var user_id = $(this).attr('data-id');
+        var id = $(this).attr('data-id');
         save_method = 'edit';
         $.ajax({
-            url: '<?= base_url()?>admin/komponen/edit/',
+            url: '<?= base_url()?>admin/komponen/edit_setup/',
             type: 'POST',
             dataType: 'json',
-            data: {user_id:user_id},
+            data: {id:id},
         }) 
 
         .done(function(res){
             if (res.success) {
                 $('[name=id]').val(res.message.id);
-                $('[name=prodiid]').val(res.message.prodiID);
-                $('[name=prodi]').val(res.message.program_studi);
-                $('[name=jenjang]').val(res.message.jenjang);
+                $('[name=nama_komponen]').val(res.message.komponen);
+                $('[name=jenis]').val(res.message.jenis);
                 $('.btn_save_back').hide();
                 $('#btnSave').text('Update Data');
-                $('.title-box').text('Edit Program Studi'); // Set Title to Bootstrap modal title  
+                $('.title-box').text('Edit Komponen'); // Set Title to Bootstrap modal title  
                 $('#simpan').text('Update Data');
                 $('.message').hide();
             } else {
                 toastr['warning'](res.message);
             }
         })    
-    });
+    }); 
 
-
-    /*
-    * Action Add Or Edit  
-    */
 
     $('.btn_action').click(function(event) {
           if (save_method == 'add') {
-               var url = '<?= base_url('admin/komponen/save_komponen'); ?>';
+               var url = '<?= base_url('admin/komponen/setup_save'); ?>';
                 var save_type = $(this).attr('data-stype');
           } else {
-              var url = '<?= base_url('admin/komponen/kategori_edit_save'); ?>';
+              var url = '<?= base_url('admin/komponen/setup_edit_save'); ?>';
               var save_type = 'back';
           }
-          var form = $('#form').serializeArray();
-          console.log(form)
            $.ajax({
              url: url,
              type:"post",
              dataType: 'json',
-             data:form,
+             data:new FormData(form),
+             processData:false,
+             contentType:false,
+             cache:false,
+             async:false,
          })
            .done(function(res) {
               if (res.success == true) {
                 if (save_type == 'stay') {
                   $('form input[type != hidden], form textarea, form select').val('');
-                  //reload_ajax();
+                  reload_ajax();
                   $('.message').printMessage({
                         message: res.message
                     });
@@ -260,11 +254,31 @@
              console.log("error");
            })
            .always(function() {
-               // reload_ajax();
+                reload_ajax();
            });
     });
 
-     $(document).on('click', '.delete', function(){
+    var checkAll = $('#check_all');
+    var checkboxes = $('input.check');
+
+    checkAll.on('ifChecked ifUnchecked', function(event) {
+        if (event.type == 'ifChecked') {
+            checkboxes.iCheck('check');
+        } else {
+            checkboxes.iCheck('uncheck');
+        }
+    });
+
+    checkboxes.on('ifChanged', function(event) {
+        if (checkboxes.filter(':checked').length == checkboxes.length) {
+            checkAll.prop('checked', 'checked');
+        } else {
+            checkAll.removeProp('checked');
+        }
+        checkAll.iCheck('update');
+    });
+
+    $(document).on('click', '.delete', function(){
        var delete_id = $(this).attr('data-id');
         swal({
                 title: "<?= cclang('are_you_sure'); ?>",
@@ -280,7 +294,7 @@
             function(isConfirm) {
                 if (isConfirm) {
                    $.ajax({
-                        url :'<?= base_url()?>admin/komponen/delete',
+                        url :'<?= base_url()?>admin/komponen/setup_delete',
                         type :'POST',
                         dataType: 'json',
                         data: {delete_id:delete_id}, 
@@ -300,12 +314,11 @@
         
     });
 
-
     $('#apply').click(function() {
         var bulk = $('.bulk');
 
         var serialize_bulk = $('#form_group').serializeAssoc();
-        
+        console.log(serialize_bulk);
         if (bulk.val() == 'delete') {
            if ('delete_id' in serialize_bulk) {
                swal({
@@ -322,7 +335,7 @@
            function(isConfirm) {
                if (isConfirm) {
                  $.ajax({
-                      url :'<?= base_url()?>admin/Prodi/delete',
+                      url :'<?= base_url()?>admin/komponen/setup_delete',
                       type :'POST',
                       dataType: 'json',
                       data: serialize_bulk, 
@@ -393,26 +406,70 @@
         return false;
     }); /*end appliy click*/
 
-    //check all
-    var checkAll = $('#check_all');
-    var checkboxes = $('input.check');
+  table = $(".dataTable").DataTable({
+    responsive: true,
+    autoWidth:false,
+    fnDrawCallback: function(oSettings){
+    if ($(".dataTable tr").length < 11) {
+      $('.dataTables_paginate').hide();
+    }
+    
+    $('.fancybox').fancybox();
+    
+   },
+    oLanguage: {
+      sProcessing: "loading..."
+    },
+    processing: true,
+    serverSide: true,
+    order : [],
+    ajax: {
+      url: BASE_AJAX + "komponen/setup_list_ajax/"+<?= $this->uri->segment(4) ?>,
+      type: "POST",
+      // data: data,
+    },
+    columnDefs : [
+      { 
+          "targets": [ -1, 1, 0 ], //last column
+          "orderable": false, //set not orderable
 
-    checkAll.on('ifChecked ifUnchecked', function(event) {
-        if (event.type == 'ifChecked') {
-            checkboxes.iCheck('check');
-        } else {
-            checkboxes.iCheck('uncheck');
-        }
-    });
+      }
+    ],
+    rowId: function(a) {
+      return a;
+    },
+    rowCallback: function(row, data, iDisplayIndex) {
+      var info = this.fnPagingInfo();
+      var page = info.iPage;
+      var length = info.iLength;
+      var index = page * length + (iDisplayIndex + 1);
+      $("td:eq(0)", row).html(index);
+    }
 
-    checkboxes.on('ifChanged', function(event) {
-        if (checkboxes.filter(':checked').length == checkboxes.length) {
-            checkAll.prop('checked', 'checked');
-        } else {
-            checkAll.removeProp('checked');
-        }
-        checkAll.iCheck('update');
-    });
 
-}); /*end doc ready*/
+  });
+
+  table
+    .buttons()
+    .container()
+    .appendTo(".dataTable .col-md-6:eq(0)");
+
+ 
+  
+    $(".select_all").on("click", function() {
+      if (this.checked) {
+        $(".check").each(function() {
+          this.checked = true;
+          $(".select_all").prop("checked", true);
+        });
+      } else {
+        $(".check").each(function() {
+          this.checked = false;
+          $(".select_all").prop("checked", false);
+        });
+      }
+    });  
+});  
+
+ 
 </script>

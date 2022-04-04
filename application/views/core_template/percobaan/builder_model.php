@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Model_{model_name} extends MY_Model {
 	<?php 
+	$joins = [];
 	foreach ($this->crud_builder->getFieldShowInColumn() as $field) {
 			$relation = $this->crud_builder->getFieldRelation($field);
 			if ($relation){

@@ -11,7 +11,7 @@ class MY_Model extends CI_Model {
     var $column_search = array(); 
     var $select_field;
     var $join = null;
-    var $where = null;
+    var $where = array();
     public function __construct()
     {
         parent::__construct();
@@ -342,9 +342,14 @@ class MY_Model extends CI_Model {
          return $this->db->update($this->table, $data);
     }
 
-    public function delete()
+    public function delete($table = null)
     {
-        $this->db->delete($this->table);
+        if ($table != null) {
+            $this->db->delete($table);
+        } else {
+             $this->db->delete($this->table);    
+        }
+       
         return $this->db->affected_rows();
         
         
@@ -593,6 +598,18 @@ class MY_Model extends CI_Model {
         $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();  
         return $query->result();   
+    }
+
+    public function resultData()
+    {
+        $this->db->from($this->table);
+        $i = 0;
+        $select_dat = implode(', ', $this->select);
+        $this->db->select($select_dat);
+        $this->getJoin();
+        $this->getWhere();
+        $query = $this->db->get();  
+        return $query->result(); 
     }
 
 

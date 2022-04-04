@@ -119,6 +119,7 @@
                     <div class="form-group ">
                         <label for="label" class="col-sm-2 control-label">Kategori</label>
                         <div class="col-sm-8">
+                            <input type="hidden" name="id">
                           <input type="text" class="form-control" name="kategori" id="kategori" placeholder="Kategori Komponen" value="">
                           <i class="required"><small></small></i>
                         </div>
@@ -185,24 +186,23 @@
       $('#modal_form').modal('show'); 
         $('.modal-title').text('Edit Program Studi');
         $('#simpan').show();
-        var user_id = $(this).attr('data-id');
+        var id = $(this).attr('data-id');
         save_method = 'edit';
         $.ajax({
             url: '<?= base_url()?>admin/komponen/edit/',
             type: 'POST',
             dataType: 'json',
-            data: {user_id:user_id},
+            data: {id:id},
         }) 
 
         .done(function(res){
             if (res.success) {
                 $('[name=id]').val(res.message.id);
-                $('[name=prodiid]').val(res.message.prodiID);
-                $('[name=prodi]').val(res.message.program_studi);
-                $('[name=jenjang]').val(res.message.jenjang);
+                $('[name=kategori]').val(res.message.kategori);
+                $('[name=aktif]').val(res.message.aktif);
                 $('.btn_save_back').hide();
                 $('#btnSave').text('Update Data');
-                $('.title-box').text('Edit Program Studi'); // Set Title to Bootstrap modal title  
+                $('.title-box').text('Edit kategori'); // Set Title to Bootstrap modal title  
                 $('#simpan').text('Update Data');
                 $('.message').hide();
             } else {
@@ -326,7 +326,7 @@
            function(isConfirm) {
                if (isConfirm) {
                  $.ajax({
-                      url :'<?= base_url()?>admin/Prodi/delete',
+                      url :'<?= base_url()?>admin/komponen/delete',
                       type :'POST',
                       dataType: 'json',
                       data: serialize_bulk, 

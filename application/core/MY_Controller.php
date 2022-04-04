@@ -434,6 +434,7 @@ class Builder extends MY_Controller
         $model_name = $this->input->post('model_name');
 
         if ($this->form_validation->run()) {
+            $join = array();
             foreach ($this->crud_builder->getFieldShowInColumn() as $field) {
                 $relation = $this->crud_builder->getFieldRelation($field);
                 if ($relation){
@@ -441,6 +442,7 @@ class Builder extends MY_Controller
                     $join[] = '$this->db->join("'.$relation['relation_table'].'", "'.$relation['relation_table'].'.'.$relation['relation_value'].' = '.$this->input->post('table_name').'.'.$relation['fk_field'].'", "left");';
                 } else {
                     $cetak[] = $table_name.'.'.$field;
+                   
                 }
                 
                 
@@ -517,19 +519,22 @@ class Builder extends MY_Controller
             if ($this->input->post('create')) {
                 $this->builder_list = $this->parser->parse($this->template_crud_path.'builder_add', $this->data, true);
                 write_file($this->view_path.strtolower($this->controller_name).'_add.php', $builder_list);
-                $this->aauth->create_perm($this->controller_name.'_add');
+                $this->aauth->create_perm(strtolower($this->controller_name).'_add');
+                $this->aauth->allow_group($this->getGroup(),strtolower($this->controller_name).'_add');
             }
 
             if ($this->input->post('update')) {
                 $builder_list = $this->parser->parse($this->template_crud_path.'builder_update', $this->data, true);
                 write_file($this->view_path.strtolower($this->controller_name).'_update.php', $builder_list);
-                $this->aauth->create_perm($this->controller_name.'_update');
+                $this->aauth->create_perm(strtolower($this->controller_name).'_update');
+                $this->aauth->allow_group($this->getGroup(),strtolower($this->controller_name).'_update');
             }
             
             if ($this->input->post('read')) {
                 $builder_list = $this->parser->parse($this->template_crud_path.'builder_view', $this->data, true);
                 write_file($this->view_path.strtolower($this->controller_name).'_view.php', $builder_list);
-                $this->aauth->create_perm($this->controller_name.'_view');
+                $this->aauth->create_perm(strtolower($this->controller_name).'_view');
+                $this->aauth->allow_group($this->getGroup(),strtolower($this->controller_name).'_view');
             }
 
 
@@ -557,8 +562,12 @@ class Builder extends MY_Controller
             //     write_file($this->view_path.$this->table_name.'_view.php', $builder_list);
             //}
 
-            $this->aauth->create_perm($this->controller_name.'_delete');
-            $this->aauth->create_perm($this->controller_name.'_list');
+            $this->aauth->create_perm(strtolower($this->controller_name).'_delete');
+            $this->aauth->allow_group($this->getGroup(),strtolower($this->controller_name).'_delete');
+
+            $this->aauth->create_perm(strtolower($this->controller_name).'_list');
+           $this->aauth->allow_group($this->getGroup(), strtolower( $this->controller_name).'_list');
+
 
             $save_data = [
                 'table_name'        => $this->input->post('table_name'),
@@ -671,6 +680,14 @@ class Builder extends MY_Controller
         return json_encode($this->response);
 
         
+    }
+
+    public function getGroup()
+    {
+        foreach($this->aauth->get_user_groups() as $a){
+
+            return $a->name;
+        }
     }
 }
 
