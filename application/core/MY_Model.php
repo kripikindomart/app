@@ -156,7 +156,7 @@ class MY_Model extends CI_Model {
 
     public function join_ref($table_utama, $table_ref, $type = 'left')
     {
-        $this->db->join($table_utama, "$table_ref.id_$table_ref = $table_utama.id", $type);
+        $this->db->join($table_ref, "$table_ref.id = $table_utama.id_$table_ref", $type);
         return $this;
     }
 

@@ -9,7 +9,7 @@
    </h1>
    <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-      <li class=""> <a href="<?= base_url('admin/users') ?>">Template</a></li>
+      <li class=""> <a href="<?= base_url('admin/form_template') ?>">Template</a></li>
       <li class="active">add</li>
    </ol>
 </section>
@@ -57,10 +57,10 @@
 
 
                       <div class="form-group ">
-                            <label for="category" class="col-sm-2 control-label">Group Departement  
+                            <label for="category" class="col-sm-2 control-label">Penaggung jawab 
                             </label>
                             <div class="col-sm-8">
-                                <select  class="form-control chosen chosen-select-deselect" name="si_group" id="category" data-placeholder="Select Group departement" >
+                                <select  class="form-control chosen chosen-select-deselect" name="penaggung_jawab" id="category" data-placeholder="Select" >
                                     <option value=""></option>
                                     <?php foreach ($pejabat as $row): ?>
                                     <option value="<?= $row->id ?>"><?= ($row->karyawans_nama != null ? $row->departements_nama.' - '.$row->karyawans_nama.' - '.$row->jabatan : $row->departements_nama.' - '.$row->pengajars_nama.' - '.$row->jabatan ); ?></option>
@@ -71,15 +71,51 @@
 
                     <div class="form-group ">
                         <div class="table-wrapper">
-	                       <table class="table table-responsive table table-bordered table-striped" id="diagnosis_list" style="width: 90% !important; margin: 0 auto;">
+	                       <table class="table table-responsive table table-bordered table-striped" id="tbl_posts" style="width: 90% !important; margin: 0 auto;">
 	                       		<thead>
 	                       			<tr>
-	                       				<td>#</td>
+	                       				<td><span class="sn"></span>.</td>
 	                       				<td>Komponen</td>
 	                       				<td>Penanggung Jawab</td>
+	                       				<td>#</td>
 	                       			</tr>
 	                       		</thead>
+	                       		<tbody id="tbl_posts_body">
+	                       			
+	                       				<tr>
+	                       					<td class="sn">1</td>
+	                       					<td>
+	                       						
+	                       						<select name="kategori[]"  class="kategori form-control chosen chosen-select">
+	                       							<option>-Pilih kategori-</option>
+	                       							<?php foreach ($kat_komponen as $row): ?>
+	                       							<option value="<?= $row->id ?>"><?= $row->kategori ?></option>
+	                       							<?php endforeach ?>
+	                       						</select>
+	                       						<br>
+	                       						<p id="data_komponen">
+	                       							
+	                       						</p>
+	                       					</td>
+	                       					<td>
+	                       						<select name="pejabat[]" id="kategori" class="form-control chosen chosen-select">
+	                       							<?php foreach ($pejabat as $row): ?>
+	                       							<option  value="<?= $row->id ?>"><?= ($row->karyawans_nama != null ? $row->departements_nama.' - '.$row->karyawans_nama.' - '.$row->jabatan : $row->departements_nama.' - '.$row->pengajars_nama.' - '.$row->jabatan ); ?></option>
+	                       							<?php endforeach ?>
+	                       						</select>
+	                       						
+	                       					</td>
+	                       					<td>
+	                       						<button type="button" class="btn btn-flat btn-success add_row" >
+						                       	+
+						                       </button>
+	                       					</td>
+	                       				</tr>
+	                       				
+	                       			
+	                       		</tbody>
 	                       </table>
+						
                   		 </div>
 
                     </div>
@@ -96,7 +132,40 @@
 
                   <?= form_close(); ?>
                   
-                  
+                  <div style="display:none;">
+						    <table id="sample_table">
+						      <tr>
+						      	<td><span class="sn"></span>.</td>
+               					<td>
+               						
+               						<select name="kategori[]"  class="kategori form-control chosen chosen-select">
+               							<option>-Pilih kategori-</option>
+               							<?php foreach ($kat_komponen as $row): ?>
+               							<option value="<?= $row->id ?>"><?= $row->kategori ?></option>
+               							<?php endforeach ?>
+               						</select>
+               						<br>
+               						<p id="data_komponen" class="">
+               							
+               						</p>
+               					</td>
+               					<td>
+               						<select name="pejabat[]" id="pejabat" class="form-control chosen chosen-select">
+               							<?php foreach ($pejabat as $row): ?>
+               							<option  value="<?= $row->id ?>"><?= ($row->karyawans_nama != null ? $row->departements_nama.' - '.$row->karyawans_nama.' - '.$row->jabatan : $row->departements_nama.' - '.$row->pengajars_nama.' - '.$row->jabatan ); ?></option>
+               							<?php endforeach ?>
+               						</select>
+               						
+               					</td>
+               					<td>
+               						<button type="button" class="btn btn-flat btn-danger delete-record" >
+			                       	-
+			                       </button>
+               					</td>
+               				</tr>
+						     </tr>
+						   </table>
+						 </div>
                </div>
                
                <!-- /.widget-user -->
@@ -113,6 +182,7 @@
 <script src="<?= BASE_ASSET; ?>js/crud.js"></script>
 <!-- Page script -->
 <script>
+	let lineNo = 1;
   $(document).ready(function() {
   	//Helper function to keep table row from collapsing when being sorted
     var fixHelperModified = function(e, tr) {
@@ -123,6 +193,91 @@
         });
         return $helper;
     };
+
+
+ 
+    jQuery(document).delegate('.add_row', 'click', function(e) {
+     e.preventDefault();    
+     var content = jQuery('#sample_table tr'),
+     size = jQuery('#tbl_posts >tbody >tr').length + 1,
+     element = null,    
+     element = content.clone();
+     element.attr('id', 'rec-'+size);
+     element.find('.delete-record').attr('data-id', size);
+     element.find('.kategori').attr('id','kategori-'+ size);
+     element.find('#data_komponen').attr('id','data_komponen-'+ size);
+     element.find('.kategori').attr('data-id', size);
+     element.appendTo('#tbl_posts_body');
+     element.find('.sn').html(size);
+   });
+
+    jQuery(document).delegate('.delete-record', 'click', function(e) {
+	     e.preventDefault();    
+	     var didConfirm = confirm("Are you sure You want to delete");
+	     if (didConfirm == true) {
+	      var id = jQuery(this).attr('data-id');
+	      var targetDiv = jQuery(this).attr('targetDiv');
+	      jQuery('#rec-' + id).remove();
+	      
+	    //regnerate index number on table
+	    $('#tbl_posts_body tr').each(function(index) {
+	      //alert(index);
+	      $(this).find('span.sn').html(index+1);
+	    });
+	    return true;
+	  } else {
+	    return false;
+	  }
+	});
+
+     	
+     	
+        // markup = "<tr><td>""</td></tr>";
+        // tableBody = $("table tbody");
+        // tableBody.append(markup);
+        // lineNo++;
+    //});
+
+
+    $(document).on('change', '.kategori', function(event) {
+    	event.preventDefault();
+    	var data_id = jQuery(this).attr('data-id');
+    	if (typeof data_id !== typeof undefined && data_id !== false) {
+    		var id = $(this).val()
+    		$.ajax({
+	    		url: '<?= base_url('admin/form_template/getKomponen') ?>',
+	    		type: 'post',
+	    		dataType: 'json',
+	    		data: {id: id},
+	    		success : function(res) {
+	    			if (res.success) {
+	    				
+	    				$('#data_komponen-'+data_id).html(res.data)
+	    			}
+	    		}
+	    	})
+    	} else {
+    		/* Act on the event */
+	    	var id = $(this).val()
+	    	$.ajax({
+	    		url: '<?= base_url('admin/form_template/getKomponen') ?>',
+	    		type: 'post',
+	    		dataType: 'json',
+	    		data: {id: id},
+	    		success : function(res) {
+	    			if (res.success) {
+	    				
+	    				$('#data_komponen').html(res.data)
+	    			}
+	    		}
+	    	})
+    	}
+
+    		
+    	
+    	
+    	
+    });
 
     //Renumber table rows
     function renumber_table(tableID) {
@@ -159,13 +314,6 @@
         var form_user = $('#form_user');
         var data_post = form_user.serializeArray();
         var save_type = $(this).attr('data-stype');
-        var uuid = $('#user_avatar_uuid').val();
-        if (uuid == null) {
-          data_post.push({
-              name: 'uuid',
-              value: uuid
-          });
-        }
         data_post.push({
             name: 'save_type',
             value: save_type
@@ -173,53 +321,24 @@
 
         $('.loading').show();
 
-
         $.ajax({
-                url: BASE_URL + '/admin/users/add_save',
-                type: 'POST',
-                dataType: 'json',
-                data: data_post,
-            })
-            .done(function(res) {
-                if (res.success) {
-                    var id = $('#user_avatar_galery').find('li').attr('qq-file-id');
+        	url: '<?= base_url('admin/form_template/add_save') ?>',
+        	type: 'post',
+        	dataType: 'json',
+        	data: data_post,
+        })
+        .done(function(res) {
+        	console.log(res);
+        })
+        .fail(function() {
+        	console.log("error");
+        })
+        .always(function() {
+        	console.log("complete");
+        });
+        
 
-                    if (res.message == false) {
-                        window.location.href = BASE_URL + 'admin/users';
-                        return;
-                    }
-
-                    $('.message').printMessage({
-                        message: res.message
-                    });
-                    $('.message').fadeIn();
-                    $('form input[type != hidden], form textarea, form select').val('');
-                    $('.chosen').val('').trigger('chosen:updated');
-                    $('#user_avatar_galery').fineUploader('deleteFile', id);
-
-                } else {
-                    $('.message').printMessage({
-                        message: res.message,
-                        type: 'warning'
-                    });
-                    $('.message').fadeIn();
-                }
-
-            })
-            .fail(function() {
-                $('.message').printMessage({
-                    message: 'Error save data',
-                    type: 'warning'
-                });
-            })
-            .always(function() {
-                $('.loading').hide();
-                $('html, body').animate({
-                    scrollTop: $(document).height()
-                }, 1000);
-            });
-
-        return false;
+      
     }); //end btn save/
 
     $('#user_avatar_galery').fineUploader({

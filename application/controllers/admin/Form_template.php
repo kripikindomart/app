@@ -18,6 +18,7 @@ class Form_template extends Admin
 
 		$this->load->model('model_Form_template');
 		$this->load->model('Model_pejabat', 'pejabat');
+		$this->load->model('Model_komponen', 'komponen');
 	}
 
 	public function index()
@@ -108,11 +109,78 @@ class Form_template extends Admin
 		//$this->is_allowed('form_template_add') ;
 		$this->template->title('Template Form');
 		$pejabat = $this->pejabat->resultData();
-		
+		$komponen = $this->komponen->where('aktif', 'Y')->get('kategori_komponen');
+		$kt = '<select name="kategori[]"  class="form-control chosen chosen-select kategori"><option>-Pilih kategori-</option>';
+		foreach($pejabat as $row){
+			foreach ($komponen as $r):
+			$kt .= '
+ 							<option value="'.$r->id.'">'.$r->kategori.'</option>
+ 							
+ 						';
+ 			endforeach;
+		}
+		$kt .= '</select>
+ 						<br>
+ 						<p id="data_komponen">
+ 							
+ 						</p>';
+
 		$data = [
-			'pejabat' => $pejabat
+			'pejabat' => $pejabat,
+			'kat_komponen' => $komponen,
+			'select_kt' => $kt
 		];
+
 		$this->render('Form_template/form_template_add', $data);
+	}
+
+	public function getKomponen()
+	{
+		$id = $this->input->post('id');
+		$komponen = $this->komponen->select('komponen.*, kategori_komponen.kategori')->join_ref('komponen', 'kategori_komponen')->where('komponen.id_kategori_komponen', $id)->get();
+		if ($komponen) {
+			$komp = '<ul>';
+			foreach($komponen as $row){
+				$komp .= '<li>'.$row->komponen.'</li>';
+			}
+			$komp .= '</ul>';
+			$result['success']= true;
+			$result['data']= $komp;
+		} else {
+			$result['success']= true;
+			$result['data']= 'tidak ada data';
+		}
+
+		return $this->response($result);
+	}
+
+	public function addRow()
+	{
+
+		// $komponen_id = $this->input->post('komponen');
+		// $pejabat = $this->pejabat->resultData();
+		// $komponen = $this->komponen->get('kategori_komponen');
+		// $tr = '<tr>'
+		// foreach ($komponen as $row) {
+		//  	$tr .= '<td>
+
+		//  	';
+		//  } 
+		// 	if ($komponen) {
+		// 		$result['success']= true;
+		// 		$result['data']= $komponen;
+		// 	} else {
+		// 		$result['success']= true;
+		// 		$result['data']= 'tidak ada data';
+		// 	}
+		// 	return $this->response($result);
+	}
+
+	public function add_save()
+	{
+		$result['success']= true;
+		$result['data']= $this->input->post(null, true);
+		return $this->response($result);
 	}
 
 	
