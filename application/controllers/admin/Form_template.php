@@ -178,8 +178,41 @@ class Form_template extends Admin
 
 	public function add_save()
 	{
-		$result['success']= true;
-		$result['data']= $this->input->post(null, true);
+		$p = $this->input->post(null, true);
+
+		$mdtemplate = [
+			'nama_template' => $p['title'],
+			'pejabat_id' => $p['penaggung_jawab'],
+		];
+
+		$save_template = $this->model_Form_template->create($mdtemplate);
+		if ($save_template) {
+			if (is_array($p['kategori'])) {
+				foreach ($p['kategori'] as $kategori) {
+					$mdtemplate_komponen = [
+						'id_template' => $save_template,
+						'id_kategori_komponen' => $kategori
+					];
+					$save_komponen = $this->model_Form_template->create('mdtemplate_komponen', $mdtemplate_komponen);
+
+					if ($save_komponen) {
+						$result['success']= true;
+						$result['data']= 'success';
+					} else {
+						$result['success']= false;
+						$result['data']= $mdtemplate_komponen;
+					}
+				}
+				
+				
+			}
+
+		} else {
+				$result['success']= false;
+					$result['data']= 'gagal 1';
+		}
+
+		
 		return $this->response($result);
 	}
 

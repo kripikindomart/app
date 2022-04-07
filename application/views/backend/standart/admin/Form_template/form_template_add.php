@@ -326,16 +326,11 @@
         	type: 'post',
         	dataType: 'json',
         	data: data_post,
+        	success : function(res) {
+        		console.log(res.data)
+        	}
         })
-        .done(function(res) {
-        	console.log(res);
-        })
-        .fail(function() {
-        	console.log("error");
-        })
-        .always(function() {
-        	console.log("complete");
-        });
+        
         
 
       
