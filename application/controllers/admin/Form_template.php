@@ -188,28 +188,45 @@ class Form_template extends Admin
 		$save_template = $this->model_Form_template->create($mdtemplate);
 		if ($save_template) {
 			if (is_array($p['kategori'])) {
+
 				foreach ($p['kategori'] as $kategori) {
 					$mdtemplate_komponen = [
 						'id_template' => $save_template,
 						'id_kategori_komponen' => $kategori
 					];
-					$save_komponen = $this->model_Form_template->create('mdtemplate_komponen', $mdtemplate_komponen);
-
+					$save_komponen = $this->model_Form_template->create($mdtemplate_komponen, 'mdtemplate_komponen');
 					if ($save_komponen) {
-						$result['success']= true;
-						$result['data']= 'success';
+						$pejabat_data = [
+							'pejabat_id' => $p['pejabat']
+						];
+						$save_pejabat = $this->model_Form_template->where('id', $kategori)->update($pejabat_data);
+						if ($save_pejabat) {
+							$result['success']= true;
+							$result['data']= $save_pejabat;
+						}
+						
 					} else {
 						$result['success']= false;
-						$result['data']= $mdtemplate_komponen;
+						$result['data']= $this->input->post(null, true);
 					}
 				}
 				
 				
+			} else {
+				$save_komponen = $this->model_Form_template->create('mdtemplate_komponen', $mdtemplate_komponen);
+
+					if ($save_komponen) {
+						$result['success']= true;
+						$result['data']= 'Data berhasil di simpan';
+					} else {
+						$result['success']= false;
+						$result['data']= 'gagal menyimpan data komponen';
+					}
 			}
 
 		} else {
 				$result['success']= false;
-					$result['data']= 'gagal 1';
+					$result['data']= 'gagal menyimpan data template';
 		}
 
 		
