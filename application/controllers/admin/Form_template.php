@@ -182,19 +182,20 @@ class Form_template extends Admin
 						'id_kategori_komponen' => $kategori
 					];
 					$save_komponen = $this->model_Form_template->create($mdtemplate_komponen, 'mdtemplate_komponen');
-					if ($save_komponen) {
-						$pejabat_data = [
-							'pejabat_id' => $p['pejabat']
-						];
-						$save_pejabat = $this->model_Form_template->where('id', $kategori)->update($pejabat_data);
-						if ($save_pejabat) {
-							$result['success']= true;
-							$result['data']= $save_pejabat;
-						}
+					if ($save_template) {
+						
+							if ($p['save_type'] == 'back') {
+								$result['success']= true;
+								$result['data']= false;
+							} else {
+								$result['success']= true;
+								$result['data']= 'Data berhasil di simpan';
+							}
+						
 						
 					} else {
 						$result['success']= false;
-						$result['data']= $this->input->post(null, true);
+						$result['data']= 'gagal menyimpan data';
 					}
 				}
 				
@@ -205,7 +206,7 @@ class Form_template extends Admin
 					if ($save_komponen) {
 						if ($p['save_type'] == 'back') {
 							$result['success']= true;
-							$result['data']= true;
+							$result['data']= false;
 						} else {
 							$result['success']= true;
 							$result['data']= 'Data berhasil di simpan';

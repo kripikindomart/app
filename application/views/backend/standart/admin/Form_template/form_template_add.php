@@ -443,8 +443,15 @@
         	dataType: 'json',
         	data: data_post,
         	success : function(res) {
-        		 $('.message').printMessage({message : res.message});
-            	 $('.message').fadeIn();
+        		if (res.success == true) {
+        			if (res.data == false) {
+        				window.location.href = BASE_URL + 'admin/form_template';
+        			} else {
+        				$('.message').printMessage({message : res.message});
+            	 		$('.message').fadeIn();
+        			}
+        		}
+        		 
         	}
         })
         
