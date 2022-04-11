@@ -136,7 +136,7 @@
 						      	<td><span class="sn"></span>.</td>
                					<td>
                						
-               						<select name="kategori[]"  class="kategori form-control chosen chosen-select">
+               						<select name="kategori[]"  class="kategori form-control ">
                							<option value="0">-Pilih kategori-</option>
                							<?php foreach ($kat_komponen as $row): ?>
                							<option value="<?= $row->id ?>"><?= $row->kategori ?></option>
@@ -148,7 +148,7 @@
                						</p>
                					</td>
                					<td>
-               						<select name="pejabat[]" id="pejabat" class="form-control chosen chosen-select pejabat_komponen pejabat_add" >
+               						<select name="pejabat[]" id="pejabat" class="form-control  pejabat_komponen pejabat_add" >
                							
                						</select>
                						
@@ -196,24 +196,35 @@
 
  
     jQuery(document).delegate('.add_row', 'click', function(e) {
-     e.preventDefault();  
-     $('.pejabat_add').attr('disabled')  
-     var content = jQuery('#sample_table tr'),
-     size = jQuery('#tbl_posts >tbody >tr').length + 1,
-     element = null,    
-     element = content.clone();
-     element.attr('id', 'rec-'+size);
-     element.find('.delete-record').attr('data-id', size);
-     element.find('.kategori').attr('id','kategori-'+ size);
-     element.find('#data_komponen').attr('id','data_komponen-'+ size);
-     element.find('#pejabat').attr('id','pejabat-'+ size);
-     element.find('.kategori').attr('data-id', size);
-     element.find('.pejabat_komponen').attr('data-id', size);
-     element.appendTo('#tbl_posts_body');
-     element.find('.sn').html(size);
+	     e.preventDefault();  
 
-      $('#kategori-'+size).trigger("chosen:updated");
-      $('#kategori-'+size).trigger("liszt:updated");
+	     // var clone_content = $('#tbl_posts_body tr').clone(true);
+	     // console.log(clone_content);
+
+	     // var parent = jQuery('#tbl_posts_body tr').last();
+	     // clone_content.clone(true).insertAfter(parent); 
+     	//  $('#tbl_posts_body tr:last select').chosen();
+
+
+	     $('.pejabat_add').attr('disabled')  
+	     var content = jQuery('#sample_table tr'),
+	     size = jQuery('#tbl_posts >tbody >tr').length + 1,
+	     element = null,    
+	     element = content.clone();
+	     element.attr('id', 'rec-'+size);
+	     element.find('.delete-record').attr('data-id', size);
+	     element.find('.kategori').attr('id','kategori-'+ size);
+	     element.find('#data_komponen').attr('id','data_komponen-'+ size);
+	     element.find('#pejabat').attr('id','pejabat-'+ size);
+	     element.find('.kategori').attr('data-id', size);
+	     element.find('.pejabat_komponen').attr('data-id', size);
+	     element.appendTo('#tbl_posts_body');
+	     element.find('.sn').html(size);
+	      $('#kategori-'+ size).addClass('chosen chosen-select');
+	      $('#pejabat-'+ size).addClass('chosen chosen-select');
+	      $('#kategori-'+ size).chosen();
+	      $('#pejabat-'+ size).chosen();
+      
    });
 
     jQuery(document).delegate('.delete-record', 'click', function(e) {
