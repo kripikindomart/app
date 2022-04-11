@@ -1,0 +1,55 @@
+<mxfile host="app.diagrams.net" modified="2022-04-09T18:29:45.341Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36" etag="WTU4UksKIYaWSWQkkB2C" version="17.2.4" type="github">
+  <diagram name="Page-1" id="9f46799a-70d6-7492-0946-bef42562c5a5">
+    <mxGraphModel dx="1240" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CgsGZ0-pp2HfUOHYREt7-1" target="CgsGZ0-pp2HfUOHYREt7-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-1" value="Admin" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="595" y="-90" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;curved=1;" edge="1" parent="1" source="CgsGZ0-pp2HfUOHYREt7-4" target="CgsGZ0-pp2HfUOHYREt7-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-9" value="" style="edgeStyle=orthogonalEdgeStyle;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CgsGZ0-pp2HfUOHYREt7-4" target="CgsGZ0-pp2HfUOHYREt7-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-12" value="" style="edgeStyle=orthogonalEdgeStyle;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CgsGZ0-pp2HfUOHYREt7-4" target="CgsGZ0-pp2HfUOHYREt7-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-16" value="" style="edgeStyle=orthogonalEdgeStyle;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CgsGZ0-pp2HfUOHYREt7-4" target="CgsGZ0-pp2HfUOHYREt7-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-18" value="" style="edgeStyle=orthogonalEdgeStyle;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CgsGZ0-pp2HfUOHYREt7-4" target="CgsGZ0-pp2HfUOHYREt7-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-21" value="" style="edgeStyle=orthogonalEdgeStyle;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CgsGZ0-pp2HfUOHYREt7-4" target="CgsGZ0-pp2HfUOHYREt7-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-4" value="Login" style="ellipse;whiteSpace=wrap;html=1;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="550" y="60" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-6" value="&lt;br&gt;Menajemen User&lt;br&gt;" style="ellipse;whiteSpace=wrap;html=1;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="240" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-8" value="Manajemen&lt;br&gt;Surat Masuk" style="ellipse;whiteSpace=wrap;html=1;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="370" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-11" value="Manajemen&lt;br&gt;Surat Keluar" style="ellipse;whiteSpace=wrap;html=1;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="500" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-15" value="Manajemen&lt;br&gt;Kelasifikasi Surat" style="ellipse;whiteSpace=wrap;html=1;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="630" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-17" value="Manajemen&lt;br&gt;Index Berkas" style="ellipse;whiteSpace=wrap;html=1;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="770" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CgsGZ0-pp2HfUOHYREt7-20" value="Manajemen&amp;nbsp;&lt;br&gt;Disposisi Surat" style="ellipse;whiteSpace=wrap;html=1;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="900" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
