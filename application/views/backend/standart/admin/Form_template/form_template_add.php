@@ -87,7 +87,7 @@
 	                       					<td>
 	                       						
 	                       						<select name="kategori[]"  class="kategori form-control chosen chosen-select">
-	                       							<option>-Pilih kategori-</option>
+	                       							<option value="0">-Pilih kategori-</option>
 	                       							<?php foreach ($kat_komponen as $row): ?>
 	                       							<option value="<?= $row->id ?>"><?= $row->kategori ?></option>
 	                       							<?php endforeach ?>
@@ -98,10 +98,8 @@
 	                       						</p>
 	                       					</td>
 	                       					<td>
-	                       						<select name="pejabat[]" id="kategori" class="form-control chosen chosen-select">
-	                       							<?php foreach ($pejabat as $row): ?>
-	                       							<option  value="<?= $row->id ?>"><?= ($row->karyawans_nama != null ? $row->departements_nama.' - '.$row->karyawans_nama.' - '.$row->jabatan : $row->departements_nama.' - '.$row->pengajars_nama.' - '.$row->jabatan ); ?></option>
-	                       							<?php endforeach ?>
+	                       						<select name="pejabat[]" id="pejabat" class="form-control chosen chosen-select pejabat_komponen" >
+	                       							
 	                       						</select>
 	                       						
 	                       					</td>
@@ -139,7 +137,7 @@
                					<td>
                						
                						<select name="kategori[]"  class="kategori form-control chosen chosen-select">
-               							<option>-Pilih kategori-</option>
+               							<option value="0">-Pilih kategori-</option>
                							<?php foreach ($kat_komponen as $row): ?>
                							<option value="<?= $row->id ?>"><?= $row->kategori ?></option>
                							<?php endforeach ?>
@@ -150,10 +148,8 @@
                						</p>
                					</td>
                					<td>
-               						<select name="pejabat[]" id="pejabat" class="form-control chosen chosen-select">
-               							<?php foreach ($pejabat as $row): ?>
-               							<option  value="<?= $row->id ?>"><?= ($row->karyawans_nama != null ? $row->departements_nama.' - '.$row->karyawans_nama.' - '.$row->jabatan : $row->departements_nama.' - '.$row->pengajars_nama.' - '.$row->jabatan ); ?></option>
-               							<?php endforeach ?>
+               						<select name="pejabat[]" id="pejabat" class="form-control chosen chosen-select pejabat_komponen pejabat_add" >
+               							
                						</select>
                						
                					</td>
@@ -179,7 +175,6 @@
    </div>
 
 </section>
-<script src="<?= BASE_ASSET; ?>js/crud.js"></script>
 <!-- Page script -->
 <script>
 	let lineNo = 1;
@@ -194,10 +189,15 @@
         return $helper;
     };
 
+    function chosenupdate() {
+    	$('.chosen').prop('disabled', false).trigger("liszt:updated");
+    }
+
 
  
     jQuery(document).delegate('.add_row', 'click', function(e) {
-     e.preventDefault();    
+     e.preventDefault();  
+     $('.pejabat_add').attr('disabled')  
      var content = jQuery('#sample_table tr'),
      size = jQuery('#tbl_posts >tbody >tr').length + 1,
      element = null,    
@@ -206,9 +206,14 @@
      element.find('.delete-record').attr('data-id', size);
      element.find('.kategori').attr('id','kategori-'+ size);
      element.find('#data_komponen').attr('id','data_komponen-'+ size);
+     element.find('#pejabat').attr('id','pejabat-'+ size);
      element.find('.kategori').attr('data-id', size);
+     element.find('.pejabat_komponen').attr('data-id', size);
      element.appendTo('#tbl_posts_body');
      element.find('.sn').html(size);
+
+      $('#kategori-'+size).trigger("chosen:updated");
+      $('#kategori-'+size).trigger("liszt:updated");
    });
 
     jQuery(document).delegate('.delete-record', 'click', function(e) {
@@ -241,6 +246,7 @@
 
     $(document).on('change', '.kategori', function(event) {
     	event.preventDefault();
+    	$('.pejabat_komponen').removeAttr('disabled')
     	var data_id = jQuery(this).attr('data-id');
     	if (typeof data_id !== typeof undefined && data_id !== false) {
     		var id = $(this).val()
@@ -250,8 +256,41 @@
 	    		dataType: 'json',
 	    		data: {id: id},
 	    		success : function(res) {
-	    			if (res.success) {
+	    			if (res.success == true) {
+	    				var pejabat = res.komponen.pejabat_id
+	    				$.ajax({
+	    					url: '<?= base_url('admin/form_template/get_option') ?>',
+	    					type: 'POST',
+	    					dataType: 'JSON',
+	    					data: {pejabat: pejabat},
+	    					beforeSend: function(){ 
+							   $('#pejabat-'+data_id).empty(); 
+							  },
+	    					success : function(res){
+	    						$('#pejabat-'+data_id).append(res.message)
+	    						$('#pejabat-'+data_id).trigger("chosen:updated");
+       							 $('#pejabat-'+data_id).trigger("liszt:updated");
+	    					}
+	    					
+	    				})
 	    				
+	    				$('#data_komponen-'+data_id).html(res.data)
+	    			} else {
+	    				var pejabat = '';
+	    				$.ajax({
+	    					url: '<?= base_url('admin/form_template/get_option') ?>',
+	    					type: 'POST',
+	    					dataType: 'JSON',
+	    					data: {pejabat: pejabat},
+	    					beforeSend: function(){ 
+							   $('#pejabat-'+data_id).empty(); 
+							  },
+	    					success : function(res){
+	    						$('#pejabat-'+data_id).append(res.message)
+	    						$('#pejabat-'+data_id).trigger("chosen:updated");
+       							 $('#pejabat-'+data_id).trigger("liszt:updated");
+	    					}
+	    				})
 	    				$('#data_komponen-'+data_id).html(res.data)
 	    			}
 	    		}
@@ -265,19 +304,85 @@
 	    		dataType: 'json',
 	    		data: {id: id},
 	    		success : function(res) {
-	    			if (res.success) {
+	    			if (res.success == true) {
+	    				var pejabat = res.komponen.pejabat_id
+
+	    				$.ajax({
+	    					url: '<?= base_url('admin/form_template/get_option') ?>',
+	    					type: 'POST',
+	    					dataType: 'JSON',
+	    					data: {pejabat: pejabat},
+	    					beforeSend: function(){ 
+							   $("#pejabat").empty(); 
+							  },
+	    					success : function(res){
+	    						$('#pejabat').append(res.message)
+	    						$("#pejabat").trigger("chosen:updated");
+       							 $("#pejabat").trigger("liszt:updated");
+	    					}
+	    				})
 	    				
+	    				$('#data_komponen').html(res.data)
+	    			} else {
+	    				var pejabat = '';
+	    				$.ajax({
+	    					url: '<?= base_url('admin/form_template/get_option') ?>',
+	    					type: 'POST',
+	    					dataType: 'JSON',
+	    					data: {pejabat: pejabat},
+	    					beforeSend: function(){ 
+							   $("#pejabat").empty(); 
+							  },
+	    					success : function(res){
+	    						$('#pejabat').append(res.message)
+	    						$("#pejabat").trigger("chosen:updated");
+       							 $("#pejabat").trigger("liszt:updated");
+	    					}
+	    				})
 	    				$('#data_komponen').html(res.data)
 	    			}
 	    		}
 	    	})
     	}
-
-    		
-    	
-    	
-    	
     });
+
+    $(document).on('change', '.pejabat_komponen', function(event) {
+    	event.preventDefault();
+    	/* Act on the event */
+    	var data_id = jQuery(this).attr('data-id');
+    	if (typeof data_id !== typeof undefined && data_id !== false) {
+    		  var komponen_id = $('#kategori-'+data_id).val();
+		       var pejabat_id = $('#pejabat-'+data_id).val();
+		       if (komponen_id !== 0) {
+		  			$.ajax({
+		  				url: '<?= base_url('admin/form_template/setPejabatKomponen') ?>',
+		  				type: 'post',
+		  				dataType: 'json',
+		  				data: {komponen_id: komponen_id, pejabat_id : pejabat_id},
+		  				success : function(res){
+		  					 toastr['success'](res.message);
+		  				}
+		  			})
+		       }
+    	} else {
+    		var komponen_id = $('.kategori').val();
+		       var pejabat_id = $(this).val();
+		       if (komponen_id !== 0) {
+		  			$.ajax({
+		  				url: '<?= base_url('admin/form_template/setPejabatKomponen') ?>',
+		  				type: 'post',
+		  				dataType: 'json',
+		  				data: {komponen_id: komponen_id, pejabat_id : pejabat_id},
+		  				success : function(res){
+		  					
+		                  toastr['success'](res.message);
+		  				}
+		  			})
+		       }
+    	}
+     
+
+    });	
 
     //Renumber table rows
     function renumber_table(tableID) {
@@ -301,7 +406,7 @@
             },
             function(isConfirm) {
                 if (isConfirm) {
-                    window.location.href = BASE_URL + 'admin/users';
+                    window.location.href = BASE_URL + 'admin/form_template';
                 }
             });
 
@@ -327,7 +432,8 @@
         	dataType: 'json',
         	data: data_post,
         	success : function(res) {
-        		console.log(res.data)
+        		 $('.message').printMessage({message : res.message});
+            	 $('.message').fadeIn();
         	}
         })
         

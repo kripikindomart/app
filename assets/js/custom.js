@@ -172,9 +172,9 @@
       var i = $('.sidebar-menu li.active').parents('li').addClass('active');
 
 
-      if (typeof $('form input, form select')[1] != 'undefined') {
-          $('form input')[1].focus();
-      }
+      // if (typeof $('form input, form select')[1] != 'undefined') {
+      //     $('form input')[1].focus();
+      // }
 
       /*show loading*/
       $.fn.loader = function(opsi) {

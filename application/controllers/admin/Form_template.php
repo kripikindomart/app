@@ -29,39 +29,6 @@ class Form_template extends Admin
 		$this->render('Form_template/form_template_list', $data);
 	}
 
-	public function getDatatable()
-	{
-				$this->datatables->select('mdtemplate_form.id, mdtemplate_form.nama_template, pejabats.jabatan as pejabats_jabatan, mdtemplate_form.aktif');
-		$this->db->join("pejabats", "pejabats.id = mdtemplate_form.pejabat_id", "left");        $this->datatables->from('mdtemplate_form');
-        $this->db->order_by('mdtemplate_form.id','dsc');
-
-        $btn_edit = false;
-        if ($this->is_allowed('form_template_update', false) == true) {
-        	$btn_edit = '
-        		        	<a title="Edit data terpilih" class="btn btn-xs btn-warning" href="'. site_url('admin/form_template/edit/$1').'">
-        		            <i class="fa fa-pencil"></i>
-        		          </a>';
-        }
-        $btn_delete = false;
-        if ($this->is_allowed('form_template_delete', false) == true) {
-        	$btn_delete = '<button title="Hapus data terpilih" type="button" class="btn btn-xs btn-danger 					delete" data-id="$1" >
-        	                    <i class="fa fa-trash"></i>
-        	                  </button>	';
-        }
-		$status = false;
-		$btn_detail = '<button title="Detail" type="button" class="btn btn-xs btn-info 					" data-id="$1" >
-        	                    <i class="fa fa-eye"></i>
-        	                  </button>	';
-		if ($this->is_allowed('form_template_benned', false) == true) {
-      		$status = true;
-      	}		        	                  
-       $this->datatables->add_column('btn_edit', $btn_edit, 'id')
-       ->add_column('btn_delete', $btn_delete, 'id')
-       ->add_column('btn_detail', $btn_detail, 'id')
-       ->add_column('status', $status);	
-       
-        return $this->response($this->datatables->generate(), false);
-	}
 
 	public function ajax()
 	{
@@ -80,7 +47,7 @@ class Form_template extends Admin
 			      
 			    			    $data_row[] = $row->nama_template;  
 			          
-			    			    $data_row[] = $row->pejabats_jabatan;
+			    			    $data_row[] = $row->pejabats_jabatan.' - '.$row->nama_karyawan;
 			      
 			    			    $data_row[] = $row->aktif;  
 			          
@@ -137,21 +104,41 @@ class Form_template extends Admin
 	public function getKomponen()
 	{
 		$id = $this->input->post('id');
-		$komponen = $this->komponen->select('komponen.*, kategori_komponen.kategori')->join_ref('komponen', 'kategori_komponen')->where('komponen.id_kategori_komponen', $id)->get();
+		$komponen = $this->komponen->select('komponen.*, kategori_komponen.kategori, kategori_komponen.pejabat_id')->join_ref('komponen', 'kategori_komponen')->where('komponen.id_kategori_komponen', $id)->get();
 		if ($komponen) {
 			$komp = '<ul>';
 			foreach($komponen as $row){
 				$komp .= '<li>'.$row->komponen.'</li>';
+				$kp = $row;
 			}
 			$komp .= '</ul>';
 			$result['success']= true;
 			$result['data']= $komp;
+			$result['komponen'] = $kp;
 		} else {
-			$result['success']= true;
+			$result['success']= false;
 			$result['data']= 'tidak ada data';
 		}
 
 		return $this->response($result);
+	}
+
+	public function get_option()
+	{
+		$pejabat_id = $this->input->post('pejabat');
+		$pejabat = $this->pejabat->where('status', 'Y')->pejabat->resultData();;
+		$op = '<option>-Pilih Penaggung Jawab-</option>';
+		foreach($pejabat as $row){
+			$op .= '
+ 							<option value="'.$row->id.'"'.($pejabat_id == $row->id ? "selected" : "").'>'.($row->karyawans_nama != null ? $row->departements_nama.' - '.$row->karyawans_nama.' - '.$row->jabatan : $row->departements_nama.' - '.$row->pengajars_nama.' - '.$row->jabatan ).'</option>
+ 						';
+		}
+
+		$response['message'] = $op;
+
+		return $this->response($response);
+	
+
 	}
 
 	public function addRow()
@@ -216,8 +203,14 @@ class Form_template extends Admin
 				$save_komponen = $this->model_Form_template->create('mdtemplate_komponen', $mdtemplate_komponen);
 
 					if ($save_komponen) {
-						$result['success']= true;
-						$result['data']= 'Data berhasil di simpan';
+						if ($p['save_type'] == 'back') {
+							$result['success']= true;
+							$result['data']= true;
+						} else {
+							$result['success']= true;
+							$result['data']= 'Data berhasil di simpan';
+						}
+						
 					} else {
 						$result['success']= false;
 						$result['data']= 'gagal menyimpan data komponen';
@@ -231,6 +224,32 @@ class Form_template extends Admin
 
 		
 		return $this->response($result);
+	}
+
+	public function setPejabatKomponen()
+	{
+		$p = $this->input->post(null, true);
+		$pejabat_id = $p['pejabat_id'];
+		$komponen_id = $p['komponen_id'];
+			$update = [
+					'pejabat_id' => $pejabat_id
+			];
+		 $save = $this->model_Form_template->where('id', $komponen_id)->update( $update, 'kategori_komponen');
+		 if ($save) {
+		 		$response['success'] = true;
+		 		$response['message'] = 'Penaggung jawab komponen berhasil di set';
+		 } else {
+		 		$response['success'] = false;
+		 		$response['message'] = 'Gagal menset penaggungjawab';
+		 }
+		
+
+		return $this->response($response);
+	}
+
+	public function delete()
+	{
+		
 	}
 
 	
