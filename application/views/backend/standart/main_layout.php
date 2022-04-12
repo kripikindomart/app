@@ -325,6 +325,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <ul class="treeview-menu" >
             <ul class="sidebar-menu  sidebar-admin tree" data-widget="tree">
               <li class=" "> 
+                <a href="<?= base_url('admin/form_template') ?>" >
+                  <i class="fa  fa-circle-o"></i> <span>Form Template</span>
+                </a>
+              </li>
+              <li class=" "> 
+                <a href="<?= base_url('admin/pejabat') ?>" >
+                  <i class="fa  fa-circle-o"></i> <span>Pejabat</span>
+                </a>
+              </li>
+              <li class=" "> 
+                <a href="<?= base_url('admin/karyawan') ?>" >
+                  <i class="fa  fa-circle-o"></i> <span>Karyawan</span>
+                </a>
+              </li>
+              <li class=" "> 
                 <a href="<?= base_url('admin/prodi') ?>" >
                   <i class="fa  fa-circle-o"></i> <span>Prodi</span>
                 </a>
@@ -458,6 +473,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <a href="<?= base_url('admin/kelengkapan') ?>" ><i class="fa fa fa-book "></i> <span>Kelengkapan</span>
           </a>
         </li> 
+        <li class="header treeview">Mahasiswa Section</li>
+        <li class="treeview" style="height: auto;">
+          <a href="#" ><i class="fa fa fa-file-text-o "></i> <span>Pendaftaran</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+          </a>
+          <ul class="treeview-menu" >
+            <ul class="sidebar-menu  sidebar-admin tree" data-widget="tree">
+              <li class=" "> 
+                <a href="<?= base_url('admin/daftar/proposal') ?>" >
+                  <i class="fa  fa-circle-o"></i> <span>Seminar Proposal</span>
+                </a>
+              </li>
+              
+
+             
+
+            </ul>
+          </ul>
+        </li>
         <li class="header treeview">REPORTS</li>
         <li>
           <a href="<?= base_url('admin/hasilujian') ?>"><i class="fa fa-file"></i> Hasil Ujian</a>

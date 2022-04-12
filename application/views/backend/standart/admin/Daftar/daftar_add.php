@@ -4,12 +4,12 @@
 
 <section class="content-header">
    <h1>
-    Manajemen Form
+    Daftar Ujian
       <small></small>
    </h1>
    <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-      <li class=""> <a href="<?= base_url('admin/form_template') ?>">Template</a></li>
+      <li class=""> <a href="<?= base_url('admin/form_template') ?>">daftar</a></li>
       <li class="active">add</li>
    </ol>
 </section>
@@ -33,7 +33,7 @@
                         <img class="img-circle" src="<?= BASE_ASSET.'/img/add2.png'; ?>" alt="User Avatar">
                      </div>
                      <!-- /.widget-user-image -->
-                     <h3 class="widget-user-username">Tambah data</h3>
+                     <h3 class="widget-user-username">Pendaftaran</h3>
                      <h5 class="widget-user-desc">Form Template<i class="label bg-yellow"></i></h5>
                   </div>
 

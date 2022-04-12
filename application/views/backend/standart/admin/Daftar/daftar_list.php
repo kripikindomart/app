@@ -1,11 +1,11 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
    <h1>
-      Pejabats<small>Data</small>
+      Pendaftaran Ujian<small>Data</small>
    </h1>
    <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">Pejabats</li>
+      <li class="active">Pendaftaran Ujian</li>
    </ol>
 </section>
 
@@ -23,25 +23,25 @@
                   <div class="widget-user-header ">
                      <div class="row pull-right">
                         <button type="button" onclick="reload_ajax()" class="btn btn-sm btn-flat btn-default"><i class="fa fa-refresh"></i> Reload</button>
-                        
-                        <a class="btn btn-flat btn-success btn_add_new" id="btn_add_new" title="<?= cclang('add_new_button', ['Pejabat']); ?>  (Ctrl+a)" href="<?=  site_url('admin/pejabat/add'); ?>"><i class="fa fa-plus-square-o" ></i> Tambah Data</a>
-                      
-                        <?php is_allowed('Pejabat_export', function(){?>
-                        <a class="btn btn-flat btn-success" title="<?= cclang('export'); ?> Pejabat" href="<?= site_url('admin/Pejabat/export'); ?>"><i class="fa fa-file-excel-o" ></i> <?= cclang('export'); ?> XLS</a>
+                        <?php is_allowed('daftar_add', function(){?>
+                        <a class="btn btn-flat btn-success btn_add_new" id="btn_add_new" title="<?= cclang('add_new_button', ['Daftar']); ?>  (Ctrl+a)" href="<?=  site_url('admin/daftar/add'); ?>"><i class="fa fa-plus-square-o" ></i> <?= cclang('add_new_button', ['Daftar']); ?></a>
                         <?php }) ?>
-                        <?php is_allowed('Pejabat_export', function(){?>
-                        <a class="btn btn-flat btn-success" title="<?= cclang('export'); ?> pdf Pejabat" href="<?= site_url('admin/Pejabat/export_pdf'); ?>"><i class="fa fa-file-pdf-o" ></i> <?= cclang('export'); ?> PDF</a>
+                        <?php is_allowed('daftar_export', function(){?>
+                        <a class="btn btn-flat btn-success" title="<?= cclang('export'); ?> Daftar" href="<?= site_url('admin/daftar/export'); ?>"><i class="fa fa-file-excel-o" ></i> <?= cclang('export'); ?> XLS</a>
+                        <?php }) ?>
+                        <?php is_allowed('daftar_export', function(){?>
+                        <a class="btn btn-flat btn-success" title="<?= cclang('export'); ?> pdf Daftar" href="<?= site_url('admin/daftar/export_pdf'); ?>"><i class="fa fa-file-pdf-o" ></i> <?= cclang('export'); ?> PDF</a>
                         <?php }) ?>
                      </div>
                      <div class="widget-user-image">
                         <img class="img-circle" src="<?= BASE_ASSET; ?>/img/list.png" alt="User Avatar">
                      </div>
                      <!-- /.widget-user-image -->
-                     <h3 class="widget-user-username">Pejabats</h3>
-                     <h5 class="widget-user-desc">  Pejabats  <i class="label bg-yellow">  <?= cclang('items'); ?></i></h5>
+                     <h3 class="widget-user-username">Pendaftaran Ujian</h3>
+                     <h5 class="widget-user-desc">  Pendaftaran Ujian  <i class="label bg-yellow">  <?= cclang('items'); ?></i></h5>
                   </div>
 
-                  <form name="form_pejabat" id="form_pejabat" action="<?= base_url('admin/Pejabat/index'); ?>">
+                  <form name="form_daftar" id="form_daftar" action="<?= base_url('admin/Daftar/index'); ?>">
                   
 
                   <div class="table-responsive"> 
@@ -54,16 +54,16 @@
                             </div>
                            </td>
                            <td>#</td>
-										<th>Karyawan</th>
-      								<th>Pengajar</th>
-      								<th>Departemen</th>
-      								<th>Jabatan</th>
-      								<th>Ttd</th>
-      								<th>Status</th>
-				                  <th>Action</th>
+										<th>Kode</th>
+								<th>Npm</th>
+								<th>Ujian</th>
+								<th>Form</th>
+								<th>Tanggal Pendaftaran</th>
+								<th>Tanggal Ujian</th>
+				<th>Action</th>
                         </tr>
                      </thead>
-                     <tbody id="tbody_Pejabat">
+                     <tbody id="tbody_Daftar">
                      
                      </tbody>
                   </table>
@@ -89,12 +89,12 @@
                         <select type="text" class="form-control chosen chosen-select" name="f" id="field" >
                            <option value=""><?= cclang('all'); ?></option>
                             <option <?= $this->input->get('f') == 'id' ? 'selected' :''; ?> value="id">Id</option>
-                           <option <?= $this->input->get('f') == 'karyawan_id' ? 'selected' :''; ?> value="karyawan_id">Karyawan Id</option>
-                           <option <?= $this->input->get('f') == 'pengajar_id' ? 'selected' :''; ?> value="pengajar_id">Pengajar Id</option>
-                           <option <?= $this->input->get('f') == 'departement_id' ? 'selected' :''; ?> value="departement_id">Departement Id</option>
-                           <option <?= $this->input->get('f') == 'jabatan' ? 'selected' :''; ?> value="jabatan">Jabatan</option>
-                           <option <?= $this->input->get('f') == 'ttd' ? 'selected' :''; ?> value="ttd">Ttd</option>
-                           <option <?= $this->input->get('f') == 'status' ? 'selected' :''; ?> value="status">Status</option>
+                           <option <?= $this->input->get('f') == 'kode' ? 'selected' :''; ?> value="kode">Kode</option>
+                           <option <?= $this->input->get('f') == 'npm' ? 'selected' :''; ?> value="npm">Npm</option>
+                           <option <?= $this->input->get('f') == 'ujian_id' ? 'selected' :''; ?> value="ujian_id">Ujian Id</option>
+                           <option <?= $this->input->get('f') == 'form_id' ? 'selected' :''; ?> value="form_id">Form Id</option>
+                           <option <?= $this->input->get('f') == 'tanggal_daftar' ? 'selected' :''; ?> value="tanggal_daftar">Tanggal Daftar</option>
+                           <option <?= $this->input->get('f') == 'tanggal_ujian' ? 'selected' :''; ?> value="tanggal_ujian">Tanggal Ujian</option>
                           </select>
                      </div>
                      <div class="col-sm-1 padd-left-0 ">
@@ -103,7 +103,7 @@
                         </button>
                      </div>
                      <div class="col-sm-1 padd-left-0 ">
-                        <a class="btn btn-default btn-flat" name="reset" id="reset" value="Apply" href="<?= base_url('administrator/pejabats');?>" title="<?= cclang('reset_filter'); ?>">
+                        <a class="btn btn-default btn-flat" name="reset" id="reset" value="Apply" href="<?= base_url('administrator/mhs_daftar');?>" title="<?= cclang('reset_filter'); ?>">
                         <i class="fa fa-undo"></i>
                         </a>
                      </div>
@@ -155,7 +155,7 @@
     $('#apply').click(function(){
 
       var bulk = $('#bulk');
-      var serialize_bulk = $('#form_pejabat').serialize();
+      var serialize_bulk = $('#form_daftar').serialize();
       var list_id = [];
 	    $(".data-check:checked").each(function() {
 	            list_id.push(this.value);
@@ -179,7 +179,7 @@
             		$.ajax({
 		                type: "POST",
 		                data: {id:list_id},
-		                url: "<?= site_url('admin/pejabat/delete')?>",
+		                url: "<?= site_url('admin/daftar/delete')?>",
 		                dataType: "JSON",
 		                success: function(data)
 		                {
@@ -202,7 +202,7 @@
             		alert('Error deleting data');
             	}
             	
-               // document.location.href = BASE_URL + '/admin/pejabat/delete?' + serialize_bulk;      
+               // document.location.href = BASE_URL + '/admin/daftar/delete?' + serialize_bulk;      
             }
           });
 
@@ -256,7 +256,7 @@ $(document).ready(function() {
     serverSide: true,
     order : [],
     ajax: {
-      url: BASE_AJAX + "pejabat/ajax",
+      url: BASE_AJAX + "daftar/ajax",
       type: "POST",
       // data: data,
     },

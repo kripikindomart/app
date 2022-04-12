@@ -3,12 +3,12 @@
 
 <section class="content-header">
    <h1>
-    Manajemen Pejabat
+    Manajemen Karyawan
       <small></small>
    </h1>
    <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-      <li class=""> <a href="<?= base_url('admin/pejabat') ?>">pejabat</a></li>
+      <li class=""> <a href="<?= base_url('admin/karyawan') ?>">Karyawan</a></li>
       <li class="active">add</li>
    </ol>
 </section>
@@ -26,14 +26,14 @@
                   <!-- Add the bg color to the header using any of the bg- classes -->
                   <div class="widget-user-header ">
                      <div class="row pull-right">
-                     <a class="btn btn-flat btn-success" title="Kembali" href="<?= site_url('admin/pejabat'); ?>"><i class="fa fa-reply" ></i> Kembali</a>                     
+                     <a class="btn btn-flat btn-success" title="Kembali" href="<?= site_url('admin/karyawan'); ?>"><i class="fa fa-reply" ></i> Kembali</a>                     
                      </div>
                      <div class="widget-user-image">
                         <img class="img-circle" src="<?= BASE_ASSET.'/img/add2.png'; ?>" alt="User Avatar">
                      </div>
                      <!-- /.widget-user-image -->
                      <h3 class="widget-user-username">Tambah data</h3>
-                     <h5 class="widget-user-desc">Users<i class="label bg-yellow"></i></h5>
+                     <h5 class="widget-user-desc">Karyawan<i class="label bg-yellow"></i></h5>
                   </div>
 
                  <?= form_open('', [
@@ -45,32 +45,83 @@
                   ]); 
 
                   ?>
-                  <div class="form-group ">
-                        <label for="category" class="col-sm-2 control-label">Pejabat by Pegawai 
+                   <div class="form-group ">
+                        <label for="username" class="col-sm-2 control-label">Kode Karaywan <i class="required">*</i></label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" name="code" id="code" placeholder="Kode Karyawan" value="">
+                          <small class="info help-block"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="username" class="col-sm-2 control-label">NIK<i class="required">*</i></label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" name="nik" id="nik" placeholder="NIK" value="">
+                          <small class="info help-block"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="username" class="col-sm-2 control-label">Nama <i class="required">*</i></label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama Karyawan" value="">
+                          <small class="info help-block"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="username" class="col-sm-2 control-label">Email <i class="required">*</i></label>
+                        <div class="col-sm-8">
+                          <input type="email" class="form-control" name="email" id="email" placeholder="Email" value="">
+                          <small class="info help-block"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="category" class="col-sm-2 control-label">Status Kontrak 
                         </label>
                         <div class="col-sm-8">
-                            <select  class="form-control chosen chosen-select-deselect" name="pegawai" id="pegawai" data-placeholder="Select Pegawai" >
+                            <select  class="form-control chosen chosen-select-deselect" name="status_karyawan" id="status_karyawan" data-placeholder="Select Status" >
                                 <option value=""></option>
-                                <?php foreach (db_get_all_data('karyawans') as $row): ?>
-                                <option value="<?= $row->id ?>"><?= $row->nama; ?></option>
-                                <?php endforeach; ?>  
+                                <option value="TETAP">TETAP</option>
+                                <option value="KONTRAK">KONTRAK</option>
+                                <option value="KONTRAK FAKULTAS">KONTRAK FAKULTAS</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-group ">
-                            <label for="category" class="col-sm-2 control-label">Pejabat by Pengajar  
-                            </label>
-                            <div class="col-sm-8">
-                                <select  class="form-control chosen chosen-select-deselect" name="pengajar" id="pengajar" data-placeholder="Select Pengajar" >
-                                    <option value=""></option>
-                                    <?php foreach (db_get_all_data('pengajars') as $row): ?>
-                                    <option value="<?= $row->id ?>"><?= $row->nama; ?></option>
-                                    <?php endforeach; ?>  
-                                </select>
-                            </div>
+                        <label for="username" class="col-sm-2 control-label">Tempat  Lahir <i class="required">*</i></label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" name="tempat_lahir" id="tempat_lahir" placeholder="Tempat Lahir" value="">
+                          <small class="info help-block"></small>
                         </div>
+                    </div>
 
+                    <div class="form-group ">
+                        <label for="username" class="col-sm-2 control-label">Tanggal  Lahir <i class="required">*</i></label>
+                        <div class="col-sm-8">
+                          <input type="date" class="form-control" name="tanggal_lahir" id="tanggal_lahir" placeholder="Tanggal Lahir" value="">
+                          <small class="info help-block"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="username" class="col-sm-2 control-label">Jenis Kelamin <i class="required">*</i></label>
+                        <div class="col-sm-8">
+                          <input type="radio" class="form-radio" name="jenis_kelamin" id="jenis_kelamin"  value=""> Laki Laki
+                          <input type="radio" class="form-radio" name="jenis_kelamin" id="jenis_kelamin"  value=""> Perempuan
+                          <small class="info help-block"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="username" class="col-sm-2 control-label">Alamat<i class="required">*</i></label>
+                        <div class="col-sm-8">
+                          <textarea cols="5" rows="5" class="form-control" name="alamat"></textarea>
+                          <small class="info help-block"></small>
+                        </div>
+                    </div>
 
                       <div class="form-group ">
                             <label for="category" class="col-sm-2 control-label">Group Departement  
@@ -85,17 +136,9 @@
                             </div>
                         </div>
 
-                        <div class="form-group ">
-                        <label for="username" class="col-sm-2 control-label">Jabatan <i class="required">*</i></label>
-
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control" name="jabatan" id="jabatan" placeholder="Jabatan" value="">
-                          <small class="info help-block"></small>
-                        </div>
-                    </div>
 
                     <div class="form-group ">
-                        <label for="username" class="col-sm-2 control-label">TTD </label>
+                        <label for="username" class="col-sm-2 control-label">Photo </label>
 
                         <div class="col-sm-8">
                             <div id="user_avatar_galery" ></div>
@@ -152,7 +195,7 @@
             },
             function(isConfirm) {
                 if (isConfirm) {
-                    window.location.href = BASE_URL + 'admin/pejabat';
+                    window.location.href = BASE_URL + 'admin/karyawan';
                 }
             });
 
@@ -181,7 +224,7 @@
 
 
         $.ajax({
-                url: BASE_URL + '/admin/pejabat/add_save',
+                url: BASE_URL + '/admin/karyawan/add_save',
                 type: 'POST',
                 dataType: 'json',
                 data: data_post,
@@ -191,7 +234,7 @@
                     var id = $('#user_avatar_galery').find('li').attr('qq-file-id');
 
                     if (res.message == false) {
-                        window.location.href = BASE_URL + 'admin/pejabat';
+                        window.location.href = BASE_URL + 'admin/karyawan';
                         return;
                     }
 
@@ -232,14 +275,14 @@
 
         template: 'qq-template-gallery',
         request: {
-            endpoint: BASE_URL + '/admin/pejabat/upload_avatar_file',
+            endpoint: BASE_URL + '/admin/karyawan/upload_avatar_file',
             params: {
                 '<?= $this->security->get_csrf_token_name(); ?>': '<?=   $this->security->get_csrf_hash(); ?>'
             }
         },
         deleteFile: {
             enabled: true,
-            endpoint: BASE_URL + '/admin/pejabat/delete_avatar_file'
+            endpoint: BASE_URL + '/admin/karyawan/delete_avatar_file'
         },
         thumbnails: {
             placeholders: {
@@ -262,7 +305,7 @@
             },
             onSubmit: function(id, name) {
                 var uuid = $('#user_avatar_uuid').val();
-                $.get(BASE_URL + 'admin/pejabat/delete_avatar_file/' + uuid);
+                $.get(BASE_URL + 'admin/karyawan/delete_avatar_file/' + uuid);
 
             }
         }

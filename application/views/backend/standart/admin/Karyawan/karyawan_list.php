@@ -1,11 +1,11 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
    <h1>
-      Pejabats<small>Data</small>
+      Data Karyawan<small>Data</small>
    </h1>
    <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">Pejabats</li>
+      <li class="active">Data Karyawan</li>
    </ol>
 </section>
 
@@ -23,25 +23,25 @@
                   <div class="widget-user-header ">
                      <div class="row pull-right">
                         <button type="button" onclick="reload_ajax()" class="btn btn-sm btn-flat btn-default"><i class="fa fa-refresh"></i> Reload</button>
-                        
-                        <a class="btn btn-flat btn-success btn_add_new" id="btn_add_new" title="<?= cclang('add_new_button', ['Pejabat']); ?>  (Ctrl+a)" href="<?=  site_url('admin/pejabat/add'); ?>"><i class="fa fa-plus-square-o" ></i> Tambah Data</a>
-                      
-                        <?php is_allowed('Pejabat_export', function(){?>
-                        <a class="btn btn-flat btn-success" title="<?= cclang('export'); ?> Pejabat" href="<?= site_url('admin/Pejabat/export'); ?>"><i class="fa fa-file-excel-o" ></i> <?= cclang('export'); ?> XLS</a>
+                        <?php is_allowed('karyawan_add', function(){?>
+                        <a class="btn btn-flat btn-success btn_add_new" id="btn_add_new" title="<?= cclang('add_new_button', ['Karyawan']); ?>  (Ctrl+a)" href="<?=  site_url('admin/karyawan/add'); ?>"><i class="fa fa-plus-square-o" ></i> <?= cclang('add_new_button', ['Karyawan']); ?></a>
                         <?php }) ?>
-                        <?php is_allowed('Pejabat_export', function(){?>
-                        <a class="btn btn-flat btn-success" title="<?= cclang('export'); ?> pdf Pejabat" href="<?= site_url('admin/Pejabat/export_pdf'); ?>"><i class="fa fa-file-pdf-o" ></i> <?= cclang('export'); ?> PDF</a>
+                        <?php is_allowed('karyawan_export', function(){?>
+                        <a class="btn btn-flat btn-success" title="<?= cclang('export'); ?> Karyawan" href="<?= site_url('admin/karyawan/export'); ?>"><i class="fa fa-file-excel-o" ></i> <?= cclang('export'); ?> XLS</a>
+                        <?php }) ?>
+                        <?php is_allowed('karyawan_export', function(){?>
+                        <a class="btn btn-flat btn-success" title="<?= cclang('export'); ?> pdf Karyawan" href="<?= site_url('admin/karyawan/export_pdf'); ?>"><i class="fa fa-file-pdf-o" ></i> <?= cclang('export'); ?> PDF</a>
                         <?php }) ?>
                      </div>
                      <div class="widget-user-image">
                         <img class="img-circle" src="<?= BASE_ASSET; ?>/img/list.png" alt="User Avatar">
                      </div>
                      <!-- /.widget-user-image -->
-                     <h3 class="widget-user-username">Pejabats</h3>
-                     <h5 class="widget-user-desc">  Pejabats  <i class="label bg-yellow">  <?= cclang('items'); ?></i></h5>
+                     <h3 class="widget-user-username">Data Karyawan</h3>
+                     <h5 class="widget-user-desc">  Data Karyawan  <i class="label bg-yellow">  <?= cclang('items'); ?></i></h5>
                   </div>
 
-                  <form name="form_pejabat" id="form_pejabat" action="<?= base_url('admin/Pejabat/index'); ?>">
+                  <form name="form_karyawan" id="form_karyawan" action="<?= base_url('admin/Karyawan/index'); ?>">
                   
 
                   <div class="table-responsive"> 
@@ -54,16 +54,27 @@
                             </div>
                            </td>
                            <td>#</td>
-										<th>Karyawan</th>
-      								<th>Pengajar</th>
-      								<th>Departemen</th>
-      								<th>Jabatan</th>
-      								<th>Ttd</th>
-      								<th>Status</th>
-				                  <th>Action</th>
+										<th>Code</th>
+								<th>Nik</th>
+								<th>Nama</th>
+								<th>Email</th>
+								<th>Status Karyawan</th>
+								<th>Jenis Kelamin</th>
+								<th>Tempat Lahir</th>
+								<th>Tanggal Lahir</th>
+								<th>Alamat</th>
+								<th>Kode Pos</th>
+								<th>Pendidikan Terakhir</th>
+								<th>Asal Pendidikan</th>
+								<th>No Hp</th>
+								<th>Photo</th>
+								<th>Program Studi Id</th>
+								<th>Departement Id</th>
+								<th>Status Akun</th>
+				<th>Action</th>
                         </tr>
                      </thead>
-                     <tbody id="tbody_Pejabat">
+                     <tbody id="tbody_Karyawan">
                      
                      </tbody>
                   </table>
@@ -89,12 +100,23 @@
                         <select type="text" class="form-control chosen chosen-select" name="f" id="field" >
                            <option value=""><?= cclang('all'); ?></option>
                             <option <?= $this->input->get('f') == 'id' ? 'selected' :''; ?> value="id">Id</option>
-                           <option <?= $this->input->get('f') == 'karyawan_id' ? 'selected' :''; ?> value="karyawan_id">Karyawan Id</option>
-                           <option <?= $this->input->get('f') == 'pengajar_id' ? 'selected' :''; ?> value="pengajar_id">Pengajar Id</option>
+                           <option <?= $this->input->get('f') == 'code' ? 'selected' :''; ?> value="code">Code</option>
+                           <option <?= $this->input->get('f') == 'nik' ? 'selected' :''; ?> value="nik">Nik</option>
+                           <option <?= $this->input->get('f') == 'nama' ? 'selected' :''; ?> value="nama">Nama</option>
+                           <option <?= $this->input->get('f') == 'email' ? 'selected' :''; ?> value="email">Email</option>
+                           <option <?= $this->input->get('f') == 'status_karyawan' ? 'selected' :''; ?> value="status_karyawan">Status Karyawan</option>
+                           <option <?= $this->input->get('f') == 'jenis_kelamin' ? 'selected' :''; ?> value="jenis_kelamin">Jenis Kelamin</option>
+                           <option <?= $this->input->get('f') == 'tempat_lahir' ? 'selected' :''; ?> value="tempat_lahir">Tempat Lahir</option>
+                           <option <?= $this->input->get('f') == 'tanggal_lahir' ? 'selected' :''; ?> value="tanggal_lahir">Tanggal Lahir</option>
+                           <option <?= $this->input->get('f') == 'alamat' ? 'selected' :''; ?> value="alamat">Alamat</option>
+                           <option <?= $this->input->get('f') == 'kode_pos' ? 'selected' :''; ?> value="kode_pos">Kode Pos</option>
+                           <option <?= $this->input->get('f') == 'pendidikan_terakhir' ? 'selected' :''; ?> value="pendidikan_terakhir">Pendidikan Terakhir</option>
+                           <option <?= $this->input->get('f') == 'asal_pendidikan' ? 'selected' :''; ?> value="asal_pendidikan">Asal Pendidikan</option>
+                           <option <?= $this->input->get('f') == 'no_hp' ? 'selected' :''; ?> value="no_hp">No Hp</option>
+                           <option <?= $this->input->get('f') == 'photo' ? 'selected' :''; ?> value="photo">Photo</option>
+                           <option <?= $this->input->get('f') == 'program_studi_id' ? 'selected' :''; ?> value="program_studi_id">Program Studi Id</option>
                            <option <?= $this->input->get('f') == 'departement_id' ? 'selected' :''; ?> value="departement_id">Departement Id</option>
-                           <option <?= $this->input->get('f') == 'jabatan' ? 'selected' :''; ?> value="jabatan">Jabatan</option>
-                           <option <?= $this->input->get('f') == 'ttd' ? 'selected' :''; ?> value="ttd">Ttd</option>
-                           <option <?= $this->input->get('f') == 'status' ? 'selected' :''; ?> value="status">Status</option>
+                           <option <?= $this->input->get('f') == 'status_akun' ? 'selected' :''; ?> value="status_akun">Status Akun</option>
                           </select>
                      </div>
                      <div class="col-sm-1 padd-left-0 ">
@@ -103,7 +125,7 @@
                         </button>
                      </div>
                      <div class="col-sm-1 padd-left-0 ">
-                        <a class="btn btn-default btn-flat" name="reset" id="reset" value="Apply" href="<?= base_url('administrator/pejabats');?>" title="<?= cclang('reset_filter'); ?>">
+                        <a class="btn btn-default btn-flat" name="reset" id="reset" value="Apply" href="<?= base_url('administrator/karyawans');?>" title="<?= cclang('reset_filter'); ?>">
                         <i class="fa fa-undo"></i>
                         </a>
                      </div>
@@ -155,7 +177,7 @@
     $('#apply').click(function(){
 
       var bulk = $('#bulk');
-      var serialize_bulk = $('#form_pejabat').serialize();
+      var serialize_bulk = $('#form_karyawan').serialize();
       var list_id = [];
 	    $(".data-check:checked").each(function() {
 	            list_id.push(this.value);
@@ -179,7 +201,7 @@
             		$.ajax({
 		                type: "POST",
 		                data: {id:list_id},
-		                url: "<?= site_url('admin/pejabat/delete')?>",
+		                url: "<?= site_url('admin/karyawan/delete')?>",
 		                dataType: "JSON",
 		                success: function(data)
 		                {
@@ -202,7 +224,7 @@
             		alert('Error deleting data');
             	}
             	
-               // document.location.href = BASE_URL + '/admin/pejabat/delete?' + serialize_bulk;      
+               // document.location.href = BASE_URL + '/admin/karyawan/delete?' + serialize_bulk;      
             }
           });
 
@@ -256,7 +278,7 @@ $(document).ready(function() {
     serverSide: true,
     order : [],
     ajax: {
-      url: BASE_AJAX + "pejabat/ajax",
+      url: BASE_AJAX + "karyawan/ajax",
       type: "POST",
       // data: data,
     },

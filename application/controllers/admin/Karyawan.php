@@ -4,34 +4,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
 *| --------------------------------------------------------------------------
-*| Pejabat Controller
+*| Karyawan Controller
 *| --------------------------------------------------------------------------
-*| Pejabat site
+*| Karyawan site
 *|
 */
 
-class Pejabat extends Admin	
+class Karyawan extends Admin	
 {
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->load->model('model_Pejabat');
+		$this->load->model('model_Karyawan');
 	}
 
 	public function index()
 	{
-		//$this->is_allowed('Pejabat_list') ;
-		$this->template->title('Pejabats');
+		//$this->is_allowed('karyawan_list') ;
+		$this->template->title('Data Karyawan');
 		$data = [];
-		$this->render('Pejabat/pejabat_list', $data);
+		$this->render('Karyawan/karyawan_list', $data);
 	}
 
-
+	
 	public function ajax()
 	{
 		if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ) {
-		$data = $this->model_Pejabat->getRequestAjax();
+		$data = $this->model_Karyawan->getRequestAjax();
 		$data_row = array();
 			$no = $_POST['start'];
 			$data_ = array();
@@ -42,26 +42,65 @@ class Pejabat extends Admin
 				$data_row[] = $no;
 				  
 			         
-			    			    $data_row[] = $row->karyawans_nama;
-			    			    $data_row[] = $row->pengajars_nama;
-			    			    $data_row[] = $row->departements_nama;
 			      
-			    			    $data_row[] = $row->jabatan;  
+			    			    $data_row[] = $row->code;  
+			          
+			      
+			    			    $data_row[] = $row->nik;  
+			          
+			      
+			    			    $data_row[] = $row->nama;  
+			          
+			      
+			    			    $data_row[] = $row->email;  
+			          
+			      
+			    			    $data_row[] = $row->status_karyawan;  
+			          
+			      
+			    			    $data_row[] = $row->jenis_kelamin;  
+			          
+			      
+			    			    $data_row[] = $row->tempat_lahir;  
+			          
+			      
+			    			    $data_row[] = $row->tanggal_lahir;  
+			          
+			      
+			    			    $data_row[] = $row->alamat;  
+			          
+			      
+			    			    $data_row[] = $row->kode_pos;  
+			          
+			      
+			    			    $data_row[] = $row->pendidikan_terakhir;  
+			          
+			      
+			    			    $data_row[] = $row->asal_pendidikan;  
+			          
+			      
+			    			    $data_row[] = $row->no_hp;  
 			          
 			     
 
 
-			    if (is_file(FCPATH . 'uploads/pejabat/' . $row->ttd)): 
-	            $img_url = base_url() . 'uploads/pejabat/' .$row->ttd; 
+			    if (is_file(FCPATH . 'uploads/user/' . $row->photo)): 
+	            $img_url = base_url() . 'uploads/user/' .$row->photo; 
 	            else: 
-	            $img_url = base_url() . 'uploads/pejabat/default.png'; 
+	            $img_url = base_url() . 'uploads/user/default.png'; 
 	            endif; 
                 $data_row[] = '<a class="fancybox" rel="group" href="'.$img_url.'">
                           <img src="'.$img_url.'" alt="Person" width="50" height="50">
                        	 </a>';
 
 			      
-			    			    $data_row[] = $row->status;  
+			    			    $data_row[] = $row->program_studi_id;  
+			          
+			      
+			    			    $data_row[] = $row->departement_id;  
+			          
+			      
+			    			    $data_row[] = $row->status_akun;  
 			          
 			    
 				//add html for action
@@ -73,8 +112,8 @@ class Pejabat extends Admin
 
 			$json_data = [
 				"draw" => $_POST['draw'],
-				"recordsTotal" => $this->model_Pejabat->count_all(),
-				"recordsFiltered" => $this->model_Pejabat->_count_filtered(),
+				"recordsTotal" => $this->model_Karyawan->count_all(),
+				"recordsFiltered" => $this->model_Karyawan->_count_filtered(),
 				'data' => $data_
 			];
 
@@ -85,9 +124,9 @@ class Pejabat extends Admin
 
 	public function add()
 	{
-		$this->template->title('Pejabat');
+		$this->template->title('Karyawan');
 		$data = [];
-		$this->render('Pejabat/pejabat_add', $data);
+		$this->render('karyawan/karyawan_add', $data);
 	}
 
 	/**
@@ -104,20 +143,29 @@ class Pejabat extends Admin
 		// 		]);
 		// }
 
-		$this->form_validation->set_rules('pegawai', 'Pegawai', 'trim');
-		$this->form_validation->set_rules('pengajar', 'Pengajar', 'trim');
-		$this->form_validation->set_rules('departements', 'Departements', 'trim|required');
-		$this->form_validation->set_rules('jabatan', 'Jabatan', 'trim|required');
+		$this->form_validation->set_rules('code', 'Kode', 'trim');
+		$this->form_validation->set_rules('nik', 'NIK', 'trim');
+		$this->form_validation->set_rules('nama', 'nama', 'trim|required');
+		$this->form_validation->set_rules('email', 'email', 'trim|required|is_unique[karyawans.email]');
+		$this->form_validation->set_rules('status_karyawan', 'Satatus Karyawan', 'trim|required');
+		$this->form_validation->set_rules('departements', 'Departement', 'trim|required');
 
 		if ($this->form_validation->run()) {
 			$user_avatar_uuid = $this->input->post('user_avatar_uuid');
 			$user_avatar_name = $this->input->post('user_avatar_name');
 
 			$save_data = [
-				'karyawan_id' 	=> $this->input->post('pegawai'),
-				'pengajar_id' 	=> $this->input->post('pengajar'),
-				'jabatan' 	=> $this->input->post('jabatan'),
-				'ttd' 		=> 'default.png',
+				'code'	=> $this->input->post('code'),
+				'nik'	=> $this->input->post('nik'),
+				'nama'	=> $this->input->post('nama'),
+				'email'	=> $this->input->post('email'),
+				'status_karyawan'	=> $this->input->post('status_karyawan'),
+				'tempat_lahir'	=> $this->input->post('tempat_lahir'),
+				'tanggal_lahir'	=> $this->input->post('tanggal_lahir'),
+				'jenis_kelamin'	=> $this->input->post('jenis_kelamin'),
+				'alamat'	=> $this->input->post('alamat'),
+				'departement_id'	=> $this->input->post('departement_id'),
+				'photo' 		=> 'default.png',
 				'created_at'	=> date('Y-m-d H:i:s'),
 				'departement_id'	=> $this->input->post('departements')
 			];
@@ -126,34 +174,34 @@ class Pejabat extends Admin
 
 				$user_avatar_name_copy = date('YmdHis') . '-' . $user_avatar_name;
 
-				if (!is_dir(FCPATH . '/uploads/pejabat')) {
-					mkdir(FCPATH . '/uploads/pejabat');
+				if (!is_dir(FCPATH . '/uploads/karyawan')) {
+					mkdir(FCPATH . '/uploads/karyawan');
 				}
 
 				@rename(FCPATH . 'uploads/tmp/' . $user_avatar_uuid . '/' . $user_avatar_name, 
-						FCPATH . 'uploads/pejabat/' . $user_avatar_name_copy);
+						FCPATH . 'uploads/karyawan/' . $user_avatar_name_copy);
 
-				$save_data['ttd'] = $user_avatar_name_copy;
+				$save_data['photo'] = $user_avatar_name_copy;
 			}
 
-			$save = $this->model_Pejabat->create($save_data); 
+			$save = $this->model_Karyawan->create($save_data); 
 
 			if ($save) {
 				if ($this->input->post('save_type') == 'stay') {
 					$response['success'] = true;
 					$response['message'] = cclang('success_save_data_stay', [
-						anchor('admin/pejabat/edit/' . $save, 'Edit Pejabat'),
-						anchor('admin/pejabat', ' Go back to list')
+						anchor('admin/karyawan/edit/' . $save, 'Edit Karyawan'),
+						anchor('admin/karyawan', ' Go back to list')
 					]);
 				} else {
 						set_message(
 							cclang('success_save_data_redirect', [
-							anchor('admin/pejabat/edit/' . $save, 'Edit Pejabat')
+							anchor('admin/karyawan/edit/' . $save, 'Edit Karyawan')
 						]), 'success');
 
 	        		$response['success'] = true;
 	        		$response['message'] = false;
-							$response['redirect'] = site_url('admin/pejabat');
+							$response['redirect'] = site_url('admin/karyawan');
 				}
 			} else {
 				$response['success'] = false;
@@ -326,7 +374,7 @@ class Pejabat extends Admin
 		$image = $this->_db->find($id)->avatar;
 		$this->load->helper('file');
 		$delete_file = '';
-		$path = FCPATH . 'uploads/user/'.$image;
+		$path = FCPATH . 'uploads/karyawan/'.$image;
 		if (file_exists($path)) {
 			if ($image != 'default.png') {
 				$delete_file = unlink($path);
@@ -409,13 +457,13 @@ class Pejabat extends Admin
 			$delete_file = false;
 
 			if ($delete_by == 'id') {
-				$user = $this->model_Pejabat->where('id', $uuid)->first();
-				$path = FCPATH . 'uploads/pejabat/'.$user->ttd;
+				$user = $this->model_Karyawan->where('id', $uuid)->first();
+				$path = FCPATH . 'uploads/karyawan/'.$user->photo;
 				if ($user->avatar != 'default.png') {
 					if (isset($uuid)) {
 						if (is_file($path)) {
 							$delete_file = unlink($path);
-							$this->model_Pejabat->where('id', $uuid)->update(['ttd' => '']);
+							$this->model_Karyawan->where('id', $uuid)->update(['photo' => '']);
 						}
 					}	
 				}
@@ -465,7 +513,7 @@ class Pejabat extends Admin
 
 		$this->load->helper('file');
 		
-		$user = $this->model_Pejabat->where('id', $id)->first();
+		$user = $this->model_Karyawan->where('id', $id)->first();
 
 		if (!$user) {
 			$result = [
@@ -474,14 +522,14 @@ class Pejabat extends Admin
 
     		return $this->response($result);
 		} else {
-			if (!empty($model_Pejabat->ttd)) {
+			if (!empty($model_Karyawan->photo)) {
 				$result[] = [
 					'success' 				=> true,
-					'thumbnailUrl' 			=> base_url('uploads/pejabat/'.$user->ttd),
+					'thumbnailUrl' 			=> base_url('uploads/karyawan/'.$user->photo),
 					'id' 					=> 0,
-					'name' 					=> $user->ttd,
+					'name' 					=> $user->photo,
 					'uuid' 					=> $user->id,
-					'deleteFileEndpoint' 	=> base_url('admin/pejabat/delete_avatar_file'),
+					'deleteFileEndpoint' 	=> base_url('admin/karyawan/delete_avatar_file'),
 					'deleteFileParams'		=> ['by' => 'id']
 				];
 
@@ -489,5 +537,7 @@ class Pejabat extends Admin
 			}
 		} 
 	}
+
+	
 
 }
