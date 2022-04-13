@@ -24,23 +24,57 @@ class Daftar extends Admin
 		//$this->is_allowed('daftar_list') ;
 		$this->template->title('Pendaftaran Ujian');
 		//Get Template by $ujian
-		$this->model_daftar->select('mdtemplate_form.*, mdtemplate_komponen.*, kategori_komponen.*, pejabats.*, karyawans.*, pengajars.*, komponen.*');
+		//$this->db->select('mdtemplate_form.title, mdtemplate_form.nama_template, pjmdtemplate.jabatan, pjmdtemplate.ttd, kr.nama as nama_karyawan');
+		$mdtemplate_komponen = "SELECT kategori_komponen.kategori, pejabats.jabatan, pejabats.ttd, karyawans.nama as nama_penaggungjawab FROM mdtemplate_komponen 
+				INNER JOIN kategori_komponen on kategori_komponen.id = mdtemplate_komponen.id_kategori_komponen
+					INNER JOIN mdtemplate_form on mdtemplate_form.id =  mdtemplate_komponen.id_template
+					INNER JOIN pejabats on pejabats.id = kategori_komponen.pejabat_id
+					INNER JOIN karyawans on karyawans.id = pejabats.karyawan_id";
+				
+		$sql_komponen = "SELECT komponen.* FROM kategori_komponen INNER JOIN komponen on komponen.id_kategori_komponen = kategori_komponen.id";			
+		// $mdtemplate_komponen = "SELECT mdtemplate_form.title, mdtemplate_form.nama_template,  kategori_komponen.kategori, pejabats.jabatan, pejabats.ttd, komponen.komponen as nama_komponen, komponen.jenis, group_concat(karyawans.nama SEPARATOR ',') as penanggung_jawab FROM mdtemplate_komponen 
+		// 		INNER JOIN kategori_komponen on kategori_komponen.id = mdtemplate_komponen.id_kategori_komponen
+		// 		INNER JOIN komponen on komponen.id_kategori_komponen = kategori_komponen.id
+		// 		INNER JOIN mdtemplate_form on mdtemplate_form.id =  mdtemplate_komponen.id_template
+		// 		INNER JOIN pejabats on pejabats.id = kategori_komponen.pejabat_id AND kategori_komponen.pejabat_id=pejabats.id
+		// 		INNER JOIN karyawans on karyawans.id = pejabats.karyawan_id 
+		// 		GROUP BY kategori_komponen.pejabat_id
+		// 		";					
 
-		$this->model_daftar->join('mdtemplate_komponen', 'mdtemplate_komponen.id_template = mdtemplate_form.id_template', 'left');
 
-		$this->model_daftar->join('kategori_komponen', 'kategori_komponen.id = mdtemplate_komponen.id_kategori_komponen', 'left');
-		$this->model_daftar->join('komponen', 'komponen.id_kategori_komponen = kategori_komponen.id', 'left');
 
-		$this->model_daftar->join('pejabats', 'pejabats.id = kategori_komponen.pejabat_id', 'UNION ALL');
-		$this->model_daftar->join('pejabats', 'pejabats.id = mdtemplate_form.pejabat_id', 'UNION ALL');
+		$mdtemplate_form = "SELECT mdtemplate_form.*, pejabats.jabatan, pejabats.ttd, kr.*
+		FROM  mdtemplate_form
+		INNER JOIN pejabats on pejabats.id = mdtemplate_form.pejabat_id
+		LEFT JOIN karyawans kr on kr.id = pejabats.karyawan_id
+		";
+		
+		
+	
+		$data1 = $this->db->query($mdtemplate_komponen)->result_array();
+		$data2 = $this->db->query($mdtemplate_form)->result_array();
+		$data3 = $this->db->query($sql_komponen)->result_array();
+		$data = [];
+		foreach ($data2 as $row) {
+			$data[] = $row;
+				$data[]['komponen'] = $data1;
+		}
+		
+		// $this->db->join('pejabats pjmdtemplate', 'pjmdtemplate.id = mdtemplate_form.pejabat_id', 'left');
 
-		$this->model_daftar->join('karyawans', 'karyawans.id = pejabatas.karyawan_id', 'UNION ALL');
-		$this->model_daftar->join('pengajars', 'pengajars.id = pejabatas.pengajar_id', 'UNION ALL');
+		// $this->db->join('karyawans kr', 'kr.id = pjmdtemplate.karyawan_id', 'left');
+		// $this->model_daftar->join('kategori_komponen', 'kategori_komponen.id = mdtemplate_komponen.id_kategori_komponen', 'left');
+		// $this->model_daftar->join('komponen', 'komponen.id_kategori_komponen = kategori_komponen.id', 'left');
+
+		// $this->model_daftar->join('pejabats ps1', 'ps1.id = kategori_komponen.pejabat_id', 'UNION ALL');
+		// $this->model_daftar->join('pejabats ps2', 'ps2.id = mdtemplate_form.pejabat_id', 'UNION ALL');
+
+		// $this->model_daftar->join('karyawans', 'karyawans.id = ps1.karyawan_id', 'UNION ALL');
+		// $this->model_daftar->join('pengajars', 'pengajars.id = ps2.pengajar_id', 'UNION ALL');
 		
 
-		$this->model_daftar->from('mdtemplate_form');
-		$this->model_daftar->where('mdtemplate_form.nama_template', 'proposal');
-		$data = $this->model_daftar->get()->result();
+		//$this->db->where('mdtemplate_form.nama_template', 'proposal');
+		//$data = $this->db->get('mdtemplate_form')->result();
 		echo "<pre>";
 		print_r ($data);
 		die();
