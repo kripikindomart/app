@@ -25,11 +25,12 @@ class Daftar extends Admin
 		$this->template->title('Pendaftaran Ujian');
 		//Get Template by $ujian
 		//$this->db->select('mdtemplate_form.title, mdtemplate_form.nama_template, pjmdtemplate.jabatan, pjmdtemplate.ttd, kr.nama as nama_karyawan');
-		$mdtemplate_komponen = "SELECT kategori_komponen.kategori, pejabats.jabatan, pejabats.ttd, karyawans.nama as nama_penaggungjawab FROM mdtemplate_komponen 
+		$mdtemplate_komponen = "SELECT kategori_komponen.kategori, komponen.komponen as nama_komponen, komponen.jenis, pejabats.jabatan, pejabats.ttd, karyawans.nama as nama_penaggungjawab FROM mdtemplate_komponen 
 				INNER JOIN kategori_komponen on kategori_komponen.id = mdtemplate_komponen.id_kategori_komponen
 					INNER JOIN mdtemplate_form on mdtemplate_form.id =  mdtemplate_komponen.id_template
 					INNER JOIN pejabats on pejabats.id = kategori_komponen.pejabat_id
-					INNER JOIN karyawans on karyawans.id = pejabats.karyawan_id";
+					INNER JOIN karyawans on karyawans.id = pejabats.karyawan_id
+					INNER JOIN komponen on komponen.id_kategori_komponen = kategori_komponen.id";
 				
 		$sql_komponen = "SELECT komponen.* FROM kategori_komponen INNER JOIN komponen on komponen.id_kategori_komponen = kategori_komponen.id";			
 		// $mdtemplate_komponen = "SELECT mdtemplate_form.title, mdtemplate_form.nama_template,  kategori_komponen.kategori, pejabats.jabatan, pejabats.ttd, komponen.komponen as nama_komponen, komponen.jenis, group_concat(karyawans.nama SEPARATOR ',') as penanggung_jawab FROM mdtemplate_komponen 
@@ -75,10 +76,7 @@ class Daftar extends Admin
 
 		//$this->db->where('mdtemplate_form.nama_template', 'proposal');
 		//$data = $this->db->get('mdtemplate_form')->result();
-		echo "<pre>";
-		print_r ($data);
-		die();
-
+		
 		$data = ['ujian' => $ujian];
 		$this->render('Daftar/daftar_add', $data);
 	}
@@ -134,6 +132,44 @@ class Daftar extends Admin
 			return $this->response($json_data);
 		}
 		
+	}
+
+	public function getUjian()
+	{
+		$this->db->where('nama_template', $this->input->post('seminar'));
+		$this->db->where('mdtemplate_form.aktif', 'Y');
+		$this->db->select('mdtemplate_form.id, GROUP_CONCAT( DISTINCT  kategori.kategori ) as kategori, mdtemplate_form.title, pejabats.jabatan as nama_pejabat, pejabats.ttd');
+		$this->db->join('mdtemplate_komponen', 'mdtemplate_komponen.id_template = mdtemplate_form.id', 'left');
+
+		$this->db->join('kategori_komponen kategori', 'kategori.id = mdtemplate_komponen.id_kategori_komponen', 'left');
+		$this->db->join('pejabats', 'pejabats.id = kategori.pejabat_id', 'left');
+		$this->db->join('karyawans', 'karyawans.id = pejabats.karyawan_id', 'left');
+		$this->db->group_by('mdtemplate_form.id');
+		$this->db->from('mdtemplate_form');
+		$ujian = $this->db->get();
+		if ($ujian->num_rows() > 0) {
+			$data_ujian = $ujian->row();
+
+			$this->db->select('kategori.kategori, pejabats.jabatan, karyawans.nama, departements.nama as departement, komponen.komponen, komponen.jenis');
+			$this->db->from('mdtemplate_komponen');
+			$this->db->join('kategori_komponen kategori', 'kategori.id = mdtemplate_komponen.id_kategori_komponen', 'left');
+
+			$this->db->join('komponen', 'komponen.id_kategori_komponen = kategori.id', 'left');
+			$this->db->join('pejabats', 'pejabats.id = kategori.pejabat_id', 'left');
+			$this->db->join('karyawans', 'karyawans.id = pejabats.karyawan_id', 'left');
+			$this->db->where('mdtemplate_komponen.id_template', $data_ujian->id);
+			$this->db->join('departements', 'departements.id = pejabats.departement_id', 'left');
+			$data_komponen =  $this->db->get()->result();
+			
+			$komponen = [];
+			foreach ($data_komponen as $row) {
+				$komponen[] = $row;
+			}
+			$response['data_komponen'] = $komponen;
+			$response['data_ujian'] = $ujian->result();
+
+			return $this->response($response);
+		}
 	}
 
 	

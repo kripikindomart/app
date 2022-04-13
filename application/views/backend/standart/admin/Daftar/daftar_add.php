@@ -50,7 +50,11 @@
                         <label for="username" class="col-sm-2 control-label">Nama / Title <i class="required">*</i></label>
 
                         <div class="col-sm-8">
-                          <input type="text" class="form-control" name="title" id="title" placeholder="title" value="">
+                          <select  class="form-control chosen chosen-select-deselect" name="seminar" id="seminar" data-placeholder="Select" >
+                                    <option value=""></option>
+                                    <option value="proposal">Seminar Proposal</option>
+                                    <option value="Sidang Tesis">Sidang Tesis</option>
+                                </select>
                           <small class="info help-block">*Title untuk judul form</small>
                         </div>
                     </div>
@@ -193,7 +197,27 @@
     	$('.chosen').prop('disabled', false).trigger("liszt:updated");
     }
 
-
+    $(document).on('change', '#seminar', function(event) {
+    	event.preventDefault();
+    	/* Act on the event */
+    	var	seminar = $(this).val()
+    	$.ajax({
+    		url: '<?= base_url('admin/daftar/getUjian') ?>',
+    		type: 'post',
+    		dataType: 'json',
+    		data: {seminar: seminar},
+    	})
+    	.done(function(res) {
+    		
+    	})
+    	.fail(function() {
+    		console.log("error");
+    	})
+    	.always(function() {
+    		console.log("complete");
+    	});
+    	
+    });
  
     jQuery(document).delegate('.add_row', 'click', function(e) {
 	     e.preventDefault();  
