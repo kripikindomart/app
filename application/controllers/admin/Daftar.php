@@ -138,7 +138,7 @@ class Daftar extends Admin
 	{
 		$this->db->where('nama_template', $this->input->post('seminar'));
 		$this->db->where('mdtemplate_form.aktif', 'Y');
-		$this->db->select('mdtemplate_form.id, GROUP_CONCAT( DISTINCT  kategori.kategori ) as kategori, mdtemplate_form.title, pejabats.jabatan as nama_pejabat, pejabats.ttd');
+		$this->db->select('mdtemplate_form.id, GROUP_CONCAT( DISTINCT  kategori.kategori ) as kategori, mdtemplate_form.title, pejabats.jabatan, pejabats.ttd, karyawans.nama');
 		$this->db->join('mdtemplate_komponen', 'mdtemplate_komponen.id_template = mdtemplate_form.id', 'left');
 
 		$this->db->join('kategori_komponen kategori', 'kategori.id = mdtemplate_komponen.id_kategori_komponen', 'left');
@@ -148,25 +148,32 @@ class Daftar extends Admin
 		$this->db->from('mdtemplate_form');
 		$ujian = $this->db->get();
 		if ($ujian->num_rows() > 0) {
-			$data_ujian = $ujian->row();
 
-			$this->db->select('kategori.kategori, pejabats.jabatan, karyawans.nama, departements.nama as departement, komponen.komponen, komponen.jenis');
+			$data_ujian = $ujian->row_array();
+
+			$this->db->select('kategori.kategori, pejabats.jabatan, karyawans.nama, departements.nama as departement, GROUP_CONCAT( DISTINCT  komponen.komponen ) as komponen, komponen.jenis');
 			$this->db->from('mdtemplate_komponen');
 			$this->db->join('kategori_komponen kategori', 'kategori.id = mdtemplate_komponen.id_kategori_komponen', 'left');
 
 			$this->db->join('komponen', 'komponen.id_kategori_komponen = kategori.id', 'left');
 			$this->db->join('pejabats', 'pejabats.id = kategori.pejabat_id', 'left');
 			$this->db->join('karyawans', 'karyawans.id = pejabats.karyawan_id', 'left');
-			$this->db->where('mdtemplate_komponen.id_template', $data_ujian->id);
+			$this->db->where('mdtemplate_komponen.id_template', $data_ujian['id']);
+			$this->db->group_by('mdtemplate_komponen.id_kategori_komponen');
 			$this->db->join('departements', 'departements.id = pejabats.departement_id', 'left');
-			$data_komponen =  $this->db->get()->result();
+			$data_komponen =  $this->db->get()->result_array();
 			
-			$komponen = [];
+			$data = [];
 			foreach ($data_komponen as $row) {
-				$komponen[] = $row;
+				// $komponen[] = $row;
+				$komponen['komponen'] = explode(',', $row['komponen']);
+				
 			}
-			$response['data_komponen'] = $komponen;
-			$response['data_ujian'] = $ujian->result();
+			$kategori['kategori'] = explode(',', $data_ujian['kategori']);
+			$e = array_replace($data_komponen, $komponen);
+			$d = array_replace($data_ujian, $kategori);
+			$response['data_komponen'] = $e;
+			$response['data_ujian'] = $d;
 
 			return $this->response($response);
 		}
