@@ -136,17 +136,22 @@ class Daftar extends Admin
 
 	public function getUjian()
 	{
+		//1. Pertama Check user id sudah pernah mengajukan apa belum
+		//2. jika sudah maka tambah status untuk verifikasi
+		//3. jika belum maka haru di lakukan pengecekan
 		$this->db->where('nama_template', $this->input->post('seminar'));
 		$this->db->where('mdtemplate_form.aktif', 'Y');
-		$this->db->select('mdtemplate_form.id, GROUP_CONCAT( DISTINCT  kategori.kategori ) as kategori, mdtemplate_form.title, pejabats.jabatan, pejabats.ttd, karyawans.nama');
+		$this->db->select('mdtemplate_form.id, mdtemplate_form.title, pejabats.jabatan, pejabats.ttd, karyawans.nama');
 		$this->db->join('mdtemplate_komponen', 'mdtemplate_komponen.id_template = mdtemplate_form.id', 'left');
 
 		$this->db->join('kategori_komponen kategori', 'kategori.id = mdtemplate_komponen.id_kategori_komponen', 'left');
-		$this->db->join('pejabats', 'pejabats.id = kategori.pejabat_id', 'left');
+		$this->db->join('pejabats', 'pejabats.id = mdtemplate_form.pejabat_id', 'left');
 		$this->db->join('karyawans', 'karyawans.id = pejabats.karyawan_id', 'left');
 		$this->db->group_by('mdtemplate_form.id');
 		$this->db->from('mdtemplate_form');
 		$ujian = $this->db->get();
+
+
 		if ($ujian->num_rows() > 0) {
 
 			$data_ujian = $ujian->row_array();
@@ -164,16 +169,18 @@ class Daftar extends Admin
 			$data_komponen =  $this->db->get()->result_array();
 			
 			$data = [];
+			$i = 0;
 			foreach ($data_komponen as $row) {
 				// $komponen[] = $row;
-				$komponen['komponen'] = explode(',', $row['komponen']);
+				$komponen['komponen'][$row['kategori']] = explode(',', $row['komponen']);
+				$e = array_replace($data_komponen[$i], $komponen);
 				
 			}
-			$kategori['kategori'] = explode(',', $data_ujian['kategori']);
-			$e = array_replace($data_komponen, $komponen);
-			$d = array_replace($data_ujian, $kategori);
-			$response['data_komponen'] = $e;
-			$response['data_ujian'] = $d;
+			
+			$response['data_komponen'] = $data_komponen;
+			$response['data_ujian'] = $data_ujian;
+
+
 
 			return $this->response($response);
 		}

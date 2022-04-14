@@ -59,61 +59,17 @@
                         </div>
                     </div>
 
-
-                      <div class="form-group ">
-                            <label for="category" class="col-sm-2 control-label">Penaggung jawab 
-                            </label>
-                            <div class="col-sm-8">
-                                <select  class="form-control chosen chosen-select-deselect" name="penaggung_jawab" id="category" data-placeholder="Select" >
-                                    <option value=""></option>
-                                    <?php foreach ($pejabat as $row): ?>
-                                    <option value="<?= $row->id ?>"><?= ($row->karyawans_nama != null ? $row->departements_nama.' - '.$row->karyawans_nama.' - '.$row->jabatan : $row->departements_nama.' - '.$row->pengajars_nama.' - '.$row->jabatan ); ?></option>
-                                    <?php endforeach; ?>  
-                                </select>
-                            </div>
-                        </div>
-
                     <div class="form-group ">
                         <div class="table-wrapper">
 	                       <table class="table table-responsive table table-bordered table-striped" id="tbl_posts" style="width: 90% !important; margin: 0 auto;">
 	                       		<thead>
 	                       			<tr>
-	                       				<td><span class="sn"></span>.</td>
-	                       				<td>Komponen</td>
-	                       				<td>Penanggung Jawab</td>
+	                       				<td>Persyaratan</td>
 	                       				<td>#</td>
+	                       				<td>Penanggung Jawab</td>
 	                       			</tr>
 	                       		</thead>
 	                       		<tbody id="tbl_posts_body">
-	                       			
-	                       				<tr>
-	                       					<td class="sn">1</td>
-	                       					<td>
-	                       						
-	                       						<select name="kategori[]"  class="kategori form-control chosen chosen-select">
-	                       							<option value="0">-Pilih kategori-</option>
-	                       							<?php foreach ($kat_komponen as $row): ?>
-	                       							<option value="<?= $row->id ?>"><?= $row->kategori ?></option>
-	                       							<?php endforeach ?>
-	                       						</select>
-	                       						<br>
-	                       						<p id="data_komponen">
-	                       							
-	                       						</p>
-	                       					</td>
-	                       					<td>
-	                       						<select name="pejabat[]" id="pejabat" class="form-control chosen chosen-select pejabat_komponen" >
-	                       							
-	                       						</select>
-	                       						
-	                       					</td>
-	                       					<td>
-	                       						<button type="button" class="btn btn-flat btn-success add_row" >
-						                       	+
-						                       </button>
-	                       					</td>
-	                       				</tr>
-	                       				
 	                       			
 	                       		</tbody>
 	                       </table>
@@ -165,7 +121,12 @@
                				</tr>
 						     </tr>
 						   </table>
+
 						 </div>
+						 <br>
+						   <br>
+						   <br>
+						   <br>
                </div>
                
                <!-- /.widget-user -->
@@ -201,6 +162,7 @@
     	event.preventDefault();
     	/* Act on the event */
     	var	seminar = $(this).val()
+    	$('#tbl_posts_body tr').remove()
     	$.ajax({
     		url: '<?= base_url('admin/daftar/getUjian') ?>',
     		type: 'post',
@@ -208,6 +170,54 @@
     		data: {seminar: seminar},
     	})
     	.done(function(res) {
+    		var i = 0;	
+    		$.each(res.data_komponen, function(index, val) {
+    			var jenis = '';
+    			if (val.jenis =='upload') {
+    				jenis = '<input type="file" class="form-control">';
+    			} else {
+    				jenis = '';
+    			}
+    			$('#tbl_posts tbody').append('<tr>'+
+    				'<td><strong>'+val.kategori+'</strong>'+
+    				'<div class="list">'+val.komponen+'</div>'+
+    				'</td>'+
+    				'<td width="20%">'+jenis+'<br><br><span class="badge bg-red">Belum di verifikasi</span></td>'+
+    			'</td>'+
+    			'<td><span>'+val.jabatan+'</span><br><br><br><br><br><span><strong>'+val.nama+'</strong></span>'+
+	             '</td>'+
+    			'</tr>'
+    			
+
+    			);
+    			})
+
+    		$('#tbl_posts tbody').append('<tr>'+
+    				'<td >'+res.data_ujian.jabatan+'</span><br><br><br><br><br><span><strong>'+res.data_ujian.nama+'</td>'+
+    				'<td colspan="2"></td>'+
+    			'</tr>');
+    		var el = $('.list');
+    		$(el).each(function(key, val) {
+			    var values = $(val).html().split(',');
+			    $(val).html('<ul>' + $.map(values, function(v) { 
+			      return '<li>' + v + '</li>';
+			    }).join('') + '</ul>');
+			});
+    		// $.each(res.data_komponen.komponen, function(index, val) {
+    		// 	 $('#tbl_posts tbody').append('<tr>'+
+    		// 	'<td><strong>'+index+'</strong>'+
+    		// 	'<ul><li>'+res.data_komponen.komponen[index][i]+'</li></ul>'+
+
+    		// 	'</td>'+
+    		// 	'<td width="20%"><span class="badge bg-green">Telah di verifikasi</span></td>'+
+    		// 	'</td>'+
+    		// 	'<td><span>'+res.data_komponen.jabatan+'</span><br><br><br><br><br><span><strong>'+res.data_komponen.nama+'</strong></span>'+
+	     //         '</td>'+
+    		// 	'</tr>');
+
+    		// 	 i++;
+    		// });
+    		
     		
     	})
     	.fail(function() {
