@@ -76,8 +76,8 @@ class Daftar extends Admin
 
 		//$this->db->where('mdtemplate_form.nama_template', 'proposal');
 		//$data = $this->db->get('mdtemplate_form')->result();
-		
-		$data = ['ujian' => $ujian];
+		$op = $this->db->select('nama_template')->where('aktif', 'Y')->get('mdtemplate_form')->result();
+		$data = ['ujian' => $ujian, 'option' => $op];
 		$this->render('Daftar/daftar_add', $data);
 	}
 

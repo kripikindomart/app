@@ -34,7 +34,7 @@
                      </div>
                      <!-- /.widget-user-image -->
                      <h3 class="widget-user-username">Pendaftaran</h3>
-                     <h5 class="widget-user-desc">Form Template<i class="label bg-yellow"></i></h5>
+                     <h5 class="widget-user-desc">Ujian<i class="label bg-yellow"></i></h5>
                   </div>
 
                  <?= form_open('', [
@@ -47,13 +47,15 @@
 
                   ?>
                   <div class="form-group ">
-                        <label for="username" class="col-sm-2 control-label">Nama / Title <i class="required">*</i></label>
+                        <label for="username" class="col-sm-2 control-label">Ujian <i class="required">*</i></label>
 
                         <div class="col-sm-8">
                           <select  class="form-control chosen chosen-select-deselect" name="seminar" id="seminar" data-placeholder="Select" >
                                     <option value=""></option>
-                                    <option value="proposal">Seminar Proposal</option>
-                                    <option value="Sidang Tesis">Sidang Tesis</option>
+                                    <?php foreach ($option as $row): ?>
+                                    	<option value="<?= $row->nama_template ?>"><?= ucwords($row->nama_template) ?></option>
+                                    <?php endforeach ?>
+                                    
                                 </select>
                           <small class="info help-block">*Title untuk judul form</small>
                         </div>
@@ -193,7 +195,7 @@
     			})
 
     		$('#tbl_posts tbody').append('<tr>'+
-    				'<td >'+res.data_ujian.jabatan+'</span><br><br><br><br><br><span><strong>'+res.data_ujian.nama+'</td>'+
+    				'<td>Mengetahui,<br>'+res.data_ujian.jabatan+'</span><br><br><br><span class="badge bg-red">Menunggu Verifikasi</span><br><br><span><strong>'+res.data_ujian.nama+'</td>'+
     				'<td colspan="2"></td>'+
     			'</tr>');
     		var el = $('.list');
