@@ -46,9 +46,43 @@
                   ]); 
 
                   ?>
+                  <table class="table table-bordered" style="width: 90% !important; margin: 0 auto;">
+                  	<tr>
+                  		<td width="20%">Nama Mahasiswa</td>
+                  		<td width="5%"> : </td>
+                  		<td><?= $data_mahasiswa->nama_lengkap ?></td>
+                  		<td rowspan="4">
+                  			<a class="fancybox" rel="group" href="<?= base_url('uploads/mahasiswa/') ?><?= $data_mahasiswa->foto ?>" onerror="<?= base_url('uploads/mahasiswa/') ?><?= $data_mahasiswa->foto ?>"><img class="img img-responsive" onerror="<?= base_url('uploads/mahasiswa/') ?><?= $data_mahasiswa->foto ?>"  src="<?= base_url('uploads/mahasiswa/') ?><?= $data_mahasiswa->foto ?>" alt="Person" width="100" height="100"></a> 
+                  			
+                  		</td>
+                  	</tr>
+                  	<tr>
+                  		<td width="20%">NPM</td>
+                  		<td width="5%"> : </td>
+                  		<td><?= $data_mahasiswa->npm ?></td>
+                  	</tr>
+                  	<tr>
+                  		<td width="20%">Program Studi</td>
+                  		<td width="5%"> : </td>
+                  		<input type="hidden" name="prodi_id" value="<?=$data_mahasiswa->id_master_prodi ?>">
+                  		<td><?= get_data($data_mahasiswa->id_master_prodi, 'id', 'master_prodi', 'program_studi') ?></td>
+                  	</tr>
+                  	<tr>
+                  		<td width="20%">Jenis Kelamin</td>
+                  		<td width="5%"> : </td>
+                  		<td><?= $data_mahasiswa->jenis_kelamin ?></td>
+                  	</tr>
+                  	<tr>
+                  		<td width="20%">No Hp</td>
+                  		<td width="5%"> : </td>
+                  		<td><?= $data_mahasiswa->no_hp ?></td>
+                  	</tr>
+                  </table>
+                  <br>
+                  <br>
                   <div class="form-group ">
                         <label for="username" class="col-sm-2 control-label">Ujian <i class="required">*</i></label>
-
+                        <input type="hidden" name="npm" value="<?= $data_mahasiswa->npm ?>" id="npm">
                         <div class="col-sm-8">
                           <select  class="form-control chosen chosen-select-deselect" name="seminar" id="seminar" data-placeholder="Select" >
                                     <option value=""></option>
@@ -163,13 +197,21 @@
     $(document).on('change', '#seminar', function(event) {
     	event.preventDefault();
     	/* Act on the event */
-    	var	seminar = $(this).val()
+    	var form_user = $('#form_user');
+        var data_post = form_user.serializeArray();
+        var save_type = $(this).attr('data-stype');
+        data_post.push({
+        	name : 'save_type',
+        	value : save_type
+        })
+
     	$('#tbl_posts_body tr').remove()
+    	console.log(data_post);
     	$.ajax({
     		url: '<?= base_url('admin/daftar/getUjian') ?>',
     		type: 'post',
     		dataType: 'json',
-    		data: {seminar: seminar},
+    		data: {data_post},
     	})
     	.done(function(res) {
     		var i = 0;	

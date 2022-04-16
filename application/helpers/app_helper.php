@@ -1184,3 +1184,8 @@ function get_data($id, $ref, $table,$field)
 
         return $ret;
     }
+
+function getDataBy($where, $db)
+    {
+    	
+    }    

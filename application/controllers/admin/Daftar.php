@@ -77,12 +77,16 @@ class Daftar extends Admin
 		//$this->db->where('mdtemplate_form.nama_template', 'proposal');
 		//$data = $this->db->get('mdtemplate_form')->result();
 		$op = $this->db->select('nama_template')->where('aktif', 'Y')->get('mdtemplate_form')->result();
-
+		
 		$id = $this->aauth->get_user()->id_mahasiswa;
-		$this->db->where('id', $id);
-		$a = $this->db->get('master_mahasiswa');
-		print_r($a->result());
-		$data = ['ujian' => $ujian, 'option' => $op];
+		$a = '';
+		if ($id != null || !empty($id)) {
+			$this->db->where('id', $id);
+			$a = $this->db->get('master_mahasiswa')->row();
+		}
+		
+		
+		$data = ['ujian' => $ujian, 'option' => $op, 'data_mahasiswa' => $a];
 		$this->render('Daftar/daftar_add', $data);
 	}
 
@@ -142,6 +146,19 @@ class Daftar extends Admin
 	public function getUjian()
 	{
 		//1. Pertama Check user id sudah pernah mengajukan apa belum
+		// $npm = $this->input->post('npm');
+		// $this->db->where('npm', $npm);
+		// $cek = $this->db->get('mdapp_pengajuan');
+		// if ($cek->num_rows() > 0) {
+			
+		// } else {
+
+		// }
+	
+			echo "<pre>";
+		print_r ($this->input->post());
+		die();
+
 		//2. jika sudah maka tambah status untuk verifikasi
 		//3. jika belum maka haru di lakukan pengecekan
 		$this->db->where('nama_template', $this->input->post('seminar'));
