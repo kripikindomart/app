@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 10, 2022 at 09:04 AM
+-- Generation Time: Apr 16, 2022 at 03:48 AM
 -- Server version: 5.7.33
 -- PHP Version: 7.4.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -131,7 +130,52 @@ INSERT INTO `aauth_perms` (`id`, `name`, `definition`) VALUES
 (15, 'master_angkatan_list', ''),
 (16, 'master_angkatan_add', ''),
 (17, 'master_angkatan_update', ''),
-(18, 'master_angkatan_view', '');
+(18, 'master_angkatan_view', ''),
+(24, 'Dosen_add', ''),
+(25, 'Dosen_update', ''),
+(26, 'Dosen_view', ''),
+(27, 'Dosen_delete', ''),
+(28, 'Dosen_list', ''),
+(29, 'Master_dosen_add', ''),
+(30, 'Master_dosen_update', ''),
+(31, 'Master_dosen_view', ''),
+(32, 'Master_dosen_delete', ''),
+(33, 'Master_dosen_list', ''),
+(34, 'Karyawan_add', ''),
+(35, 'Karyawan_update', ''),
+(36, 'Karyawan_view', ''),
+(37, 'Karyawan_delete', ''),
+(38, 'Karyawan_list', ''),
+(39, 'Karyawans_add', ''),
+(40, 'Karyawans_update', ''),
+(41, 'Karyawans_view', ''),
+(42, 'Karyawans_delete', ''),
+(43, 'Karyawans_list', ''),
+(44, 'Student_add', ''),
+(45, 'Student_update', ''),
+(46, 'Student_view', ''),
+(47, 'Student_delete', ''),
+(48, 'Student_list', ''),
+(49, 'Pejabats_add', ''),
+(50, 'Pejabats_update', ''),
+(51, 'Pejabats_view', ''),
+(52, 'Pejabats_delete', ''),
+(53, 'Pejabats_list', ''),
+(54, 'Pejabat_add', ''),
+(55, 'Pejabat_update', ''),
+(56, 'Pejabat_view', ''),
+(57, 'Pejabat_delete', ''),
+(58, 'Pejabat_list', ''),
+(64, 'form_template_add', ''),
+(65, 'form_template_update', ''),
+(66, 'form_template_view', ''),
+(67, 'form_template_delete', ''),
+(68, 'form_template_list', ''),
+(69, 'daftar_add', ''),
+(70, 'daftar_update', ''),
+(71, 'daftar_view', ''),
+(72, 'daftar_delete', ''),
+(73, 'daftar_list', '');
 
 -- --------------------------------------------------------
 
@@ -159,7 +203,24 @@ INSERT INTO `aauth_perm_to_group` (`perm_id`, `group_id`) VALUES
 (10, 1),
 (11, 1),
 (12, 1),
-(13, 1);
+(13, 1),
+(34, 1),
+(35, 1),
+(36, 1),
+(37, 1),
+(38, 1),
+(64, 1),
+(65, 1),
+(66, 1),
+(67, 1),
+(68, 1),
+(69, 1),
+(70, 1),
+(71, 1),
+(72, 1),
+(73, 1),
+(7, 3),
+(69, 3);
 
 -- --------------------------------------------------------
 
@@ -213,17 +274,20 @@ CREATE TABLE `aauth_users` (
   `verification_code` text,
   `totp_secret` varchar(16) DEFAULT NULL,
   `ip_address` text,
-  `id_master_prodi` int(11) DEFAULT NULL,
-  `delete_at` text NOT NULL
+  `id_master_prodi` varchar(50) DEFAULT NULL,
+  `id_mahasiswa` int(11) DEFAULT NULL,
+  `delete_at` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `aauth_users`
 --
 
-INSERT INTO `aauth_users` (`id`, `email`, `pass`, `username`, `full_name`, `banned`, `avatar`, `last_login`, `last_activity`, `date_created`, `forgot_exp`, `remember_time`, `remember_exp`, `verification_code`, `totp_secret`, `ip_address`, `id_master_prodi`, `delete_at`) VALUES
-(1, 'asrulanwar99@gmail.com', '$2y$10$21ll73aUDDLk5kmW/rfpVOKHmSijxZjmBKxDZ028aNmWjQ2ff8hZ2', 'asrul', 'Muhammad Asrul Anwar', 0, '20200729093029-LOGO_UIKA_Terbaru2.png', '2022-03-10 09:28:58', '2022-03-10 09:28:58', '2020-07-29 09:30:29', NULL, NULL, NULL, NULL, NULL, '::1', 6, ''),
-(2, 'user@local.com', '$2y$10$s8A74MVHxPrwnAThy/D5B.ZAg8kHt5H.1X4.mDnseAcicpBaC8dy2', 'user', 'user', 0, 'default.png', '2022-03-10 14:29:03', '2022-03-10 14:29:03', '2022-03-10 14:27:10', NULL, NULL, NULL, NULL, NULL, '192.168.112.59', 6, '');
+INSERT INTO `aauth_users` (`id`, `email`, `pass`, `username`, `full_name`, `banned`, `avatar`, `last_login`, `last_activity`, `date_created`, `forgot_exp`, `remember_time`, `remember_exp`, `verification_code`, `totp_secret`, `ip_address`, `id_master_prodi`, `id_mahasiswa`, `delete_at`) VALUES
+(1, 'asrulanwar99@gmail.com', '$2y$10$21ll73aUDDLk5kmW/rfpVOKHmSijxZjmBKxDZ028aNmWjQ2ff8hZ2', 'asrul', 'Muhammad Asrul Anwar', 0, '20200729093029-LOGO_UIKA_Terbaru2.png', '2022-04-16 09:59:12', '2022-04-16 09:59:12', '2020-07-29 09:30:29', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '6', 100, ''),
+(2, 'user@local.com', '$2y$10$s8A74MVHxPrwnAThy/D5B.ZAg8kHt5H.1X4.mDnseAcicpBaC8dy2', 'user', 'user', 0, 'default.png', '2022-03-10 14:29:03', '2022-03-10 14:29:03', '2022-03-10 14:27:10', NULL, NULL, NULL, NULL, NULL, '192.168.112.59', '6', 100, ''),
+(4, 'ahmad@gmail.com', '$2y$10$21ll73aUDDLk5kmW/rfpVOKHmSijxZjmBKxDZ028aNmWjQ2ff8hZ2', 'ahmad', 'Ahmad', 0, '20200729093029-LOGO_UIKA_Terbaru2.png', '2022-04-14 14:57:39', '2022-04-14 14:57:39', '2020-07-29 09:30:29', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '6', 100, NULL),
+(5, 'student@student.com', '$2y$10$CsRTelivtChsJ3eNxhFo6.5zuGW1GYBB/iRFzEQxbUlBNUQotMY2C', 'student', 'Rusti', 0, '20220416100005-167858841_4384478648233717_7020433269666150664_n.png', '2022-04-16 10:00:37', '2022-04-16 10:00:37', '2022-04-16 10:00:05', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '6', 100, NULL);
 
 -- --------------------------------------------------------
 
@@ -264,7 +328,8 @@ INSERT INTO `aauth_user_to_departement` (`id`, `id_departement`, `id_users`) VAL
 (20, 3, 432),
 (21, 6, 433),
 (22, 6, 2),
-(23, 4, 3);
+(23, 4, 3),
+(24, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -283,7 +348,9 @@ CREATE TABLE `aauth_user_to_group` (
 
 INSERT INTO `aauth_user_to_group` (`user_id`, `group_id`) VALUES
 (1, 1),
-(2, 1);
+(2, 1),
+(4, 3),
+(5, 3);
 
 -- --------------------------------------------------------
 
@@ -582,7 +649,13 @@ CREATE TABLE `crud` (
 --
 
 INSERT INTO `crud` (`id`, `title`, `subject`, `table_name`, `primary_key`, `page_read`, `page_create`, `page_update`) VALUES
-(4, 'Blog Category', 'Blog Category', 'blog_category', 'category_id', 'yes', 'yes', 'yes');
+(4, 'Blog Category', 'Blog Category', 'blog_category', 'category_id', 'yes', 'yes', 'yes'),
+(5, 'Dosen', 'Dosen', 'master_dosen', 'id', 'yes', 'yes', 'yes'),
+(6, 'Data Karyawan', 'Data Karyawan', 'karyawans', 'id', 'yes', 'yes', 'yes'),
+(7, 'Data Siswa', 'Data Siswa', 'students', 'id', 'yes', 'yes', 'yes'),
+(8, 'Pejabats', 'Pejabats', 'pejabats', 'id', 'yes', 'yes', 'yes'),
+(9, 'Template Form', 'Template Form', 'mdtemplate_form', 'id', 'yes', 'yes', 'yes'),
+(10, 'Pendaftaran Ujian', 'Pendaftaran Ujian', 'mhs_daftar', 'id', 'yes', 'yes', 'yes');
 
 -- --------------------------------------------------------
 
@@ -597,6 +670,15 @@ CREATE TABLE `crud_custom_option` (
   `option_value` text NOT NULL,
   `option_label` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `crud_custom_option`
+--
+
+INSERT INTO `crud_custom_option` (`id`, `crud_field_id`, `crud_id`, `option_value`, `option_label`) VALUES
+(129, 3331, 6, 'KONTRAK', 'KONTRAK'),
+(130, 3331, 6, 'KONTRAN FAKULTAS', 'KONTRAN FAKULTAS'),
+(131, 3331, 6, 'TETAP', 'TETAP');
 
 -- --------------------------------------------------------
 
@@ -636,7 +718,99 @@ INSERT INTO `crud_field` (`id`, `crud_id`, `field_name`, `field_label`, `input_t
 (12, 3, 'category_desc', 'category_desc', 'editor_wysiwyg', 'yes', 'yes', 'yes', 'yes', 3, '', '', ''),
 (13, 4, 'category_id', 'category_id', 'number', '', '', '', 'yes', 1, '', '', ''),
 (14, 4, 'category_name', 'category_name', 'input', 'yes', 'yes', 'yes', 'yes', 2, '', '', ''),
-(15, 4, 'category_desc', 'category_desc', 'datetime', 'yes', 'yes', 'yes', 'yes', 3, '', '', '');
+(15, 4, 'category_desc', 'category_desc', 'datetime', 'yes', 'yes', 'yes', 'yes', 3, '', '', ''),
+(2516, 7, 'id', 'id', 'input', '', '', '', 'yes', 1, '', '', ''),
+(2517, 7, 'program_studi_id', 'program studi', 'select', 'yes', 'yes', 'yes', 'yes', 2, 'program_studis', 'id', 'nama'),
+(2518, 7, 'kelas_id', 'kelas_id', 'number', 'yes', 'yes', 'yes', 'yes', 3, '', '', ''),
+(2519, 7, 'subkelas_id', 'subkelas_id', 'number', 'yes', 'yes', 'yes', 'yes', 4, '', '', ''),
+(2520, 7, 'total_semester', 'total_semester', 'number', 'yes', 'yes', 'yes', 'yes', 5, '', '', ''),
+(2521, 7, 'code', 'code', 'input', 'yes', 'yes', 'yes', 'yes', 6, '', '', ''),
+(2522, 7, 'nik', 'nik', 'input', 'yes', 'yes', 'yes', 'yes', 7, '', '', ''),
+(2523, 7, 'nama', 'nama', 'input', 'yes', 'yes', 'yes', 'yes', 8, '', '', ''),
+(2524, 7, 'email', 'email', 'input', 'yes', 'yes', 'yes', 'yes', 9, '', '', ''),
+(2525, 7, 'status_mahasiswa', 'status_mahasiswa', 'input', 'yes', 'yes', 'yes', 'yes', 10, '', '', ''),
+(2526, 7, 'status_penerimaan', 'status_penerimaan', 'input', 'yes', 'yes', 'yes', 'yes', 11, '', '', ''),
+(2527, 7, 'jenis_kelamin', 'jenis_kelamin', 'input', 'yes', 'yes', 'yes', 'yes', 12, '', '', ''),
+(2528, 7, 'tempat_lahir', 'tempat_lahir', 'input', 'yes', 'yes', 'yes', 'yes', 13, '', '', ''),
+(2529, 7, 'tanggal_lahir', 'tanggal_lahir', 'date', 'yes', 'yes', 'yes', 'yes', 14, '', '', ''),
+(2530, 7, 'alamat', 'alamat', 'editor_wysiwyg', 'yes', 'yes', 'yes', 'yes', 15, '', '', ''),
+(2531, 7, 'kode_pos', 'kode_pos', 'input', 'yes', 'yes', 'yes', 'yes', 16, '', '', ''),
+(2532, 7, 'no_hp', 'no_hp', 'input', 'yes', 'yes', 'yes', 'yes', 17, '', '', ''),
+(2533, 7, 'pendidikan_terakhir', 'pendidikan_terakhir', 'input', 'yes', 'yes', 'yes', 'yes', 18, '', '', ''),
+(2534, 7, 'asal_universitas_s1', 'asal_universitas_s1', 'input', 'yes', 'yes', 'yes', 'yes', 19, '', '', ''),
+(2535, 7, 'asal_universitas_s2', 'asal_universitas_s2', 'input', 'yes', 'yes', 'yes', 'yes', 20, '', '', ''),
+(2536, 7, 'asal_universitas_s3', 'asal_universitas_s3', 'input', 'yes', 'yes', 'yes', 'yes', 21, '', '', ''),
+(2537, 7, 'gelar_terakhir', 'gelar_terakhir', 'input', 'yes', 'yes', 'yes', 'yes', 22, '', '', ''),
+(2538, 7, 'pekerjaan', 'pekerjaan', 'input', 'yes', 'yes', 'yes', 'yes', 23, '', '', ''),
+(2539, 7, 'alamat_pekerjaan', 'alamat_pekerjaan', 'input', 'yes', 'yes', 'yes', 'yes', 24, '', '', ''),
+(2540, 7, 'nama_ibu', 'nama_ibu', 'input', 'yes', 'yes', 'yes', 'yes', 25, '', '', ''),
+(2541, 7, 'photo', 'photo', 'file', 'yes', 'yes', 'yes', 'yes', 26, '', '', ''),
+(2542, 7, 'judul_thesis', 'judul_thesis', 'editor_wysiwyg', 'yes', 'yes', 'yes', 'yes', 27, '', '', ''),
+(2543, 7, 'status_akun', 'status_akun', 'input', 'yes', 'yes', 'yes', 'yes', 28, '', '', ''),
+(2544, 7, 'daftar_tgl', 'daftar_tgl', 'date', 'yes', 'yes', 'yes', 'yes', 29, '', '', ''),
+(2545, 7, 'diterima_tgl', 'diterima_tgl', 'date', 'yes', 'yes', 'yes', 'yes', 30, '', '', ''),
+(2546, 7, 'created_at', 'created_at', 'timestamp', 'yes', 'yes', 'yes', 'yes', 31, '', '', ''),
+(2547, 7, 'updated_at', 'updated_at', 'timestamp', 'yes', 'yes', 'yes', 'yes', 32, '', '', ''),
+(3169, 8, 'id', 'id', 'input', 'yes', '', '', 'yes', 1, '', '', ''),
+(3170, 8, 'karyawan_id', 'Karyawan', 'select', 'yes', 'yes', 'yes', 'yes', 2, 'karyawans', 'id', 'nama'),
+(3171, 8, 'pengajar_id', 'Pengajar', 'select', 'yes', 'yes', 'yes', 'yes', 3, 'pengajars', 'id', 'nama'),
+(3172, 8, 'departement_id', 'departemen', 'select', 'yes', 'yes', 'yes', 'yes', 4, 'departements', 'id', 'nama'),
+(3173, 8, 'jabatan', 'jabatan', 'input', 'yes', 'yes', 'yes', 'yes', 5, '', '', ''),
+(3174, 8, 'ttd', 'ttd', 'file', 'yes', 'yes', 'yes', 'yes', 6, '', '', ''),
+(3175, 8, 'status', 'status', 'yes_no', 'yes', 'yes', 'yes', 'yes', 7, '', '', ''),
+(3176, 8, 'created_at', 'created_at', 'timestamp', '', '', '', 'yes', 8, '', '', ''),
+(3177, 8, 'updated_at', 'updated_at', 'timestamp', '', '', '', 'yes', 9, '', '', ''),
+(3238, 5, 'id', 'id', 'number', 'yes', '', '', 'yes', 1, '', '', ''),
+(3239, 5, 'nik', 'nik', 'input', 'yes', 'yes', 'yes', 'yes', 2, '', '', ''),
+(3240, 5, 'nama_lengkap', 'nama_lengkap', 'input', 'yes', 'yes', 'yes', 'yes', 3, '', '', ''),
+(3241, 5, 'jenis_kelamin', 'jenis_kelamin', 'input', 'yes', 'yes', 'yes', 'yes', 4, '', '', ''),
+(3242, 5, 'no_ktp', 'no_ktp', 'input', 'yes', 'yes', 'yes', 'yes', 5, '', '', ''),
+(3243, 5, 'gelar_kesarjanaan', 'gelar_kesarjanaan', 'input', 'yes', 'yes', 'yes', 'yes', 6, '', '', ''),
+(3244, 5, 'tempat_lahir', 'tempat_lahir', 'input', 'yes', 'yes', 'yes', 'yes', 7, '', '', ''),
+(3245, 5, 'tanggal_lahir', 'tanggal_lahir', 'date', 'yes', 'yes', 'yes', 'yes', 8, '', '', ''),
+(3246, 5, 'status_kawin', 'status_kawin', 'input', 'yes', 'yes', 'yes', 'yes', 9, '', '', ''),
+(3247, 5, 'alamat_rumah', 'alamat_rumah', 'editor_wysiwyg', 'yes', 'yes', 'yes', 'yes', 10, '', '', ''),
+(3248, 5, 'email', 'email', 'input', 'yes', 'yes', 'yes', 'yes', 11, '', '', ''),
+(3249, 5, 'no_hp', 'no_hp', 'input', 'yes', 'yes', 'yes', 'yes', 12, '', '', ''),
+(3250, 5, 'id_master_prodi', 'prodi', 'select', 'yes', 'yes', 'yes', 'yes', 13, 'program_studis', 'id', 'nama'),
+(3251, 5, 'fungsional', 'fungsional', 'input', 'yes', 'yes', 'yes', 'yes', 14, '', '', ''),
+(3252, 5, 'golongan', 'golongan', 'input', 'yes', 'yes', 'yes', 'yes', 15, '', '', ''),
+(3253, 5, 'foto', 'foto', 'input', 'yes', 'yes', 'yes', 'yes', 16, '', '', ''),
+(3254, 5, 'status_dosen', 'status_dosen', 'input', 'yes', 'yes', 'yes', 'yes', 17, '', '', ''),
+(3255, 5, 'created_at', 'created_at', 'timestamp', '', 'yes', 'yes', 'yes', 18, '', '', ''),
+(3256, 5, 'update_at', 'update_at', 'timestamp', '', 'yes', 'yes', 'yes', 19, '', '', ''),
+(3257, 5, 'created_by', 'created_by', 'number', '', 'yes', 'yes', 'yes', 20, '', '', ''),
+(3322, 9, 'id', 'id', 'number', 'yes', '', '', 'yes', 1, '', '', ''),
+(3323, 9, 'nama_template', 'Nama Form', 'input', 'yes', 'yes', 'yes', 'yes', 2, '', '', ''),
+(3324, 9, 'pejabat_id', 'Penaggung jawab', 'select', 'yes', 'yes', 'yes', 'yes', 3, 'pejabats', 'id', 'jabatan'),
+(3325, 9, 'aktif', 'aktif', 'yes_no', 'yes', 'yes', 'yes', 'yes', 4, '', '', ''),
+(3326, 6, 'id', 'id', 'input', 'yes', '', '', 'yes', 1, '', '', ''),
+(3327, 6, 'code', 'code', 'input', 'yes', 'yes', 'yes', 'yes', 2, '', '', ''),
+(3328, 6, 'nik', 'nik', 'input', 'yes', 'yes', 'yes', 'yes', 3, '', '', ''),
+(3329, 6, 'nama', 'nama', 'input', 'yes', 'yes', 'yes', 'yes', 4, '', '', ''),
+(3330, 6, 'email', 'email', 'email', 'yes', 'yes', 'yes', 'yes', 5, '', '', ''),
+(3331, 6, 'status_karyawan', 'status_karyawan', 'input', 'yes', 'yes', 'yes', 'yes', 6, '', '', ''),
+(3332, 6, 'jenis_kelamin', 'jenis_kelamin', 'input', 'yes', 'yes', 'yes', 'yes', 7, '', '', ''),
+(3333, 6, 'tempat_lahir', 'tempat_lahir', 'input', 'yes', 'yes', 'yes', 'yes', 8, '', '', ''),
+(3334, 6, 'tanggal_lahir', 'tanggal_lahir', 'date', 'yes', 'yes', 'yes', 'yes', 9, '', '', ''),
+(3335, 6, 'alamat', 'alamat', 'editor_wysiwyg', 'yes', 'yes', 'yes', 'yes', 10, '', '', ''),
+(3336, 6, 'kode_pos', 'kode_pos', 'input', 'yes', 'yes', 'yes', 'yes', 11, '', '', ''),
+(3337, 6, 'pendidikan_terakhir', 'pendidikan_terakhir', 'input', 'yes', 'yes', 'yes', 'yes', 12, '', '', ''),
+(3338, 6, 'asal_pendidikan', 'asal_pendidikan', 'input', 'yes', 'yes', 'yes', 'yes', 13, '', '', ''),
+(3339, 6, 'no_hp', 'no_hp', 'input', 'yes', 'yes', 'yes', 'yes', 14, '', '', ''),
+(3340, 6, 'photo', 'photo', 'file', 'yes', 'yes', 'yes', 'yes', 15, '', '', ''),
+(3341, 6, 'program_studi_id', 'program_studi_id', 'number', 'yes', 'yes', 'yes', 'yes', 16, '', '', ''),
+(3342, 6, 'departement_id', 'departement_id', 'number', 'yes', 'yes', 'yes', 'yes', 17, '', '', ''),
+(3343, 6, 'status_akun', 'status_akun', 'input', 'yes', 'yes', 'yes', 'yes', 18, '', '', ''),
+(3344, 6, 'created_at', 'created_at', 'timestamp', '', '', '', '', 19, '', '', ''),
+(3345, 6, 'updated_at', 'updated_at', 'timestamp', '', '', '', '', 20, '', '', ''),
+(3346, 10, 'id', 'id', 'number', 'yes', '', '', 'yes', 1, '', '', ''),
+(3347, 10, 'kode', 'kode', 'input', 'yes', 'yes', 'yes', 'yes', 2, '', '', ''),
+(3348, 10, 'npm', 'npm', 'input', 'yes', 'yes', 'yes', 'yes', 3, '', '', ''),
+(3349, 10, 'ujian_id', 'Ujian', 'input', 'yes', 'yes', 'yes', 'yes', 4, '', '', ''),
+(3350, 10, 'form_id', 'Form', 'number', 'yes', 'yes', 'yes', 'yes', 5, '', '', ''),
+(3351, 10, 'tanggal_daftar', 'Tanggal Pendaftaran', 'date', 'yes', 'yes', 'yes', 'yes', 6, '', '', ''),
+(3352, 10, 'tanggal_ujian', 'Tanggal Ujian', 'date', 'yes', 'yes', 'yes', 'yes', 7, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -668,7 +842,140 @@ INSERT INTO `crud_field_validation` (`id`, `crud_field_id`, `crud_id`, `validati
 (12, 12, 3, 'required', ''),
 (13, 14, 4, 'required', ''),
 (14, 14, 4, 'max_length', '200'),
-(15, 15, 4, 'required', '');
+(15, 15, 4, 'required', ''),
+(3784, 2517, 7, 'required', ''),
+(3785, 2517, 7, 'max_length', '11'),
+(3786, 2518, 7, 'required', ''),
+(3787, 2518, 7, 'max_length', '11'),
+(3788, 2519, 7, 'required', ''),
+(3789, 2519, 7, 'max_length', '11'),
+(3790, 2520, 7, 'required', ''),
+(3791, 2520, 7, 'max_length', '11'),
+(3792, 2521, 7, 'required', ''),
+(3793, 2521, 7, 'max_length', '10'),
+(3794, 2522, 7, 'required', ''),
+(3795, 2522, 7, 'max_length', '75'),
+(3796, 2523, 7, 'required', ''),
+(3797, 2523, 7, 'max_length', '75'),
+(3798, 2524, 7, 'required', ''),
+(3799, 2524, 7, 'max_length', '255'),
+(3800, 2525, 7, 'required', ''),
+(3801, 2526, 7, 'required', ''),
+(3802, 2527, 7, 'required', ''),
+(3803, 2528, 7, 'required', ''),
+(3804, 2528, 7, 'max_length', '255'),
+(3805, 2529, 7, 'required', ''),
+(3806, 2530, 7, 'required', ''),
+(3807, 2531, 7, 'required', ''),
+(3808, 2531, 7, 'max_length', '255'),
+(3809, 2532, 7, 'required', ''),
+(3810, 2532, 7, 'max_length', '255'),
+(3811, 2533, 7, 'required', ''),
+(3812, 2534, 7, 'required', ''),
+(3813, 2534, 7, 'max_length', '255'),
+(3814, 2535, 7, 'required', ''),
+(3815, 2535, 7, 'max_length', '255'),
+(3816, 2536, 7, 'required', ''),
+(3817, 2536, 7, 'max_length', '255'),
+(3818, 2537, 7, 'required', ''),
+(3819, 2537, 7, 'max_length', '255'),
+(3820, 2538, 7, 'required', ''),
+(3821, 2538, 7, 'max_length', '255'),
+(3822, 2539, 7, 'required', ''),
+(3823, 2539, 7, 'max_length', '255'),
+(3824, 2540, 7, 'required', ''),
+(3825, 2540, 7, 'max_length', '255'),
+(3826, 2541, 7, 'required', ''),
+(3827, 2541, 7, 'max_length', '255'),
+(3828, 2542, 7, 'required', ''),
+(3829, 2543, 7, 'required', ''),
+(3830, 2544, 7, 'required', ''),
+(3831, 2545, 7, 'required', ''),
+(3832, 2546, 7, 'required', ''),
+(3833, 2547, 7, 'required', ''),
+(4397, 3172, 8, 'required', ''),
+(4398, 3172, 8, 'max_length', '255'),
+(4399, 3173, 8, 'required', ''),
+(4400, 3173, 8, 'max_length', '255'),
+(4401, 3174, 8, 'required', ''),
+(4402, 3174, 8, 'max_length', '255'),
+(4403, 3175, 8, 'required', ''),
+(4404, 3176, 8, 'required', ''),
+(4405, 3177, 8, 'required', ''),
+(4499, 3239, 5, 'required', ''),
+(4500, 3239, 5, 'max_length', '11'),
+(4501, 3240, 5, 'required', ''),
+(4502, 3240, 5, 'max_length', '128'),
+(4503, 3241, 5, 'required', ''),
+(4504, 3242, 5, 'required', ''),
+(4505, 3242, 5, 'max_length', '128'),
+(4506, 3243, 5, 'required', ''),
+(4507, 3243, 5, 'max_length', '128'),
+(4508, 3244, 5, 'required', ''),
+(4509, 3244, 5, 'max_length', '128'),
+(4510, 3245, 5, 'required', ''),
+(4511, 3246, 5, 'required', ''),
+(4512, 3247, 5, 'required', ''),
+(4513, 3248, 5, 'required', ''),
+(4514, 3248, 5, 'max_length', '128'),
+(4515, 3249, 5, 'required', ''),
+(4516, 3249, 5, 'max_length', '13'),
+(4517, 3250, 5, 'required', ''),
+(4518, 3250, 5, 'max_length', '128'),
+(4519, 3251, 5, 'required', ''),
+(4520, 3251, 5, 'max_length', '50'),
+(4521, 3252, 5, 'required', ''),
+(4522, 3252, 5, 'max_length', '50'),
+(4523, 3253, 5, 'required', ''),
+(4524, 3253, 5, 'max_length', '128'),
+(4525, 3254, 5, 'required', ''),
+(4526, 3255, 5, 'required', ''),
+(4527, 3256, 5, 'required', ''),
+(4528, 3257, 5, 'required', ''),
+(4529, 3257, 5, 'max_length', '11'),
+(4578, 3323, 9, 'required', ''),
+(4579, 3324, 9, 'required', ''),
+(4580, 3325, 9, 'required', ''),
+(4581, 3327, 6, 'required', ''),
+(4582, 3327, 6, 'max_length', '10'),
+(4583, 3328, 6, 'required', ''),
+(4584, 3328, 6, 'max_length', '255'),
+(4585, 3329, 6, 'required', ''),
+(4586, 3329, 6, 'max_length', '255'),
+(4587, 3330, 6, 'required', ''),
+(4588, 3330, 6, 'max_length', '255'),
+(4589, 3331, 6, 'required', ''),
+(4590, 3332, 6, 'required', ''),
+(4591, 3333, 6, 'required', ''),
+(4592, 3333, 6, 'max_length', '255'),
+(4593, 3334, 6, 'required', ''),
+(4594, 3335, 6, 'required', ''),
+(4595, 3336, 6, 'required', ''),
+(4596, 3336, 6, 'max_length', '255'),
+(4597, 3337, 6, 'required', ''),
+(4598, 3338, 6, 'required', ''),
+(4599, 3338, 6, 'max_length', '255'),
+(4600, 3339, 6, 'required', ''),
+(4601, 3339, 6, 'max_length', '255'),
+(4602, 3340, 6, 'required', ''),
+(4603, 3340, 6, 'max_length', '255'),
+(4604, 3341, 6, 'required', ''),
+(4605, 3341, 6, 'max_length', '11'),
+(4606, 3342, 6, 'required', ''),
+(4607, 3342, 6, 'max_length', '11'),
+(4608, 3343, 6, 'required', ''),
+(4609, 3344, 6, 'required', ''),
+(4610, 3345, 6, 'required', ''),
+(4611, 3347, 10, 'required', ''),
+(4612, 3347, 10, 'max_length', '50'),
+(4613, 3348, 10, 'required', ''),
+(4614, 3348, 10, 'max_length', '50'),
+(4615, 3349, 10, 'required', ''),
+(4616, 3349, 10, 'max_length', '11'),
+(4617, 3350, 10, 'required', ''),
+(4618, 3350, 10, 'max_length', '11'),
+(4619, 3351, 10, 'required', ''),
+(4620, 3352, 10, 'required', '');
 
 -- --------------------------------------------------------
 
@@ -788,6 +1095,17 @@ CREATE TABLE `departements` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `departements`
+--
+
+INSERT INTO `departements` (`id`, `code`, `nama`, `created_at`, `updated_at`) VALUES
+(1, '001', 'UPTTIK', '2022-03-25 03:32:38', NULL),
+(2, '002', 'PRODI', '2022-03-25 07:39:34', NULL),
+(3, '003', 'TATA USAHA', '2022-04-11 02:50:34', NULL),
+(4, '004', 'KEUANGAN', '2022-04-11 02:50:55', NULL),
+(5, '005', 'AKADEMIK', '2022-04-11 02:51:04', NULL);
 
 -- --------------------------------------------------------
 
@@ -971,15 +1289,27 @@ CREATE TABLE `karyawans` (
   `alamat` text COLLATE utf8mb4_unicode_ci,
   `kode_pos` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pendidikan_terakhir` enum('-','SD','SMP','SMA/SEDERAJAT','S1','S2','S3') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '-',
-  `asal_pendidikan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `no_hp` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `asal_pendidikan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `no_hp` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `photo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'profile.png',
-  `program_studi_id` int(11) NOT NULL,
-  `departement_id` int(11) NOT NULL,
+  `program_studi_id` int(11) DEFAULT NULL,
+  `departement_id` int(11) DEFAULT NULL,
   `status_akun` enum('Y','N') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `karyawans`
+--
+
+INSERT INTO `karyawans` (`id`, `code`, `nik`, `nama`, `email`, `status_karyawan`, `jenis_kelamin`, `tempat_lahir`, `tanggal_lahir`, `alamat`, `kode_pos`, `pendidikan_terakhir`, `asal_pendidikan`, `no_hp`, `photo`, `program_studi_id`, `departement_id`, `status_akun`, `created_at`, `updated_at`) VALUES
+(5, 'PPS024', '3201302410960001', 'Muhamamd Anwa Asrul', 'asrulanwar16@gmail.com', 'KONTRAK FAKULTAS', '', 'Bogor', '1996-01-24', 'Jl. Cibereum Kalong Rt 07/05', NULL, '-', NULL, NULL, '20220412104313-167858841_4384478648233717_7020433269666150664_n.png', NULL, 1, 'N', '2022-04-12 03:43:13', NULL),
+(6, 'PPS025', '321321', 'Nuzulhadi Zamaran, S.H', 'nuzulhadi@ppsuika.ac.id', 'TETAP', '', 'Bogor', '0000-00-00', '-', NULL, '-', NULL, NULL, '20220412104449-167858841_4384478648233717_7020433269666150664_n.png', NULL, 3, 'N', '2022-04-12 03:44:49', NULL),
+(7, 'PPS026', '3222122', 'Hendri Walika, SE., MPd', 'walika@ppsuika.ac.id', 'TETAP', '', 'Bogor', '0000-00-00', '-', NULL, '-', NULL, NULL, '20220412104544-167858841_4384478648233717_7020433269666150664_n.png', NULL, 4, 'N', '2022-04-12 03:45:44', NULL),
+(8, 'PPS027', '325251', 'Ahmad Mukhsinudin, SH', 'fadhey@ppsuika.ac.id', 'TETAP', '', '-', '0000-00-00', '-', NULL, '-', NULL, NULL, '20220412104644-167858841_4384478648233717_7020433269666150664_n.png', NULL, 5, 'N', '2022-04-12 03:46:44', NULL),
+(9, 'PPS001', '232323', 'Prof. Dr. KH. Didin Hafidhuddin, M.S', 'didin@ppsuika.ac.id', 'TETAP', '', '-', '0000-00-00', '-', NULL, '-', NULL, NULL, '20220412104737-167858841_4384478648233717_7020433269666150664_n.png', NULL, 5, 'N', '2022-04-12 03:47:37', NULL),
+(10, 'PPS002', '323235588', 'H. Hendri Tanjung, P.Hd', 'tanjung@ppsuika.ac.id', 'TETAP', '', '', '0000-00-00', '', NULL, '-', NULL, NULL, '20220412104824-167858841_4384478648233717_7020433269666150664_n.png', NULL, 5, 'N', '2022-04-12 03:48:24', NULL);
 
 -- --------------------------------------------------------
 
@@ -990,21 +1320,19 @@ CREATE TABLE `karyawans` (
 CREATE TABLE `kategori_komponen` (
   `id` int(11) NOT NULL,
   `kategori` varchar(100) DEFAULT NULL,
-  `aktif` enum('Y','N') NOT NULL DEFAULT 'Y'
+  `aktif` enum('Y','N') NOT NULL DEFAULT 'Y',
+  `pejabat_id` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `kategori_komponen`
 --
 
-INSERT INTO `kategori_komponen` (`id`, `kategori`, `aktif`) VALUES
-(1, 'ADMINISTRASI', 'Y'),
-(2, 'KELENGKAPAN SIDANG', 'Y'),
-(3, 'KELENGKAPAN BERKAS', 'Y'),
-(4, 'KELENGKAPAN UJIAN KOMPREHENSIF', 'Y'),
-(5, 'Administrasi Keuangan Sidang Tesis', 'Y'),
-(6, 'Administrasi Akademik Sidang Tesis', 'Y'),
-(7, 'Administrasi Program Studi Sidang Tesis', 'Y');
+INSERT INTO `kategori_komponen` (`id`, `kategori`, `aktif`, `pejabat_id`) VALUES
+(5, 'Administrasi Keuangan Sidang Tesis', 'Y', NULL),
+(9, 'Administrasi Seminar Proposal (S2)', 'Y', 8),
+(11, 'Administrasi Keuangan Seminar Proposal (S2)', 'Y', 7),
+(12, 'Administrasi Keuangan Seminar Proposal (S3)', 'Y', 7);
 
 -- --------------------------------------------------------
 
@@ -1028,29 +1356,20 @@ CREATE TABLE `kelengkapan` (
 CREATE TABLE `komponen` (
   `id` int(11) NOT NULL,
   `id_kategori_komponen` int(11) DEFAULT NULL,
-  `komponen` varchar(255) DEFAULT NULL
+  `komponen` varchar(255) DEFAULT NULL,
+  `jenis` enum('check','upload','input') NOT NULL DEFAULT 'check'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `komponen`
 --
 
-INSERT INTO `komponen` (`id`, `id_kategori_komponen`, `komponen`) VALUES
-(3, 4, 'Lunas Administrasi Semeter I s/d III'),
-(4, 4, 'Lunas Administrasi Cicilan Awal Semeter IV'),
-(5, 5, 'Lunas SPP'),
-(6, 5, 'Lunas Herregistrasi'),
-(7, 5, 'Lunas Fasilitas'),
-(8, 5, 'Lunas Sumbangan Pembangunan'),
-(9, 5, 'Lunas biaya Seminar, Komprehensif, Bimbingan dan Ujian Tesis'),
-(10, 6, 'Map Warna Merah 1 (Satu) Buah'),
-(11, 6, 'Lulus semua mata kuliah (Perlihatkan Transkrip Nilai S2)'),
-(12, 6, 'Menyerahkan tesis 3(tiga) rangkap, dijilid Mika Warna Merah'),
-(13, 6, 'pas photo berwarna terbaru ukuran 3x4 = 8 lmbr (bukan dari HP)*'),
-(14, 6, 'Copy Ijazah & Transkrip S1 LEGALISIR 4 (Empat) lembar'),
-(15, 6, 'Fotocopy KTP, KK & Kartu Bimbingan 2 Lembar'),
-(16, 7, 'Dua Jurnal terakreditasi nasional (artikel \"hasil penelitian\" dimuat di Jurnal terakreditasi nasional) / Procedding seminar nasional'),
-(17, 7, 'Hasil tes TOEFL (Bahas Inggris) dengan skor 500 atau TOEFL (Bahasa Arab) dengan skor 450');
+INSERT INTO `komponen` (`id`, `id_kategori_komponen`, `komponen`, `jenis`) VALUES
+(28, 9, 'Mengupload Berkas Proposal seminar', 'upload'),
+(29, 9, 'Lunas SPP SMT II & III', 'check'),
+(31, 11, 'Telah Melunasi Biaya semeter II & III', 'check'),
+(32, 12, 'TELAH MELUNASI KEUANGAN SEMETER II', 'check'),
+(33, 11, 'Lulus semua mata kuliah (Perlihatkan Transkrip Nilai S2)', 'check');
 
 -- --------------------------------------------------------
 
@@ -1071,6 +1390,42 @@ CREATE TABLE `master_angkatan` (
 INSERT INTO `master_angkatan` (`id`, `keterangan`, `aktif`) VALUES
 (1, '2020-2021', 'Y'),
 (2, '2022-2023', 'Y');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `master_dosen`
+--
+
+CREATE TABLE `master_dosen` (
+  `id` int(11) NOT NULL,
+  `nik` varchar(11) NOT NULL,
+  `nama_lengkap` varchar(128) NOT NULL,
+  `jenis_kelamin` enum('L','P') DEFAULT NULL,
+  `no_ktp` varchar(128) NOT NULL,
+  `gelar_kesarjanaan` varchar(128) DEFAULT NULL,
+  `tempat_lahir` varchar(128) DEFAULT NULL,
+  `tanggal_lahir` date DEFAULT NULL,
+  `status_kawin` enum('menikah','belum menikah') DEFAULT NULL,
+  `alamat_rumah` text,
+  `email` varchar(128) NOT NULL,
+  `no_hp` varchar(13) NOT NULL,
+  `id_master_prodi` int(128) DEFAULT NULL,
+  `fungsional` varchar(50) DEFAULT NULL,
+  `golongan` varchar(50) DEFAULT NULL,
+  `foto` varchar(128) DEFAULT 'default.png',
+  `status_dosen` enum('TETAP','LB') NOT NULL DEFAULT 'TETAP',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `created_by` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `master_dosen`
+--
+
+INSERT INTO `master_dosen` (`id`, `nik`, `nama_lengkap`, `jenis_kelamin`, `no_ktp`, `gelar_kesarjanaan`, `tempat_lahir`, `tanggal_lahir`, `status_kawin`, `alamat_rumah`, `email`, `no_hp`, `id_master_prodi`, `fungsional`, `golongan`, `foto`, `status_dosen`, `created_at`, `update_at`, `created_by`) VALUES
+(1, '001', 'Muhamamd Asrul anwar', 'L', '3201302410960001', 'Dr.', 'Bogor', '1996-01-24', 'belum menikah', 'Kp. Cibereum Kalong Rt 07', 'asrul.maa99@gmail.com', '081381100046', 1, '1', '1', 'default.png', 'TETAP', '2022-03-23 06:41:16', '2022-03-23 06:42:22', NULL);
 
 -- --------------------------------------------------------
 
@@ -1108,7 +1463,7 @@ CREATE TABLE `master_mahasiswa` (
 --
 
 INSERT INTO `master_mahasiswa` (`id`, `npm`, `nama_lengkap`, `jenis_kelamin`, `no_ktp`, `gelar_kesarjanaan`, `tempat_lahir`, `tanggal_lahir`, `status_kawin`, `alamat_rumah`, `email`, `no_hp`, `nama_ayah`, `nama_ibu`, `id_master_prodi`, `id_angkatan`, `konsentrasi`, `foto`, `status`, `created_at`, `update_at`, `created_by`) VALUES
-(100, '662651', 'Ahmad', NULL, '', NULL, NULL, NULL, NULL, NULL, '', '081392110025', '', '', 1, 2, '', 'default.png', 0, '2022-02-23 07:39:12', '2022-02-24 03:53:37', NULL),
+(100, '662651', 'Ahmad', NULL, '3201302410960001', 'ST', 'Bogor', '2022-04-14', 'belum menikah', 'Jl. Cibereum', 'ahmad@gmail.com', '081392110025', 'ahmadi', 'madi', 1, 2, '', 'Untitled-1.jpg', 1, '2022-02-23 07:39:12', '2022-04-16 03:18:53', NULL),
 (101, '662652', 'Ali', NULL, '', NULL, NULL, NULL, NULL, NULL, '', '081392110026', '', '', 1, 2, '', 'default.png', 0, '2022-02-23 07:39:12', '2022-02-24 03:53:38', NULL),
 (102, '662653', 'untung', NULL, '', NULL, NULL, NULL, NULL, NULL, '', '081392110027', '', '', 1, 2, '', 'default.png', 0, '2022-02-23 07:39:12', '2022-02-24 03:53:39', NULL),
 (103, '662654', 'sugeng', NULL, '', NULL, NULL, NULL, NULL, NULL, '', '081392110028', '', '', 1, 2, '', 'default.png', 0, '2022-02-23 07:39:12', '2022-02-24 03:53:40', NULL),
@@ -1170,6 +1525,154 @@ INSERT INTO `master_prodi` (`id`, `prodiID`, `program_studi`, `jenjang`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `mdapp_pengajuan`
+--
+
+CREATE TABLE `mdapp_pengajuan` (
+  `id` int(11) NOT NULL,
+  `npm` varchar(50) DEFAULT NULL,
+  `ujian` varchar(50) DEFAULT NULL,
+  `tanggal_pengajuan` date DEFAULT NULL,
+  `angkatan_id` int(11) DEFAULT NULL,
+  `prodi_id` int(11) DEFAULT NULL,
+  `thesis` text,
+  `status` enum('Y','N') DEFAULT 'N',
+  `pengajuan_ke` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `mdapp_pengajuan`
+--
+
+INSERT INTO `mdapp_pengajuan` (`id`, `npm`, `ujian`, `tanggal_pengajuan`, `angkatan_id`, `prodi_id`, `thesis`, `status`, `pengajuan_ke`) VALUES
+(6, '662651', 'kompre', NULL, 2, 1, 'tracer', 'N', NULL),
+(7, '662660', 'kompre', NULL, 1, 2, 'Fery sidang ', 'N', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mdapp_pengajuan_kelengkapan`
+--
+
+CREATE TABLE `mdapp_pengajuan_kelengkapan` (
+  `id_pengajuan` int(11) DEFAULT NULL,
+  `id_kategori_komponen` int(11) DEFAULT NULL,
+  `status` enum('Diperiksa','Menunggu','Diulang') DEFAULT 'Menunggu',
+  `file` text,
+  `catatan` text
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mdapp_penguji_ujian`
+--
+
+CREATE TABLE `mdapp_penguji_ujian` (
+  `id_ujian` int(11) DEFAULT NULL,
+  `id_dosen` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mdapp_penilaian`
+--
+
+CREATE TABLE `mdapp_penilaian` (
+  `npm` int(11) DEFAULT NULL,
+  `id_dosen` int(11) DEFAULT NULL,
+  `id_ujian` int(11) DEFAULT NULL,
+  `id_komponen` int(11) DEFAULT NULL,
+  `nilai` int(11) DEFAULT NULL,
+  `catatan` text
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mdapp_ujian`
+--
+
+CREATE TABLE `mdapp_ujian` (
+  `id` int(11) NOT NULL,
+  `npm` varchar(50) DEFAULT NULL,
+  `judul_thesis` text,
+  `tgl_ujian` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mdsetup_komponen`
+--
+
+CREATE TABLE `mdsetup_komponen` (
+  `id_kategori_komponen` int(11) DEFAULT NULL,
+  `id_komponen` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mdtemplate_form`
+--
+
+CREATE TABLE `mdtemplate_form` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `nama_template` varchar(255) DEFAULT NULL,
+  `pejabat_id` varchar(255) DEFAULT NULL,
+  `aktif` enum('Y','N') NOT NULL DEFAULT 'Y'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `mdtemplate_form`
+--
+
+INSERT INTO `mdtemplate_form` (`id`, `title`, `nama_template`, `pejabat_id`, `aktif`) VALUES
+(14, 'Form Pendaftaran Seminar Proposal', 'proposal', '6', 'Y'),
+(15, NULL, 'SIDANG DISERTASI', '6', 'Y');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mdtemplate_komponen`
+--
+
+CREATE TABLE `mdtemplate_komponen` (
+  `id_template` int(11) DEFAULT NULL,
+  `id_kategori_komponen` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `mdtemplate_komponen`
+--
+
+INSERT INTO `mdtemplate_komponen` (`id_template`, `id_kategori_komponen`) VALUES
+(14, 11),
+(14, 9),
+(15, 12);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mhs_daftar`
+--
+
+CREATE TABLE `mhs_daftar` (
+  `id` int(11) NOT NULL,
+  `kode` varchar(50) DEFAULT NULL,
+  `npm` varchar(50) DEFAULT NULL,
+  `ujian_id` int(11) DEFAULT NULL,
+  `form_id` int(11) DEFAULT NULL,
+  `tanggal_daftar` date DEFAULT NULL,
+  `tanggal_ujian` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pejabats`
 --
 
@@ -1184,6 +1687,15 @@ CREATE TABLE `pejabats` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `pejabats`
+--
+
+INSERT INTO `pejabats` (`id`, `karyawan_id`, `pengajar_id`, `departement_id`, `jabatan`, `ttd`, `status`, `created_at`, `updated_at`) VALUES
+(6, '6', '', '3', 'KEPALA TATA USAHA', '20220412105220-ig.png', 'Y', '2022-04-12 03:52:20', NULL),
+(7, '7', '', '4', 'KASUBAG KEUANGAN', '20220412105235-167858841_4384478648233717_7020433269666150664_n.png', 'Y', '2022-04-12 03:52:35', NULL),
+(8, '8', '', '5', 'KASUBAG AKADEMIK', '20220412105250-167858841_4384478648233717_7020433269666150664_n.png', 'Y', '2022-04-12 03:52:50', NULL);
 
 -- --------------------------------------------------------
 
@@ -1231,6 +1743,14 @@ CREATE TABLE `program_studis` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `program_studis`
+--
+
+INSERT INTO `program_studis` (`id`, `code`, `nama`, `jenjang`, `kaprodi`, `sekprodi`, `ttd`, `created_at`, `updated_at`) VALUES
+(1, '001', 'TEKNOLOGI PENDIDIKAN', 'S2', 1, 1, NULL, '2022-03-25 03:26:04', NULL),
+(2, '002', 'Manajemen', 'S2', 1, 1, NULL, '2022-03-25 03:26:04', NULL);
 
 -- --------------------------------------------------------
 
@@ -1330,6 +1850,17 @@ CREATE TABLE `students` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `template_to_form`
+--
+
+CREATE TABLE `template_to_form` (
+  `id_mdtemplate_komponen` int(11) DEFAULT NULL,
+  `form` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
@@ -1552,12 +2083,19 @@ ALTER TABLE `kelengkapan`
 -- Indexes for table `komponen`
 --
 ALTER TABLE `komponen`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_kategori_komponen` (`id_kategori_komponen`);
 
 --
 -- Indexes for table `master_angkatan`
 --
 ALTER TABLE `master_angkatan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `master_dosen`
+--
+ALTER TABLE `master_dosen`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1573,6 +2111,30 @@ ALTER TABLE `master_mahasiswa`
 -- Indexes for table `master_prodi`
 --
 ALTER TABLE `master_prodi`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `mdapp_pengajuan`
+--
+ALTER TABLE `mdapp_pengajuan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `mdapp_ujian`
+--
+ALTER TABLE `mdapp_ujian`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `mdtemplate_form`
+--
+ALTER TABLE `mdtemplate_form`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `mhs_daftar`
+--
+ALTER TABLE `mhs_daftar`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1631,13 +2193,13 @@ ALTER TABLE `aauth_groups`
 -- AUTO_INCREMENT for table `aauth_login_attempts`
 --
 ALTER TABLE `aauth_login_attempts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `aauth_perms`
 --
 ALTER TABLE `aauth_perms`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `aauth_pms`
@@ -1649,13 +2211,13 @@ ALTER TABLE `aauth_pms`
 -- AUTO_INCREMENT for table `aauth_users`
 --
 ALTER TABLE `aauth_users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `aauth_user_to_departement`
 --
 ALTER TABLE `aauth_user_to_departement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `aauth_user_variables`
@@ -1709,25 +2271,25 @@ ALTER TABLE `bank_soal`
 -- AUTO_INCREMENT for table `crud`
 --
 ALTER TABLE `crud`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `crud_custom_option`
 --
 ALTER TABLE `crud_custom_option`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
 
 --
 -- AUTO_INCREMENT for table `crud_field`
 --
 ALTER TABLE `crud_field`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3353;
 
 --
 -- AUTO_INCREMENT for table `crud_field_validation`
 --
 ALTER TABLE `crud_field_validation`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4621;
 
 --
 -- AUTO_INCREMENT for table `crud_input_type`
@@ -1745,7 +2307,7 @@ ALTER TABLE `crud_input_validation`
 -- AUTO_INCREMENT for table `departements`
 --
 ALTER TABLE `departements`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `enroll`
@@ -1775,13 +2337,13 @@ ALTER TABLE `h_ujian`
 -- AUTO_INCREMENT for table `karyawans`
 --
 ALTER TABLE `karyawans`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `kategori_komponen`
 --
 ALTER TABLE `kategori_komponen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `kelengkapan`
@@ -1793,13 +2355,19 @@ ALTER TABLE `kelengkapan`
 -- AUTO_INCREMENT for table `komponen`
 --
 ALTER TABLE `komponen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `master_angkatan`
 --
 ALTER TABLE `master_angkatan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `master_dosen`
+--
+ALTER TABLE `master_dosen`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `master_mahasiswa`
@@ -1814,10 +2382,28 @@ ALTER TABLE `master_prodi`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `mdapp_pengajuan`
+--
+ALTER TABLE `mdapp_pengajuan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `mdtemplate_form`
+--
+ALTER TABLE `mdtemplate_form`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `mhs_daftar`
+--
+ALTER TABLE `mhs_daftar`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `pejabats`
 --
 ALTER TABLE `pejabats`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `pengajars`
@@ -1829,7 +2415,7 @@ ALTER TABLE `pengajars`
 -- AUTO_INCREMENT for table `program_studis`
 --
 ALTER TABLE `program_studis`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `soal_to_gorupsoal`
@@ -1884,6 +2470,12 @@ ALTER TABLE `enroll`
 --
 ALTER TABLE `form`
   ADD CONSTRAINT `form_ibfk_1` FOREIGN KEY (`prodi_id`) REFERENCES `master_prodi` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `komponen`
+--
+ALTER TABLE `komponen`
+  ADD CONSTRAINT `komponen_ibfk_1` FOREIGN KEY (`id_kategori_komponen`) REFERENCES `kategori_komponen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `master_mahasiswa`
