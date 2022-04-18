@@ -146,66 +146,150 @@ class Daftar extends Admin
 	public function getUjian()
 	{
 		//1. Pertama Check user id sudah pernah mengajukan apa belum
-		// $npm = $this->input->post('npm');
-		// $this->db->where('npm', $npm);
-		// $cek = $this->db->get('mdapp_pengajuan');
-		// if ($cek->num_rows() > 0) {
-			
-		// } else {
+		$npm = $this->input->post('npm');
+		$this->db->where('npm', $npm);
+		$cek = $this->db->get('mdapp_pengajuan');
+		if ($cek->num_rows() > 0) {
+			//parsing info
+			$this->db->where('nama_template', $this->input->post('seminar'));
+			$this->db->where('mdtemplate_form.aktif', 'Y');
+			$this->db->select('mdtemplate_form.id, mdtemplate_form.title, pejabats.jabatan, pejabats.ttd, karyawans.nama');
+			$this->db->join('mdtemplate_komponen', 'mdtemplate_komponen.id_template = mdtemplate_form.id', 'left');
 
-		// }
+			$this->db->join('kategori_komponen kategori', 'kategori.id = mdtemplate_komponen.id_kategori_komponen', 'left');
+			$this->db->join('pejabats', 'pejabats.id = mdtemplate_form.pejabat_id', 'left');
+			$this->db->join('karyawans', 'karyawans.id = pejabats.karyawan_id', 'left');
+			$this->db->group_by('mdtemplate_form.id');
+			$this->db->from('mdtemplate_form');
+			$ujian = $this->db->get();
+
+
+			if ($ujian->num_rows() > 0) {
+
+				$data_ujian = $ujian->row_array();
+
+				$this->db->select('kategori.kategori, pejabats.jabatan, karyawans.nama, departements.nama as departement, GROUP_CONCAT( DISTINCT  komponen.komponen ) as komponen, komponen.jenis');
+				$this->db->from('mdtemplate_komponen');
+				$this->db->join('kategori_komponen kategori', 'kategori.id = mdtemplate_komponen.id_kategori_komponen', 'left');
+
+				$this->db->join('komponen', 'komponen.id_kategori_komponen = kategori.id', 'left');
+				$this->db->join('pejabats', 'pejabats.id = kategori.pejabat_id', 'left');
+				$this->db->join('karyawans', 'karyawans.id = pejabats.karyawan_id', 'left');
+				$this->db->join('mdtemplate_form', 'mdtemplate_form.id = mdtemplate_komponen.id_template', 'left');
+
+				$this->db->join('mdapp_pengajuan', 'mdapp_pengajuan.ujian = mdtemplate_form.nama_template', 'left');
+
+				$this->db->where('mdtemplate_komponen.id_template', $data_ujian['id']);
+				$this->db->where('mdapp_pengajuan.npm', $npm);
+				$this->db->group_by('mdtemplate_komponen.id_kategori_komponen');
+				$this->db->join('departements', 'departements.id = pejabats.departement_id', 'left');
+				$data_komponen =  $this->db->get()->result_array();
+				
+				$data = [];
+				$i = 0;
+				foreach ($data_komponen as $row) {
+					// $komponen[] = $row;
+					$komponen['komponen'][$row['kategori']] = explode(',', $row['komponen']);
+					$e = array_replace($data_komponen[$i], $komponen);
+					
+				}
+				
+				$response['data_komponen'] = $data_komponen;
+				$response['data_ujian'] = $data_ujian;
+
+
+
+				return $this->response($response);
+			}
+
+		} else {
+			//parsing info daftar
+			$this->db->where('nama_template', $this->input->post('seminar'));
+			$this->db->where('mdtemplate_form.aktif', 'Y');
+			$this->db->select('mdtemplate_form.id, mdtemplate_form.title, pejabats.jabatan, pejabats.ttd, karyawans.nama');
+			$this->db->join('mdtemplate_komponen', 'mdtemplate_komponen.id_template = mdtemplate_form.id', 'left');
+
+			$this->db->join('kategori_komponen kategori', 'kategori.id = mdtemplate_komponen.id_kategori_komponen', 'left');
+			$this->db->join('pejabats', 'pejabats.id = mdtemplate_form.pejabat_id', 'left');
+			$this->db->join('karyawans', 'karyawans.id = pejabats.karyawan_id', 'left');
+			$this->db->group_by('mdtemplate_form.id');
+			$this->db->from('mdtemplate_form');
+			$ujian = $this->db->get();
+
+
+			if ($ujian->num_rows() > 0) {
+
+				$data_ujian = $ujian->row_array();
+
+				$this->db->select('kategori.kategori, pejabats.jabatan, karyawans.nama, departements.nama as departement, GROUP_CONCAT( DISTINCT  komponen.komponen ) as komponen, komponen.jenis');
+				$this->db->from('mdtemplate_komponen');
+				$this->db->join('kategori_komponen kategori', 'kategori.id = mdtemplate_komponen.id_kategori_komponen', 'left');
+
+				$this->db->join('komponen', 'komponen.id_kategori_komponen = kategori.id', 'left');
+				$this->db->join('pejabats', 'pejabats.id = kategori.pejabat_id', 'left');
+				$this->db->join('karyawans', 'karyawans.id = pejabats.karyawan_id', 'left');
+				$this->db->where('mdtemplate_komponen.id_template', $data_ujian['id']);
+				$this->db->group_by('mdtemplate_komponen.id_kategori_komponen');
+				$this->db->join('departements', 'departements.id = pejabats.departement_id', 'left');
+				$data_komponen =  $this->db->get()->result_array();
+				
+				$data = [];
+				$i = 0;
+				foreach ($data_komponen as $row) {
+					// $komponen[] = $row;
+					$komponen['komponen'][$row['kategori']] = explode(',', $row['komponen']);
+					$e = array_replace($data_komponen[$i], $komponen);
+					
+				}
+				
+				$response['data_komponen'] = $data_komponen;
+				$response['data_ujian'] = $data_ujian;
+
+
+
+				return $this->response($response);
+			}
 	
-			echo "<pre>";
-		print_r ($this->input->post());
-		die();
+		
 
 		//2. jika sudah maka tambah status untuk verifikasi
 		//3. jika belum maka haru di lakukan pengecekan
-		$this->db->where('nama_template', $this->input->post('seminar'));
-		$this->db->where('mdtemplate_form.aktif', 'Y');
-		$this->db->select('mdtemplate_form.id, mdtemplate_form.title, pejabats.jabatan, pejabats.ttd, karyawans.nama');
-		$this->db->join('mdtemplate_komponen', 'mdtemplate_komponen.id_template = mdtemplate_form.id', 'left');
-
-		$this->db->join('kategori_komponen kategori', 'kategori.id = mdtemplate_komponen.id_kategori_komponen', 'left');
-		$this->db->join('pejabats', 'pejabats.id = mdtemplate_form.pejabat_id', 'left');
-		$this->db->join('karyawans', 'karyawans.id = pejabats.karyawan_id', 'left');
-		$this->db->group_by('mdtemplate_form.id');
-		$this->db->from('mdtemplate_form');
-		$ujian = $this->db->get();
-
-
-		if ($ujian->num_rows() > 0) {
-
-			$data_ujian = $ujian->row_array();
-
-			$this->db->select('kategori.kategori, pejabats.jabatan, karyawans.nama, departements.nama as departement, GROUP_CONCAT( DISTINCT  komponen.komponen ) as komponen, komponen.jenis');
-			$this->db->from('mdtemplate_komponen');
-			$this->db->join('kategori_komponen kategori', 'kategori.id = mdtemplate_komponen.id_kategori_komponen', 'left');
-
-			$this->db->join('komponen', 'komponen.id_kategori_komponen = kategori.id', 'left');
-			$this->db->join('pejabats', 'pejabats.id = kategori.pejabat_id', 'left');
-			$this->db->join('karyawans', 'karyawans.id = pejabats.karyawan_id', 'left');
-			$this->db->where('mdtemplate_komponen.id_template', $data_ujian['id']);
-			$this->db->group_by('mdtemplate_komponen.id_kategori_komponen');
-			$this->db->join('departements', 'departements.id = pejabats.departement_id', 'left');
-			$data_komponen =  $this->db->get()->result_array();
-			
-			$data = [];
-			$i = 0;
-			foreach ($data_komponen as $row) {
-				// $komponen[] = $row;
-				$komponen['komponen'][$row['kategori']] = explode(',', $row['komponen']);
-				$e = array_replace($data_komponen[$i], $komponen);
-				
-			}
-			
-			$response['data_komponen'] = $data_komponen;
-			$response['data_ujian'] = $data_ujian;
-
-
-
-			return $this->response($response);
+		
 		}
+	}
+
+	public function add_save()
+	{
+		if (!$_POST) {
+			$input = (object) $this->model_daftar->getDefaultValues();
+		} else {
+			$input = (object) $this->input->post(null, true);
+		}
+
+		if ($this->model_daftar->validate()) {
+			$save_angkatan = $this->model_daftar->run($input);
+			if ($save_angkatan) {
+				if ($this->input->post('save_type') == 'stay') {
+						$response['success'] = true;
+						$response['message'] = 'Berhasil menyimpan data, klik link untuk mengedit Pendaftaran'.
+							anchor('admin/daftar/edit/' . $save_angkatan, ' Edit Pendaftaran'). ' atau klik'.
+							anchor('admin/daftar', ' kemabali ke list'). ' untuk melihat seluruh data';
+				} else {
+					$response['message'] = 'Berhasil menyimpan data Angkatan';
+	        		$response['success'] = true;
+					$response['redirect'] = site_url('admin/daftar');
+				} 
+
+			} else {
+				$response['success'] = false;
+				$response['message'] = 'gagal menyimpan data pendaftaran';
+			}
+		}	else {
+			$response['success'] = false;
+			$response['message'] = validation_errors();
+		}
+
+		return $this->response($response);
 	}
 
 	

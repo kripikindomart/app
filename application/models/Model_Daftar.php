@@ -18,6 +18,55 @@ class Model_Daftar extends MY_Model {
 		parent::__construct();
 	}
 
+	public function getDefaultValues()
+	{
+		return [
+			'npm'		=> '',
+			'prodi_id'	=> '',
+			'ujian'	=> '',
+
+		];
+	}
+
+	public function getValidationRules()
+	{
+		$validationRules = [
+			[
+				'field' => 'seminar',
+				'label' => 'Ujian',
+				'rules' => 'trim|required',
+				'errors' => array('required' => '%s tidak boleh kosong')
+			],
+
+		];
+		return $validationRules;
+		
+	}
+
+	public function run($data, $action = 'input')
+	{
+		if ($action == 'input') {
+
+			$save_data = [
+				'npm' 	=> $data->npm,
+				'prodi_id' 	=> $data->prodi_id,
+				'ujian' 	=> $data->seminar,
+				'pengajuan_ke' 	=> 1,
+				'tanggal_pengajuan' 	=> date('Ymd'),
+			];
+
+			return $this->create($save_data, 'mdapp_pengajuan');
+		} else {
+
+			$save_data = [
+				'keterangan' 	=> $data->tahun_angkatan,
+				'aktif' 		=> $data->aktif,
+			];
+
+			return $this->where('id', $data->id)->update($save_data);
+		}
+	}
+
 	
 
 	

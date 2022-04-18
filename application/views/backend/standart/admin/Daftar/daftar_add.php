@@ -46,6 +46,7 @@
                   ]); 
 
                   ?>
+                  <input type="hidden" name="form_template" id="form_template">
                   <table class="table table-bordered" style="width: 90% !important; margin: 0 auto;">
                   	<tr>
                   		<td width="20%">Nama Mahasiswa</td>
@@ -197,21 +198,18 @@
     $(document).on('change', '#seminar', function(event) {
     	event.preventDefault();
     	/* Act on the event */
+    	var	seminar = $(this).val()
+    	var npm = $('#npm').val();
+    	var prodi_id = $('#prodi_id').val();
     	var form_user = $('#form_user');
-        var data_post = form_user.serializeArray();
         var save_type = $(this).attr('data-stype');
-        data_post.push({
-        	name : 'save_type',
-        	value : save_type
-        })
 
     	$('#tbl_posts_body tr').remove()
-    	console.log(data_post);
     	$.ajax({
     		url: '<?= base_url('admin/daftar/getUjian') ?>',
     		type: 'post',
     		dataType: 'json',
-    		data: {data_post},
+    		data: {seminar : seminar, npm : npm, prodi_id: prodi_id, save_type: save_type},
     	})
     	.done(function(res) {
     		var i = 0;	
@@ -516,14 +514,14 @@
         $('.loading').show();
 
         $.ajax({
-        	url: '<?= base_url('admin/form_template/add_save') ?>',
+        	url: '<?= base_url('admin/daftar/add_save') ?>',
         	type: 'post',
         	dataType: 'json',
         	data: data_post,
         	success : function(res) {
         		if (res.success == true) {
         			if (res.data == false) {
-        				window.location.href = BASE_URL + 'admin/form_template';
+        				window.location.href = BASE_URL + 'admin/daftar';
         			} else {
         				$('.message').printMessage({message : res.message});
             	 		$('.message').fadeIn();

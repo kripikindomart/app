@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 16, 2022 at 03:48 AM
+-- Generation Time: Apr 18, 2022 at 07:14 AM
 -- Server version: 5.7.33
 -- PHP Version: 7.4.19
 
@@ -284,7 +284,7 @@ CREATE TABLE `aauth_users` (
 --
 
 INSERT INTO `aauth_users` (`id`, `email`, `pass`, `username`, `full_name`, `banned`, `avatar`, `last_login`, `last_activity`, `date_created`, `forgot_exp`, `remember_time`, `remember_exp`, `verification_code`, `totp_secret`, `ip_address`, `id_master_prodi`, `id_mahasiswa`, `delete_at`) VALUES
-(1, 'asrulanwar99@gmail.com', '$2y$10$21ll73aUDDLk5kmW/rfpVOKHmSijxZjmBKxDZ028aNmWjQ2ff8hZ2', 'asrul', 'Muhammad Asrul Anwar', 0, '20200729093029-LOGO_UIKA_Terbaru2.png', '2022-04-16 09:59:12', '2022-04-16 09:59:12', '2020-07-29 09:30:29', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '6', 100, ''),
+(1, 'asrulanwar99@gmail.com', '$2y$10$21ll73aUDDLk5kmW/rfpVOKHmSijxZjmBKxDZ028aNmWjQ2ff8hZ2', 'asrul', 'Muhammad Asrul Anwar', 0, '20200729093029-LOGO_UIKA_Terbaru2.png', '2022-04-18 09:31:49', '2022-04-18 09:31:49', '2020-07-29 09:30:29', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '6', 101, ''),
 (2, 'user@local.com', '$2y$10$s8A74MVHxPrwnAThy/D5B.ZAg8kHt5H.1X4.mDnseAcicpBaC8dy2', 'user', 'user', 0, 'default.png', '2022-03-10 14:29:03', '2022-03-10 14:29:03', '2022-03-10 14:27:10', NULL, NULL, NULL, NULL, NULL, '192.168.112.59', '6', 100, ''),
 (4, 'ahmad@gmail.com', '$2y$10$21ll73aUDDLk5kmW/rfpVOKHmSijxZjmBKxDZ028aNmWjQ2ff8hZ2', 'ahmad', 'Ahmad', 0, '20200729093029-LOGO_UIKA_Terbaru2.png', '2022-04-14 14:57:39', '2022-04-14 14:57:39', '2020-07-29 09:30:29', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '6', 100, NULL),
 (5, 'student@student.com', '$2y$10$CsRTelivtChsJ3eNxhFo6.5zuGW1GYBB/iRFzEQxbUlBNUQotMY2C', 'student', 'Rusti', 0, '20220416100005-167858841_4384478648233717_7020433269666150664_n.png', '2022-04-16 10:00:37', '2022-04-16 10:00:37', '2022-04-16 10:00:05', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '6', 100, NULL);
@@ -1537,16 +1537,16 @@ CREATE TABLE `mdapp_pengajuan` (
   `prodi_id` int(11) DEFAULT NULL,
   `thesis` text,
   `status` enum('Y','N') DEFAULT 'N',
-  `pengajuan_ke` int(11) DEFAULT NULL
+  `pengajuan_ke` int(11) DEFAULT NULL,
+  `pengajuan_form` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `mdapp_pengajuan`
 --
 
-INSERT INTO `mdapp_pengajuan` (`id`, `npm`, `ujian`, `tanggal_pengajuan`, `angkatan_id`, `prodi_id`, `thesis`, `status`, `pengajuan_ke`) VALUES
-(6, '662651', 'kompre', NULL, 2, 1, 'tracer', 'N', NULL),
-(7, '662660', 'kompre', NULL, 1, 2, 'Fery sidang ', 'N', NULL);
+INSERT INTO `mdapp_pengajuan` (`id`, `npm`, `ujian`, `tanggal_pengajuan`, `angkatan_id`, `prodi_id`, `thesis`, `status`, `pengajuan_ke`, `pengajuan_form`) VALUES
+(8, '662652', 'proposal', '2022-04-18', NULL, 1, NULL, 'N', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -1632,7 +1632,9 @@ CREATE TABLE `mdtemplate_form` (
 
 INSERT INTO `mdtemplate_form` (`id`, `title`, `nama_template`, `pejabat_id`, `aktif`) VALUES
 (14, 'Form Pendaftaran Seminar Proposal', 'proposal', '6', 'Y'),
-(15, NULL, 'SIDANG DISERTASI', '6', 'Y');
+(15, NULL, 'SIDANG DISERTASI', '6', 'Y'),
+(16, NULL, NULL, NULL, 'Y'),
+(17, NULL, NULL, NULL, 'Y');
 
 -- --------------------------------------------------------
 
@@ -2193,7 +2195,7 @@ ALTER TABLE `aauth_groups`
 -- AUTO_INCREMENT for table `aauth_login_attempts`
 --
 ALTER TABLE `aauth_login_attempts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `aauth_perms`
@@ -2385,13 +2387,13 @@ ALTER TABLE `master_prodi`
 -- AUTO_INCREMENT for table `mdapp_pengajuan`
 --
 ALTER TABLE `mdapp_pengajuan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `mdtemplate_form`
 --
 ALTER TABLE `mdtemplate_form`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `mhs_daftar`
